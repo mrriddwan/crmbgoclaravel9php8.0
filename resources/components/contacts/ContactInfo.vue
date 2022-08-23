@@ -1,0 +1,48 @@
+<template>
+<div>
+        <table>
+            <thead>
+                <tr>
+                    <th>
+                        Company Information
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Name</td>
+                    <td>Syarikat Buah</td>
+                </tr>
+                <tr>
+                    <td>Industry</td>
+                    <td>test@gmail.com</td>
+                </tr>
+                <tr>
+                    <td>Category</td>
+                    <td>Food</td>
+                </tr>
+                <tr>
+                    <td>Address</td>
+                    <td>Jalan Tunku Ismail</td>
+                </tr>
+                <tr>
+                    <td>CS</td>
+                    <td>Ali</td>
+                </tr>
+                <tr>
+                    <td>Contact History</td>
+                    <td><router-link to="contacts_history">Link to History Page</router-link></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p>PIC TABLE HERE</p>
+
+        <p>FORECAST TABLE HERE</p>
+</div>
+
+</template>
+
+<script>
+
+</script>
