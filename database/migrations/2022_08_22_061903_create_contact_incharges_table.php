@@ -22,8 +22,8 @@ return new class extends Migration
                     ->onDelete('cascade');
 
             $table->string('name');
-            $table->string('tel_no1');
-            $table->string('tel_no2');
+            $table->string('phone_mobile');
+            $table->string('phone_office');
             $table->timestamps();
         });
     }

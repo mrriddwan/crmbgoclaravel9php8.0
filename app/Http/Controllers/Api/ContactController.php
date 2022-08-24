@@ -13,9 +13,10 @@ class ContactController extends Controller
     public function index()
     {
         // $contacts = Contact::with('category', 'type', 'status', 'incharge', 'user')->paginate(10);
-        $contact = Contact::with('category', 'type', 'status', 'incharge', 'user')->get();
+        // $contact = Contact::with('category', 'type', 'status', 'incharge', 'user')->get();
+        $contact = (Contact::with('category', 'type', 'status', 'incharge', 'user'))->get();
 
-        return response()->json(['data' => $contact]);
+        return ContactResource::collection($contact);
     }
 
     public function store(Request $request)
@@ -24,18 +25,21 @@ class ContactController extends Controller
 
         return new ContactResource($contact);
     }
-    public function show(Contact $contact)
+    public function show($id)
     {   
-        $data = Contact::with('category', 'type', 'status', 'incharge', 'user')
-                ->where('id', $contact->id)
-                ->get();
+        // $data = Contact::with('category', 'type', 'status', 'incharge', 'user')
+        //         ->where('id', $contact->id)
+        //         ->toArray()
+        //         ->get();
 
+        // return response()->json([
+        //     'status' => true,
+        //     'message' => 'Successfully fetch data Contact ',
+        //     'data' => $data,
+        // ]);
 
-        return response()->json([
-            'status' => true,
-            'message' => 'Successfully fetch data Contact ',
-            'data' => $data,
-        ]);
+        $contact = Contact::find($id);
+        return response()->json($contact);
     }
 
     public function update(Request $request, Contact $contact)

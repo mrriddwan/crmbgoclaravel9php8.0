@@ -1,3 +1,83 @@
+<!-- <template>
+    <div class="row" onchange="debug">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Update Category</h4>
+                </div>
+                <div class="card-body">
+                    <form @submit.prevent="update">
+                        <div class="row">
+                            <div class="col-12 mb-2">
+                                <div class="form-group">
+                                    <label>Name</label>
+                                    <input type="text" class="form-control" v-model="contact.name">
+                                </div>
+                            </div>
+                            <div class="col-12 mb-2">
+                                <div class="form-group">
+                                    <label>Industry</label>
+                                    <input type="text" class="form-control" v-model="contact.industry">
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary">Update</button>
+                            </div>
+                        </div>                        
+                    </form>
+
+            
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+export default {
+    name:"update-contact",
+    data(){
+        return {
+            contact:{
+                name:"",
+                category:"",
+            }
+        }
+    },
+    mounted(){
+        this.showContact()
+        this.debug()
+    },
+    methods:{
+        async showContact(){
+            await axios.get(`/api/contacts/show/${this.$route.params.id}`).then(response=>{
+                const { name, category } = response.data
+                this.contact.name = name
+                this.contact.category = category
+            }).catch(error=>{
+                console.log(error)
+            })
+        },
+        async update(){
+            await this.axios.post(`api/contacts/update/${this.$route.params.id}`,this.contact).then(response=>{
+                this.$router.push({name:"contact_index"})
+            }).catch(error=>{
+                console.log(error)
+            })
+        },
+
+        debug() {
+            console.log(this.contact.data)
+        }
+    }
+}
+</script> -->
+
+
+
+
+
+
 <template>
     <div>
         <h1 class="text-center font-bold text-lg">Edit Contact</h1>
@@ -6,10 +86,22 @@
             <div class="col-md-6">
                 <form @submit.prevent="updateContact">
                     <div class="form-group mb-4">
+                        <label class="font-bold">User</label>
+                        <select
+                            class="block m-1 w-max rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                            v-model="contact.user_id" @change="getCategory">
+                            <option value="">Please select user</option>
+
+                            <option v-for="user in users" :key="user.id" :value="user.id">
+                                {{ user.name }}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group mb-4">
                         <label class="font-bold">Status</label>
                         <select
                             class="block mt-1 w-max rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="form.status" @change="getStatus">
+                            v-model="contact.status_id" @change="getStatus">
                             <option value="">Please select one</option>
 
                             <option v-for="status in statuses" :key="status.id" :value="status.id">
@@ -21,7 +113,7 @@
                         <label class="font-bold">Type</label>
                         <select
                             class="block mt-1 w-max rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="form.type" @change="getType">
+                            v-model="contact.type_id" @change="getType">
                             <option value="">Please select one</option>
 
                             <option v-for="type in types" :key="type.id" :value="type.id">
@@ -32,22 +124,22 @@
 
                     <div class="form-group mb-4">
                         <label class="font-bold">Industry</label>
-                        <input type="text"
+                        <input type="text" name="industry" id="industry"
                             class="block mt-4 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="form.industry" />
+                            v-model="contact.industry" />
                     </div>
 
-                    <div class="form-group mb-4">
-                        <label class="font-bold">Company Name</label>
-                        <input type="text"
+                    <div class="mt-1">
+                        <label class="font-bold">Name</label>
+                        <input type="text" name="name" id="name"
                             class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="form.company_name" />
+                            v-model="contact.name" />
                     </div>
                     <div class="form-group mb-4">
                         <label class="font-bold">Category</label>
                         <select
                             class="block m-1 w-max rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="form.category" @change="getCategory">
+                            v-model="contact.category_id" @change="getCategory">
                             <option value="">Please select one</option>
 
                             <option v-for="category in categories" :key="category.id" :value="category.id">
@@ -57,15 +149,15 @@
                     </div>
                     <div class="form-group mb-4">
                         <label class="font-bold">Address</label>
-                        <input type="text"
+                        <input type="text" name="address" id="address"
                             class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="form.address" />
+                            v-model="contact.address" />
                     </div>
                     <div class="form-group mb-4">
                         <label class="font-bold">Remark</label>
-                        <input type="text"
+                        <input type="text" name="address" id="remark"
                             class="h-20 w-40 block m- rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="form.remark" />
+                            v-model="contact.remark" />
                     </div>
 
                     <button type="submit"
@@ -83,23 +175,18 @@ import axios from 'axios';
 import GoBack from '../utils/GoBack.vue';
 
 
-const categoryAPI = "/api/contactCategory/index"
-const typeAPI = "/api/contactType/index"
-const statusAPI = "/api/contactStatus/index"
-const userAPI = "/api/user/index"
-
 export default {
     data() {
         return {
-            form: {
+            contact: {
                 user: '',
-                status: '',
-                type: '',
-                industry: '',
-                company_name: '',
-                category: '',
-                address: '',
-                remark: '',
+                status_id: '',
+                type_id: '',
+                category_id: '',
+                industry: "",
+                name: "",
+                address: "",
+                remark: "",
             },
             users: [],
             statuses: [],
@@ -113,15 +200,23 @@ export default {
         this.getStatus();
         this.getCategory;
         this.getType();
+        // this.debug();
         // this.getFormSelections();
     },
     methods: {
+
+        // debug(){
+        //     console.log(this.contact.data)
+        //     console.log(this.categories)
+        //     console.log(this.types)
+        //     console.log(this.statuses)
+        // },
 
         showContact() {
             axios
                 .get("/api/contacts/show/" + this.$route.params.id)
                 .then((res) => {
-                    this.form = res.data.data;
+                    this.contact = res.data;
                 }).catch((error) => {
                     console.log(error);
                 });
@@ -146,7 +241,7 @@ export default {
 
         getStatus() {
             axios
-                .get(statusAPI)
+                .get("/api/contactstatus/index")
                 .then((res) => {
                     this.statuses = res.data.data;
                 }).catch((error) => {
@@ -154,19 +249,29 @@ export default {
                 })
         },
 
-        getCategory(){
+        getUser() {
             axios
-                .get(categoryAPI)
+                .get("/api/user/index")
+                .then((res) => {
+                    this.user = res.data.data;
+                }).catch((error) => {
+                    console.log(error);
+                })
+        },
+
+        getCategory() {
+            axios
+                .get("/api/contactcategory/index")
                 .then((res) => {
                     this.categories = res.data.data;
                 }).catch((error) => {
                     console.log(error);
-        })
+                })
         },
 
-        getType(){
+        getType() {
             axios
-                .get(typeAPI)
+                .get("/api/contacttype/index")
                 .then((res) => {
                     this.types = res.data.data;
                 }).catch((error) => {
@@ -174,15 +279,17 @@ export default {
                 })
         },
 
-        getUser(){
-            axios
-                .get(userAPI)
-                .then((res) => {
-                    this.users = res.data.data;
-                }).catch((error) => {
-                    console.log(error);
-                })
-        }
+
+
+
+    },
+
+    components: {
+        GoBack,
+    }
+};
+</script>
+
 
         // getFormSelections() {
         //     const requestOne = axios.get(categoryAPI);
@@ -205,12 +312,3 @@ export default {
         //             console.error(errors);
         //         })
         // }
-    },
-components: {
-    GoBack, 
-    }
-};
-</script>
-
-
-

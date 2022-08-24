@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
+use Illuminate\Routing\Controller;
 use App\Http\Resources\ContactTypeResource;
 use App\Models\ContactType;
 use Illuminate\Http\Request;

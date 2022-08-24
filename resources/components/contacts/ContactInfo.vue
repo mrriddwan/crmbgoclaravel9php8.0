@@ -1,5 +1,5 @@
 <template>
-<div>
+    <div>
         <table>
             <thead>
                 <tr>
@@ -8,41 +8,88 @@
                     </th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody v-for="info in contact" :key="contact.id">
                 <tr>
                     <td>Name</td>
-                    <td>Syarikat Buah</td>
+                    <td>{{ info.name }}</td>
                 </tr>
                 <tr>
                     <td>Industry</td>
-                    <td>test@gmail.com</td>
+                    <td>{{ info.industry }}</td>
                 </tr>
                 <tr>
                     <td>Category</td>
-                    <td>Food</td>
+                    <td>{{ info.category.name }}</td>
                 </tr>
                 <tr>
                     <td>Address</td>
-                    <td>Jalan Tunku Ismail</td>
+                    <td>{{ info.address }}</td>
                 </tr>
                 <tr>
                     <td>CS</td>
-                    <td>Ali</td>
+                    <td>{{ info.user.name }}</td>
                 </tr>
                 <tr>
                     <td>Contact History</td>
-                    <td><router-link to="contacts_history">Link to History Page</router-link></td>
+                    <td>
+                        <router-link to="contacts_history">Link to History Page</router-link>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>PIC</td>
+                    <td>Link to Edit/Add PIC</td>
                 </tr>
             </tbody>
         </table>
+    </div>
 
-        <p>PIC TABLE HERE</p>
+    <InchargeInfo />
+    
 
+    <div>
         <p>FORECAST TABLE HERE</p>
-</div>
+    </div>
 
 </template>
 
 <script>
+import axios from 'axios';
+import GoBack from '../utils/GoBack.vue';
+import InchargeInfo from './InchargeInfo.vue';
 
+
+export default {
+
+    components: {
+        GoBack,
+        InchargeInfo
+    },
+
+    data() {
+        return {
+            contact: []
+        };
+    },
+
+    created() {
+        this.showContact();
+    },
+
+    methods: {
+        showContact() {
+            axios
+                .get("/api/contacts/show/" + this.$route.params.id)
+                .then((res) => {
+                    this.contact = res.data.data;
+                }).catch((error) => {
+                    console.log(error);
+                });
+        }
+    }
+
+    //     mounted: function () {
+    //     this.loadData();
+    // },
+}
 </script>

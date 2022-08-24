@@ -1,12 +1,15 @@
 import { createRouter, createWebHistory } from 'vue-router';
+
 /**Contact Imports */
 import ContactIndex from '../components/contacts/ContactIndex.vue';
 import ContactCreate from '../components/contacts/ContactCreate.vue';
 import ContactEdit from '../components/contacts/ContactEdit.vue';
 import ContactHistory from '../components/contacts/ContactHistory.vue';
 import ContactInfo from '../components/contacts/ContactInfo.vue';
-import InchargeCreateInfo from '../components/contacts/InchargeCreateInfo.vue';
+import InchargeCreate from '../components/contacts/InchargeCreate.vue';
+import InchargeInfo from '../components/contacts/InchargeInfo.vue';
 import InchargeEdit from '../components/contacts/InchargeEdit.vue';
+
 
 /**Forecast Imports */
 import ForecastIndex from '../components/forecasts/ForecastIndex.vue';
@@ -38,7 +41,7 @@ const routes = [
     },
 
     {
-        path: '/contacts_info',
+        path: '/contacts/:id/info',
         name: 'contacts_info',
         component: ContactInfo
     },
@@ -50,13 +53,19 @@ const routes = [
     },
 
     {
-        path: '/incharge_createinfo',
-        name: 'incharge_createinfo',
-        component: InchargeCreateInfo
+        path: '/incharge_create',
+        name: 'incharge_create',
+        component: InchargeCreate
     },
 
     {
-        path: '/incharge_edit/:id',
+        path: '/incharge_info',
+        name: 'incharge_info',
+        component: InchargeInfo
+    },
+
+    {
+        path: '/incharge/:id/edit',
         name: 'incharge_edit',
         component: InchargeEdit
     },

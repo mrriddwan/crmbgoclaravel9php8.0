@@ -6,15 +6,17 @@ import router from './routes'
 import ContactIndex from '../components/contacts/ContactIndex.vue'
 
 
+
 window.Alpine = Alpine;
 
 Alpine.start();
 
-// createApp(
+// createApp({
 //         ContactIndex,
-// )
+// })
 // .use(router)
 // .mount("#app")
+
 
 const app = createApp({})
 

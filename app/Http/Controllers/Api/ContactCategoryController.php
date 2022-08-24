@@ -13,5 +13,6 @@ class ContactCategoryController extends Controller
     public function index()
     {
         return ContactCategoryResource::collection(ContactCategory::all());
+        // return ContactCategory::all()->only('id', 'name');
     }
 }

@@ -9,7 +9,7 @@
                 class="mr-10 mb-10 inline-flex items-center px-1 py-1 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150">
                 Create contact</router-link>
 
-            <router-link to="/contacts_edit"
+            <!-- <router-link to="/contacts_edit"
                 class="inline-flex items-center px-1 py-1 m-5 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150">
                 Edit contact (test)</router-link>
 
@@ -23,9 +23,7 @@
 
             <router-link to="/incharge_createinfo"
                 class="inline-flex items-center px-1 py-1 m-5 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150">
-                Contact PIC (test))</router-link>
-
-            
+                Contact PIC (test))</router-link> -->
 
 
             <table class="table">
@@ -95,6 +93,11 @@
                         </td>
                         <td class="px-6 py-4 text-sm leading-5 text-gray-900 whitespace-no-wrap">
                             {{ contact.name }}
+                            <router-link :to="{
+                                    name: 'contacts_info',
+                                    params: { id: contact.id },
+                                }">?
+                            </router-link>
                         </td>
                         <td class="px-6 py-4 text-sm leading-5 text-gray-900 whitespace-no-wrap">
                             {{ contact.category.name }}
@@ -105,28 +108,6 @@
                         <td class="px-6 py-4 text-sm leading-5 text-gray-900 whitespace-no-wrap">
                             {{ contact.remark }}
                         </td>
-
-                        <!-- <td v-if="contact.department_id === null"
-                            class="px-6 py-4 text-sm leading-5 text-gray-900 whitespace-no-wrap">
-                            <span id="no-department-bubble">
-                                No department
-                            </span>
-                        </td>
-                        <td v-else class="px-6 py-4 text-sm leading-5 text-gray-900 whitespace-no-wrap">
-                            <span id="department-bubble">
-                                {{ contact.department.name }}
-                            </span>
-                        </td> -->
-
-                        <!-- <td v-if="contact.roles.length === 0"
-                            class="px-6 py-4 text-sm leading-5 text-gray-900 whitespace-no-wrap">
-                            <span id="no-role-bubble"> No role(s) </span>
-                        </td>
-                        <td v-else class="px-6 py-4 text-sm leading-5 text-gray-900 whitespace-no-wrap">
-                            <span v-for="role in contact.roles" :key="role.id" id="role-bubble">
-                                {{ role.name }}
-                            </span>
-                        </td> -->
 
                         <td>
                             <div class="btn-group" role="group">

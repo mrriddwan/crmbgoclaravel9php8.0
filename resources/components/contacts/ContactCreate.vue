@@ -8,17 +8,10 @@
                     <div class="form-group">
                         <label>Status</label>
                         <select
-                        class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="form.status"
-                            @change="getStatus"
-                        >
-                            <option value="">Please select one</option>
-
-                            <option
-                                v-for="status in statuses"
-                                :key="status.id"
-                                :value="status.id"
-                            >
+                            class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                            v-model="form.status" @change="getStatus">
+                            <option disabled value="">Please select one</option>
+                            <option v-for="status in statuses" :key="status.id" :value="status.id">
                                 {{ status.name }}
                             </option>
                         </select>
@@ -27,21 +20,14 @@
                         <label>Type</label>
                         <select
                             class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="form.type"
-                            @change="getType"
-                        >
-                            <option value="">Please select one</option>
-
-                            <option
-                                v-for="type in types"
-                                :key="type.id"
-                                :value="type.id"
-                            >
+                            v-model="form.type" @change="getType">
+                            <option disabled value="">Please select one</option>
+                            <option v-for="type in types" :key="type.id" :value="type.id">
                                 {{ type.name }}
                             </option>
                         </select>
                     </div>
-                    
+
                     <div class="form-group">
                         <label>Industry</label>
                         <input type="text"
@@ -59,16 +45,9 @@
                         <label>Category</label>
                         <select
                             class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="form.category"
-                            @change="getCategory"
-                        >
-                            <option value="">Please select one</option>
-
-                            <option
-                                v-for="category in categories"
-                                :key="category.id"
-                                :value="category.id"
-                            >
+                            v-model="form.category" @change="getCategory">
+                            <option disabled value="">Please select one</option>
+                            <option v-for="category in categories" :key="category.id" :value="category.id">
                                 {{ category.name }}
                             </option>
                         </select>
@@ -98,6 +77,8 @@
 
 <script>
 import GoBack from '../utils/GoBack.vue';
+import axios from 'axios';
+
 export default {
     data() {
         return {
@@ -110,8 +91,24 @@ export default {
                 address: '',
                 remark: '',
             },
+            types: [],
+            categories: [],
+            statuses: []
         };
     },
+
+    created () {
+        this.getStatus();
+        this.getCategory();
+        this.getType();
+    },
+
+    // created() {
+    //     this.getStatus();
+    //     this.getCategory;
+    //     this.getType();
+    // },
+
     methods: {
         createContact() {
             axios
@@ -119,6 +116,7 @@ export default {
                     address: this.form.address,
                     type: this.form.type,
                     industry: this.form.industry,
+                    status: this.form.status,
                     company_name: this.form.company_name,
                     category: this.form.category,
                     address: this.form.address,
@@ -128,6 +126,39 @@ export default {
                     this.$router.push({ name: "contact_index" });
                 });
         },
+
+
+        getStatus() {
+            axios
+                .get("/api/contactstatus/index")
+                .then((res) => {
+                    this.statuses = res.data.data;
+                }).catch((error) => {
+                    console.log(error);
+                })
+        },
+
+        getCategory() {
+            axios
+                .get("/api/contactcategory/index")
+                .then((res) => {
+                    this.categories = res.data.data;
+                }).catch((error) => {
+                    console.log(error);
+                })
+        },
+
+        getType() {
+            axios
+                .get("/api/contacttype/index")
+                .then((res) => {
+                    this.types = res.data.data;
+                }).catch((error) => {
+                    console.log(error);
+                })
+        },
+
+
     },
     components: { GoBack }
 };
