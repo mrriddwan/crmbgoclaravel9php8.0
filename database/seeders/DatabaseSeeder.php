@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             Contact_StatusSeeder::class,
             Contact_CategorySeeder::class,
             ContactSeeder::class,
+            ContactInchargeSeeder::class,
         ]);
     }
 }

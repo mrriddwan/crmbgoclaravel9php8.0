@@ -37,7 +37,7 @@ class Contact extends Model
     }
 
     public function incharge(){
-        return $this -> belongsTo(ContactIncharge::class);
+        return $this -> hasMany(ContactIncharge::class);
     }
     
 }

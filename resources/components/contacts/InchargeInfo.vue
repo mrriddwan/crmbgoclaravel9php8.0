@@ -57,7 +57,7 @@ export default {
     methods: {
         showIncharge() {
             axios
-                .get("/incharges/show/" + this.$route.params.id)
+                .get("api/incharges/show/" + this.$route.params.id)
                 .then((res) => {
                     this.incharge_infos = res.data.data;
                 }).catch((error) => {

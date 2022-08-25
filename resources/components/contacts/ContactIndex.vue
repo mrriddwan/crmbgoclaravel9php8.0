@@ -86,13 +86,14 @@
                 Create contact</router-link>
 
             <div class="overflow-scroll max-h-80 content-center">
-                <table class="container max-h-60 w-full align-center">
-                    <thead class="bg-black text-white border max-h-10">
+                <table class="container max-h-60 w-full">
+                    <thead class=" text-white border max-h-10 ">
                         <tr>
                             <th class="px-2 py-1 bg-gray-50">
                                 <span
                                     class="text-xs font-small tracking-wider leading-4 text-left text-gray-500 uppercase">Date</span>
-                                <span></span>
+                                    <!-- <img id="sort-arrow" @click="" src="../icons/icons8-drop-down-32.png" class=""/> -->
+                                <!-- <img src="../resources/icons/icons8-drop-down-32.png" alt=""> -->
                             </th>
                             <th class="px-2 py-3 bg-gray-50">
                                 <span
@@ -222,7 +223,6 @@ export default {
             sortDirection: 'unchanged',
 
         };
-
     },
 
     watch() {

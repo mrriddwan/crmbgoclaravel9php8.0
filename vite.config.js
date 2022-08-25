@@ -19,5 +19,6 @@ export default defineConfig({
             ],
             refresh: true,
         }),
+        { src: '~/plugins/vue-good-table@next', ssr: false }
     ],
 });

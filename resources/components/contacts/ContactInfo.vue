@@ -1,14 +1,14 @@
 <template>
-    <div>
-        <table>
-            <thead>
+    <div class="container w-max">
+        <table class="container max-w-40">
+            <thead class="flex flex-col items-left justify-between p-2 pr-4 bg-white border-b border-gray-200 dark:border-gray-700 dark:bg-grey-800 sm:flex-row sm:items-left">
                 <tr>
                     <th>
                         Company Information
                     </th>
                 </tr>
             </thead>
-            <tbody v-for="info in contact" :key="contact.id">
+            <tbody v-for="info in contact_infos" :key="contact_infos.id">
                 <tr>
                     <td>Name</td>
                     <td>{{ info.name }}</td>
@@ -48,7 +48,7 @@
                                     name: 'incharge_create',
                                     params: { id: info.id },
                                 }"
-                                    class="inline-flex items-left ml-5 mr-5 px-4 py-2 bg-blue-800 border border-black rounded-md font-bold text-xs text-black uppercase ">
+                                    class="ml-5 mr-5 px-4 py-2 bg-blue-400 border border-black rounded-md font-bold text-xs text-black uppercase ">
                                     Add PIC</router-link>
                     </td>
 
@@ -87,7 +87,7 @@ export default {
             data: {
                 info: ''
             },
-            contact: []
+            contact_infos: []
         };
     },
 
@@ -100,7 +100,7 @@ export default {
             axios
                 .get("/api/contacts/info/" + this.$route.params.id)
                 .then((res) => {
-                    this.contact = res.data.data;
+                    this.contact_infos = res.data.data;
                 }).catch((error) => {
                     console.log(error);
                 });

@@ -5,7 +5,7 @@ use App\Http\Controllers\Api\ContactController;
 use App\Http\Controllers\Api\ContactStatusController;
 use App\Http\Controllers\Api\ContactTypeController;
 use App\Http\Controllers\Api\UserController;
-use App\Models\ContactIncharge;
+use App\Http\Controllers\Api\ContactInchargeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -37,8 +37,9 @@ Route::get('/contactcategory/index', [ContactCategoryController::class, 'index']
 Route::get('/contacttype/index', [ContactTypeController::class, 'index'])->name('type:index');
 Route::get('/contactstatus/index', [ContactStatusController::class, 'index'])->name('status:index');
 Route::get('/user/index', [UserController::class, 'index'])->name('user:index');
-Route::get('/incharges/index', [UserController::class, 'index'])->name('incharge:index');
-Route::get('/incharges/show/{incharge}', [ContactIncharge::class, 'show'])->name('incharge:show');
+Route::post('/incharges/store', [ContactInchargeController::class, 'store'])->name('incharge:store');
+Route::get('/incharges/index', [ContactInchargeController::class, 'index'])->name('incharge:index');
+Route::get('/incharges/show/{incharge}', [ContactInchargeController::class, 'show'])->name('incharge:show');
 
 
 

@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\ContactIncharge;
+use App\Http\Requests\Contact\ContactInchargeRequest;
 use Illuminate\Http\Request;
+use App\Models\ContactIncharge;
 use App\Http\Resources\ContactInchargeResource;
 
-
-class InchargeController extends Controller
+class ContactInchargeController extends Controller
 {
     public function index()
     {
@@ -17,9 +17,11 @@ class InchargeController extends Controller
         return ContactInchargeResource::collection($incharge);
     }
 
-    public function store(Request $request)
+    public function store(ContactInchargeRequest $request)
     {
-        $contact = ContactIncharge::create($request->validated());
+        $contact = ContactIncharge::create(
+            $request->validated()
+        );
 
         return new ContactInchargeResource($contact);
     }
@@ -38,13 +40,10 @@ class InchargeController extends Controller
         ]);
     }
 
-    public function update(Request $request, ContactIncharge $incharge)
+    public function update(ContactInchargeRequest $request, ContactIncharge $incharge)
     {   
         $incharge->update([
-            'name' => $request->name,
-            'email' => $request->email,
-            'phone_mobile' => $request->phone_mobile,
-            'phone_office' => $request->phone_office,
+            $request->validated()
         ]);
 
         return response()->json([

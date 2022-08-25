@@ -10,6 +10,7 @@ import InchargeCreate from '../components/contacts/InchargeCreate.vue';
 import InchargeInfo from '../components/contacts/InchargeInfo.vue';
 import InchargeEdit from '../components/contacts/InchargeEdit.vue';
 
+import ContactIndex2 from '../components/contacts/ContactIndex2.vue';
 
 /**Forecast Imports */
 import ForecastIndex from '../components/forecasts/ForecastIndex.vue';
@@ -26,6 +27,12 @@ const routes = [
         path: '/dashboard',
         name: 'contact_index',
         component: ContactIndex
+    },
+
+    {
+        path: '/contact_index2',
+        name: 'contact_index2',
+        component: ContactIndex2
     },
 
     {

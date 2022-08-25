@@ -61,7 +61,7 @@ export default {
     methods: {
         createPIC() {
             axios
-                .post("/api/contacts/inchargeCreate", {
+                .post("/api/incharges/store", {
                 name: this.form.name,
                 email: this.form.email,
                 phone_no1: this.form.phone_no1,
