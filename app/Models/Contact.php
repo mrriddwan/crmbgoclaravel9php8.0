@@ -13,9 +13,11 @@ class Contact extends Model
         'name',
         'address',
         'industry',
-        'status',
-        'type',
-        'category'
+        'status_id',
+        'type_id',
+        'category_id',
+        'remark',
+        'user_id'
     ];
 
     public function user(){

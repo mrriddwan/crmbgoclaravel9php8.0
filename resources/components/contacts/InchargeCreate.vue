@@ -1,10 +1,10 @@
 <template>
 
-<InchargeInfo/>
+<!-- <InchargeInfo/> -->
 
 <div class="row">
             <div class="col-md-6">
-                <form @submit.prevent="createContact">
+                <form @submit.prevent="createPIC">
                     <div class="form-group">
                         <label>Name</label>
                         <input type="text"
@@ -15,21 +15,21 @@
                         <label>Email</label>
                         <input type="email"
                             class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="form.type" />
+                            v-model="form.email" />
                     </div>
 
                     <div class="form-group">
                         <label>Phone No.(Mobile)</label>
-                        <input type="phone"
+                        <input type="text"
                             class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="form.tel_no1" />
+                            v-model="form.phone_no1" />
                     </div>
 
                     <div class="form-group">
                         <label>Phone No.(Office)</label>
-                        <input type="phone"
+                        <input type="text"
                             class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="form.tel_no2" />
+                            v-model="form.phone_no2" />
                     </div>
 
 
@@ -46,6 +46,18 @@
 import InchargeInfo from './InchargeInfo.vue';
 
 export default {
+
+    data() {
+        return {
+            form: {
+                name: '',
+                email: '',
+                phone_no1: '',
+                phone_no2: '',
+            },
+        }
+    },
+
     methods: {
         createPIC() {
             axios

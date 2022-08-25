@@ -31,14 +31,30 @@
                 </tr>
                 <tr>
                     <td>Contact History</td>
-                    <td>
-                        <router-link to="contacts_history">Link to History Page</router-link>
+                    <td>History of To Do
+                        <!-- <router-link :to="{
+                                    name: 'contact_history',
+                                    params: { id: info.id },
+                                }"
+                                    class="mr-2 mb-2 inline-flex items-center px-1 py-1 bg-blue-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150">
+                                    Contact History</router-link> -->
                     </td>
                 </tr>
 
                 <tr>
                     <td>PIC</td>
-                    <td>Link to Edit/Add PIC</td>
+                    <td v-if="info.incharge === null">
+                        <router-link :to="{
+                                    name: 'incharge_create',
+                                    params: { id: info.id },
+                                }"
+                                    class="inline-flex items-left ml-5 mr-5 px-4 py-2 bg-blue-800 border border-black rounded-md font-bold text-xs text-black uppercase ">
+                                    Add PIC</router-link>
+                    </td>
+
+                    <td v-else>
+                        <InchargeInfo/>
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -68,6 +84,9 @@ export default {
 
     data() {
         return {
+            data: {
+                info: ''
+            },
             contact: []
         };
     },
@@ -79,7 +98,7 @@ export default {
     methods: {
         showContact() {
             axios
-                .get("/api/contacts/show/" + this.$route.params.id)
+                .get("/api/contacts/info/" + this.$route.params.id)
                 .then((res) => {
                     this.contact = res.data.data;
                 }).catch((error) => {

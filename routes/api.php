@@ -26,10 +26,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 /*Contact API*/
 Route::get('/contacts/index', [ContactController::class, 'index'])->name('contact:index');
-Route::get('/contacts/create', [ContactController::class, 'store'])->name('contact:store');
+Route::post('/contacts/store', [ContactController::class, 'store'])->name('contact:store');
 Route::get('/contacts/show/{contact}', [ContactController::class, 'show'])->name('contact:show');
 Route::put('/contacts/update/{contact}', [ContactController::class, 'update'])->name('contact:update');
 Route::delete('/contacts/delete/{contact}', [ContactController::class, 'delete'])->name('contact:delete');
+Route::get('/contacts/info/{contact}', [ContactController::class, 'info'])->name('contact:info');
 
 /*Sub-Contact API*/
 Route::get('/contactcategory/index', [ContactCategoryController::class, 'index'])->name('category:index');

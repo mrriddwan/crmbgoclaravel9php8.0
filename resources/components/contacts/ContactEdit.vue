@@ -84,15 +84,16 @@ export default {
         <GoBack />
         <div class="row">
             <div class="col-md-6">
-                <form @submit.prevent="updateContact">
+                <form @submit.prevent="updateContact()" >
                     <div class="form-group mb-4">
                         <label class="font-bold">User</label>
+                        <p>Selected User: {{ contact.user_id }}</p>
                         <select
                             class="block m-1 w-max rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="contact.user_id" @change="getCategory">
-                            <option value="">Please select user</option>
+                            v-model="contact.user_id" @change="getUser">
+                            <option disabled value="">Please select user</option>
 
-                            <option v-for="user in users" :key="user.id" :value="user.id">
+                            <option v-for="user in users" :key="user.id" :value="user.id" >
                                 {{ user.name }}
                             </option>
                         </select>
@@ -133,7 +134,7 @@ export default {
                         <label class="font-bold">Name</label>
                         <input type="text" name="name" id="name"
                             class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="contact.name" />
+                            v-model="contact.name"/>
                     </div>
                     <div class="form-group mb-4">
                         <label class="font-bold">Category</label>
@@ -162,7 +163,7 @@ export default {
 
                     <button type="submit"
                         class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150">
-                        Create
+                        Update
                     </button>
                 </form>
             </div>
@@ -179,7 +180,7 @@ export default {
     data() {
         return {
             contact: {
-                user: '',
+                user_id: '',
                 status_id: '',
                 type_id: '',
                 category_id: '',
@@ -198,7 +199,8 @@ export default {
     created() {
         this.showContact();
         this.getStatus();
-        this.getCategory;
+        this.getCategory();
+        this.getUser();
         this.getType();
         // this.debug();
         // this.getFormSelections();
@@ -206,10 +208,7 @@ export default {
     methods: {
 
         // debug(){
-        //     console.log(this.contact.data)
-        //     console.log(this.categories)
-        //     console.log(this.types)
-        //     console.log(this.statuses)
+        //     console.log(this.contact.user_id)
         // },
 
         showContact() {
@@ -225,14 +224,15 @@ export default {
         updateContact() {
             axios
                 .put("/api/contacts/update/" + this.$route.params.id, {
-                    user: this.form.user,
-                    address: this.form.address,
-                    type: this.form.type,
-                    industry: this.form.industry,
-                    company_name: this.form.company_name,
-                    category: this.form.category,
-                    address: this.form.address,
-                    remark: this.form.remark
+                    user_id: this.contact.user_id,
+                    address: this.contact.address,
+                    type_id: this.contact.type_id,
+                    status_id: this.contact.status_id,
+                    industry: this.contact.industry,
+                    name: this.contact.name,
+                    category_id: this.contact.category_id,
+                    address: this.contact.address,
+                    remark: this.contact.remark
                 })
                 .then((res) => {
                     this.$router.push({ name: "contact_index" });
@@ -253,7 +253,7 @@ export default {
             axios
                 .get("/api/user/index")
                 .then((res) => {
-                    this.user = res.data.data;
+                    this.users = res.data.data;
                 }).catch((error) => {
                     console.log(error);
                 })
@@ -278,9 +278,6 @@ export default {
                     console.log(error);
                 })
         },
-
-
-
 
     },
 

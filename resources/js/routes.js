@@ -47,19 +47,19 @@ const routes = [
     },
 
     {
-        path: '/contacts_history',
+        path: '/contacts/history',
         name: 'contacts_history',
         component: ContactHistory
     },
 
     {
-        path: '/incharge_create',
+        path: '/incharge/create',
         name: 'incharge_create',
         component: InchargeCreate
     },
 
     {
-        path: '/incharge_info',
+        path: '/incharge/info',
         name: 'incharge_info',
         component: InchargeInfo
     },

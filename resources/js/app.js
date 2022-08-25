@@ -4,7 +4,7 @@ import Alpine from 'alpinejs';
 import { createApp } from 'vue';
 import router from './routes'
 import ContactIndex from '../components/contacts/ContactIndex.vue'
-
+import '../css/app.css'
 
 
 window.Alpine = Alpine;

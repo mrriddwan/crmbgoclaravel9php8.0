@@ -9,7 +9,7 @@
                         <label>Status</label>
                         <select
                             class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="form.status" @change="getStatus">
+                            v-model="form.status_id" @change="getStatus">
                             <option disabled value="">Please select one</option>
                             <option v-for="status in statuses" :key="status.id" :value="status.id">
                                 {{ status.name }}
@@ -20,7 +20,7 @@
                         <label>Type</label>
                         <select
                             class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="form.type" @change="getType">
+                            v-model="form.type_id" @change="getType">
                             <option disabled value="">Please select one</option>
                             <option v-for="type in types" :key="type.id" :value="type.id">
                                 {{ type.name }}
@@ -39,13 +39,13 @@
                         <label>Company Name</label>
                         <input type="text"
                             class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="form.company_name" />
+                            v-model="form.name" />
                     </div>
                     <div class="form-group">
                         <label>Category</label>
                         <select
                             class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="form.category" @change="getCategory">
+                            v-model="form.category_id" @change="getCategory">
                             <option disabled value="">Please select one</option>
                             <option v-for="category in categories" :key="category.id" :value="category.id">
                                 {{ category.name }}
@@ -83,11 +83,11 @@ export default {
     data() {
         return {
             form: {
-                status: '',
-                type: '',
+                status_id: '',
+                type_id: '',
                 industry: '',
                 company_name: '',
-                category: '',
+                category_id: '',
                 address: '',
                 remark: '',
             },
@@ -113,12 +113,11 @@ export default {
         createContact() {
             axios
                 .post("/api/contacts/store", {
-                    address: this.form.address,
-                    type: this.form.type,
+                    type_id: this.form.type_id,
                     industry: this.form.industry,
-                    status: this.form.status,
-                    company_name: this.form.company_name,
-                    category: this.form.category,
+                    status_id: this.form.status_id,
+                    name: this.form.name,
+                    category_id: this.form.category_id,
                     address: this.form.address,
                     remark: this.form.remark
                 })
