@@ -1,7 +1,8 @@
 <template>
     <div class="container w-max">
         <table class="container max-w-40">
-            <thead class="flex flex-col items-left justify-between p-2 pr-4 bg-white border-b border-gray-200 dark:border-gray-700 dark:bg-grey-800 sm:flex-row sm:items-left">
+            <thead
+                class="flex flex-col items-left justify-between p-2 pr-4 bg-white border-b border-gray-200 dark:border-gray-700 dark:bg-grey-800 sm:flex-row sm:items-left">
                 <tr>
                     <th>
                         Company Information
@@ -40,28 +41,42 @@
                                     Contact History</router-link> -->
                     </td>
                 </tr>
-
                 <tr>
-                    <td>PIC</td>
-                    <td v-if="info.incharge === null">
+                    <td>
                         <router-link :to="{
-                                    name: 'incharge_create',
-                                    params: { id: info.id },
-                                }"
-                                    class="ml-5 mr-5 px-4 py-2 bg-blue-400 border border-black rounded-md font-bold text-xs text-black uppercase ">
-                                    Add PIC</router-link>
+                            name: 'incharge_create',
+                            params: { id: info.id },
+                        }"
+                            class="inline-flex text-center px-1 py-1 bg-blue-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150">
+                            Create/Edit Incharge</router-link>
                     </td>
+                </tr>
+                <tr v-if="info.incharge === null">
+                    No PIC Data
+                </tr>
 
-                    <td v-else>
-                        <InchargeInfo/>
-                    </td>
+                <tr v-else>
+                    <td>PIC</td>
+                    <td>{{ info.incharge }}</td>
+                </tr>
+                <tr>
+                    <td>Email</td>
+                    <td>{{ info.incharge }}</td>
+                </tr>
+                <tr>
+                    <td>Phone No. (Mobile)</td>
+                    <td>{{ info.incharge }}</td>
+                </tr>
+                <tr>
+                    <td>Phone No. (Office)</td>
+                    <td>{{ info.incharge }}</td>
                 </tr>
             </tbody>
         </table>
     </div>
 
     <InchargeInfo />
-    
+
 
     <div>
         <p>FORECAST TABLE HERE</p>

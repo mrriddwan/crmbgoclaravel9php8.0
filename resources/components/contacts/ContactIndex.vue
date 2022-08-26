@@ -211,7 +211,6 @@ export default {
     data() {
         return {
             contacts: [],
-            departments: [],
             statuses: [],
 
             selectedStatus: [],

@@ -20,8 +20,8 @@ class ContactController extends Controller
     public function index()
     {
         // $contacts = Contact::with('category', 'type', 'status', 'incharge', 'user')->paginate(10);
-        // $contact = Contact::with('category', 'type', 'status', 'incharge', 'user')->get();
-        $contact = (Contact::with('category', 'type', 'status', 'incharge', 'user'))->paginate(10);
+        $contact = Contact::with('category', 'type', 'status', 'incharge', 'user')->get();
+        // $contact = (Contact::with('category', 'type', 'status', 'incharge', 'user'))->paginate(100);
 
         return ContactResource::collection($contact);
     }

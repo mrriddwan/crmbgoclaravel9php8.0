@@ -1,6 +1,57 @@
 <template>
+
     <div>
-        <vue-good-table :columns="columns" :rows="rows" />
+        <router-link to="/contacts_create"
+            class="mr-10 mb-10 inline-flex items-center px-2 py-1 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150">
+            Create contact</router-link>
+    </div>
+
+    <div>
+
+        <vue-good-table :columns="columns" :rows="rows" max-height="800px" :fixed-header="true" :sort-options="{
+            enabled: true,
+            initialSortBy: { field: 'created_at', type: 'desc' }
+        }" :pagination-options="{
+    enabled: true,
+    mode: 'pages',
+    perPage: 10,
+    position: 'top',
+    perPageDropdown: [20, 50, 100],
+    dropdownAllowAll: true,
+    setCurrentPage: 1,
+    jumpFirstOrLast: true,
+    firstLabel: 'First Page',
+    lastLabel: 'Last Page',
+    nextLabel: 'next',
+    prevLabel: 'prev',
+    rowsPerPageLabel: 'Entries',
+    ofLabel: 'of',
+    pageLabel: 'page', // for 'pages' mode
+    allLabel: 'All',
+    infoFn: (params) => `Page: ${params.firstRecordOnPage}`,
+}">
+            <template #table-row="props">
+                <span v-if="props.column.field == 'name'">
+                    <span style="font-weight: bold; color: blue;">{{ props.row.name }}</span>
+                </span>
+                <span v-if="props.column.field == 'action'">
+                    <router-link :to="{
+                        name: 'contacts_edit',
+                        params: { id: props.row.id },
+                    }"
+                        class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150">
+                        Edit</router-link>
+                    <button
+                        class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                        @click="deleteContact(props.row.id)">
+                        Delete
+                    </button>
+                </span>
+                <span v-else>
+                    {{ props.formattedRow[props.column.field] }}
+                </span>
+            </template>
+        </vue-good-table>
     </div>
 </template>
 
@@ -16,38 +67,195 @@ export default {
 
     data() {
         return {
+
+            statuses: [],
             columns: [
+
                 {
-                    label: 'Name',
-                    field: 'name',
-                },
-                {
-                    label: 'Age',
-                    field: 'age',
-                    type: 'number',
-                },
-                {
-                    label: 'Created On',
-                    field: 'createdAt',
+                    label: 'Date Created',
+                    field: 'created_at',
                     type: 'date',
                     dateInputFormat: 'yyyy-MM-dd',
-                    dateOutputFormat: 'MMM do yy',
+                    dateOutputFormat: 'dd-MM-yyyy',
+                    filterOptions: {
+                        styleClass: 'class1', // class to be added to the parent th element
+                        enabled: true, // enable filter for this column
+                        placeholder: 'Filter', // placeholder for filter input
+                        filterValue: '', // initial populated value for this filter
+                        // filterDropdownItems: [], // dropdown (with selected values) instead of text input
+                        filterFn: this.columnFilterFn, //custom filter function that
+                        // trigger: 'enter', //only trigger on enter not on keyup 
+                    },
+
                 },
                 {
-                    label: 'Percent',
-                    field: 'score',
-                    type: 'percentage',
+                    label: 'CS',
+                    field: 'user.name',
+                    filterOptions: {
+                        styleClass: 'class1', // class to be added to the parent th element
+                        enabled: true, // enable filter for this column
+                        placeholder: 'Filter', // placeholder for filter input
+                        filterValue: '', // initial populated value for this filter
+                        // filterDropdownItems: [], // dropdown (with selected values) instead of text input
+                        filterFn: this.columnFilterFn, //custom filter function that
+                        // trigger: 'enter', //only trigger on enter not on keyup 
+                    },
                 },
+                {
+                    label: 'Status',
+                    field: 'status.name',
+                    filterOptions: {
+                        styleClass: 'class1', // class to be added to the parent th element
+                        enabled: true, // enable filter for this column
+                        placeholder: 'Filter', // placeholder for filter input
+                        filterValue: '', // initial populated value for this filter
+                        // filterDropdownItems: [], // dropdown (with selected values) instead of text input
+                        filterFn: this.columnFilterFn, //custom filter function that
+                        // trigger: 'enter', //only trigger on enter not on keyup 
+                    },
+                },
+                {
+                    label: 'Type',
+                    field: 'type.name',
+                    filterOptions: {
+                        styleClass: 'class1', // class to be added to the parent th element
+                        enabled: true, // enable filter for this column
+                        placeholder: 'Filter', // placeholder for filter input
+                        filterValue: '', // initial populated value for this filter
+                        filterDropdownItems: [], // dropdown (with selected values) instead of text input
+                        filterFn: this.columnFilterFn, //custom filter function that
+                        // trigger: 'enter', //only trigger on enter not on keyup 
+                    },
+                },
+                {
+                    label: 'Industry',
+                    field: 'industry',
+                    filterOptions: {
+                        styleClass: 'class1', // class to be added to the parent th element
+                        enabled: true, // enable filter for this column
+                        placeholder: 'Filter', // placeholder for filter input
+                        filterValue: '', // initial populated value for this filter
+                        // filterDropdownItems: [], // dropdown (with selected values) instead of text input
+                        filterFn: this.columnFilterFn, //custom filter function that
+                        // trigger: 'enter', //only trigger on enter not on keyup 
+                    },
+                },
+                {
+                    label: 'Contact Name',
+                    field: 'name',
+                    filterOptions: {
+                        styleClass: 'class1', // class to be added to the parent th element
+                        enabled: true, // enable filter for this column
+                        placeholder: 'Filter', // placeholder for filter input
+                        filterValue: '', // initial populated value for this filter
+                        // filterDropdownItems: [], // dropdown (with selected values) instead of text input
+                        filterFn: this.columnFilterFn, //custom filter function that
+                        // trigger: 'enter', //only trigger on enter not on keyup 
+                    },
+                },
+                {
+                    label: 'Category',
+                    field: 'category.name',
+                    filterOptions: {
+                        styleClass: 'class1', // class to be added to the parent th element
+                        enabled: true, // enable filter for this column
+                        placeholder: 'Filter', // placeholder for filter input
+                        filterValue: '', // initial populated value for this filter
+                        // filterDropdownItems: [], // dropdown (with selected values) instead of text input
+                        filterFn: this.columnFilterFn, //custom filter function that
+                        // trigger: 'enter', //only trigger on enter not on keyup 
+                    },
+                },
+                {
+                    label: 'Address',
+                    field: 'address',
+                    filterOptions: {
+                        styleClass: 'class1', // class to be added to the parent th element
+                        enabled: true, // enable filter for this column
+                        placeholder: 'Filter', // placeholder for filter input
+                        filterValue: '', // initial populated value for this filter
+                        // filterDropdownItems: [], // dropdown (with selected values) instead of text input
+                        filterFn: this.columnFilterFn, //custom filter function that
+                        // trigger: 'enter', //only trigger on enter not on keyup 
+                    },
+                },
+                {
+                    label: 'Remark',
+                    field: 'remark',
+                    filterOptions: {
+                        styleClass: 'class1', // class to be added to the parent th element
+                        enabled: true, // enable filter for this column
+                        placeholder: 'Filter', // placeholder for filter input
+                        filterValue: '', // initial populated value for this filter
+                        // filterDropdownItems: [], // dropdown (with selected values) instead of text input
+                        filterFn: this.columnFilterFn, //custom filter function that
+                        // trigger: 'enter', //only trigger on enter not on keyup 
+                    },
+                },
+                {
+                    label: 'Action',
+                    field: 'action'
+                },
+
             ],
-            rows: [
-                { id: 1, name: "John", age: 20, createdAt: '2011-10-31', score: 0.03343 },
-                { id: 2, name: "Jane", age: 24, createdAt: '2011-10-31', score: 0.03343 },
-                { id: 3, name: "Susan", age: 16, createdAt: '2011-10-30', score: 0.03343 },
-                { id: 4, name: "Chris", age: 55, createdAt: '2011-10-11', score: 0.03343 },
-                { id: 5, name: "Dan", age: 40, createdAt: '2011-10-21', score: 0.03343 },
-                { id: 6, name: "John", age: 20, createdAt: '2011-10-31', score: 0.03343 },
-            ],
+            rows: [],
+
         };
     },
+
+    mounted() {
+        this.getStatus();
+        this.getContacts()
+    },
+
+    methods: {
+        // getContacts(page = 1) {
+        //     if (typeof page === "undefined") {
+        //         page = 1;
+        //     }
+        //     axios
+        //         .get("/api/contacts/index?page=" + page)
+        //         .then((res) => {
+        //             this.rows = res.data.data;
+        //             console.log(res.data.data);
+        //         })
+        //         .catch((error) => {
+        //             console.log(error);
+        //         });
+        // },
+
+        getContacts() {
+            axios
+                .get("/api/contacts/index")
+                .then((res) => {
+                    this.rows = res.data.data;
+                    console.log(res.data.data);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
+        showContactInfo() {
+            this.$router.push('/contacts/{:id}/info' + this.contact.id);
+        },
+
+        getStatus() {
+            axios
+                .get("/api/contactstatus/index")
+                .then((res) => {
+                    this.statuses = res.data.data;
+                }).catch((error) => {
+                    console.log(error);
+                })
+        },
+
+        deleteContact(id) {
+            if (!window.confirm("Are you sure?")) {
+                return;
+            }
+            axios.delete("/api/contacts/delete/" + id);
+            this.getContacts();
+        },
+    }
 };
 </script>
