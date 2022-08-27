@@ -4,8 +4,7 @@
 
     <div class="container max-w-50">
         <table class="table border-black">
-            <thead
-                class="bg-grey">
+            <thead class="bg-grey">
                 <tr class="text-center w-max">
                     <th class="px-2 py-3 bg-black-50 col-span-2">
                         Company Information
@@ -14,24 +13,30 @@
             </thead>
             <tbody v-for="info in contact_infos" :key="contact_infos.id">
                 <tr>
-                    <td >Name</td>
-                    <td class="px-2 py-4 text-m leading-5 font-bold text-gray-900 whitespace-no-wrap">{{ info.name }}</td>
+                    <td>Name</td>
+                    <td class="px-2 py-4 text-m leading-5 font-bold text-gray-900 whitespace-no-wrap">{{ info.name }}
+                    </td>
                 </tr>
                 <tr>
-                    <td >Industry</td>
-                    <td class="px-2 py-4 text-m leading-5 font-bold text-gray-900 whitespace-no-wrap">{{ info.industry }}</td>
+                    <td>Industry</td>
+                    <td class="px-2 py-4 text-m leading-5 font-bold text-gray-900 whitespace-no-wrap">{{ info.industry
+                    }}</td>
                 </tr>
                 <tr>
                     <td>Category</td>
-                    <td class="px-2 py-4 text-m leading-5 font-bold text-gray-900 whitespace-no-wrap">{{ info.category.name }}</td>
+                    <td class="px-2 py-4 text-m leading-5 font-bold text-gray-900 whitespace-no-wrap">{{
+                            info.category.name
+                    }}</td>
                 </tr>
                 <tr>
                     <td>Address</td>
-                    <td class="px-2 py-4 text-m leading-5 font-bold text-gray-900 whitespace-no-wrap">{{ info.address }}</td>
+                    <td class="px-2 py-4 text-m leading-5 font-bold text-gray-900 whitespace-no-wrap">{{ info.address }}
+                    </td>
                 </tr>
                 <tr>
                     <td>CS</td>
-                    <td class="px-2 py-4 text-m leading-5 font-bold text-gray-900 whitespace-no-wrap">{{ info.user.name }}</td>
+                    <td class="px-2 py-4 text-m leading-5 font-bold text-gray-900 whitespace-no-wrap">{{ info.user.name
+                    }}</td>
                 </tr>
                 <tr>
                     <td>Contact History</td>
@@ -45,6 +50,7 @@
                     </td>
                 </tr>
                 <tr class="col-span-2">
+                    <td>PIC</td>
                     <td>
                         <router-link :to="{
                             name: 'incharge_create',
@@ -55,30 +61,44 @@
                     </td>
                 </tr>
 
-                <span v-if="info.incharge.length === 0">
+                <span v-if="info.incharge.length !== 0">
+                    <span v-for="pic in info.incharge" :key="info.incharge.id" class="block">
+                        <tr>
+                            <td class="px-2 py-4 text-m leading-5 text-gray-900 whitespace-no-wrap">Name</td>
+                            <td class="px-2 py-4 text-m leading-5 font-bold text-gray-900 whitespace-no-wrap">{{
+                                    pic.name
+                            }}</td>
+                        </tr>
+                        <tr>
+                            <td class="px-2 py-4 text-m leading-5 text-gray-900 whitespace-no-wrap">Email</td>
+                            <td class="px-2 py-4 text-m leading-5 font-bold text-gray-900 whitespace-no-wrap">{{
+                                    pic.email
+                            }}</td>
+                        </tr>
+                        <tr>
+                            <td class="px-2 py-4 text-m leading-5 text-gray-900 whitespace-no-wrap">Phone No. (Mobile)
+                            </td>
+                            <td class="px-2 py-4 text-m leading-5 font-bold text-gray-900 whitespace-no-wrap">{{
+                                    pic.phone_mobile
+                            }}</td>
+                        </tr>
+                        <tr>
+                            <td class="px-2 py-4 text-m leading-5 text-gray-900 whitespace-no-wrap">Phone No. (Office)
+                            </td>
+                            <td class="px-2 py-4 text-m leading-5 font-bold text-gray-900 whitespace-no-wrap">{{
+                                    pic.phone_office
+                            }}</td>
+                        </tr>
+                    </span>
+                </span>
+
+                <span v-else>
                     <td class="px-2 py-4 text-m leading-5 font-bold text-gray-900 whitespace-no-wrap">
                         No PIC Data
                     </td>
                 </span>
 
-                <span v-else>
-                    <tr>
-                        <td class="px-2 py-4 text-m leading-5 text-gray-900 whitespace-no-wrap">PIC</td>
-                        <td class="px-2 py-4 text-m leading-5 font-bold text-gray-900 whitespace-no-wrap">{{ info.incharge }}</td>
-                    </tr>
-                    <tr>
-                        <td class="px-2 py-4 text-m leading-5 text-gray-900 whitespace-no-wrap">Email</td>
-                        <td class="px-2 py-4 text-m leading-5 font-bold text-gray-900 whitespace-no-wrap">{{ info.incharge }}</td>
-                    </tr>
-                    <tr>
-                        <td class="px-2 py-4 text-m leading-5 text-gray-900 whitespace-no-wrap">Phone No. (Mobile)</td>
-                        <td class="px-2 py-4 text-m leading-5 font-bold text-gray-900 whitespace-no-wrap">{{ info.incharge }}</td>
-                    </tr>
-                    <tr>
-                        <td class="px-2 py-4 text-m leading-5 text-gray-900 whitespace-no-wrap">Phone No. (Office)</td>
-                        <td class="px-2 py-4 text-m leading-5 font-bold text-gray-900 whitespace-no-wrap">{{ info.incharge }}</td>
-                    </tr>
-                </span>
+                
 
             </tbody>
         </table>

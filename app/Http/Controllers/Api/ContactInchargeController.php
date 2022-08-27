@@ -7,6 +7,7 @@ use App\Http\Requests\Contact\ContactInchargeRequest;
 use Illuminate\Http\Request;
 use App\Models\ContactIncharge;
 use App\Http\Resources\ContactInchargeResource;
+use App\Models\Contact;
 
 class ContactInchargeController extends Controller
 {
@@ -73,10 +74,14 @@ class ContactInchargeController extends Controller
         return response()->json('Contact PIC deleted.');
     }
 
-    public function info(ContactIncharge $incharge)
+    public function info(ContactIncharge $incharge, Contact $contact)
     {   
+        // $contact = ContactIncharge::with('contact')
+        //         ->where('id', $contact->id)
+        //         ->get();
+        
         $incharge = ContactIncharge::with('contact')
-                ->where('id', $incharge->id)
+                ->where('id', $incharge->contact_id)
                 ->get();
 
         $data = $incharge->toArray();

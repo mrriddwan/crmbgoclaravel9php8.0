@@ -1,175 +1,154 @@
 <template>
-    <div>
-        <h3 class="text-center">Create Contact</h3>
-        <GoBack />
-        <div class="row">
-            <div class="col-md-6">
-                <form @submit.prevent="updateContact">
-                    <div class="form-group">
-                        <label>Status</label>
-                        <select
-                        class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="form.status"
-                            @change="getStatus"
-                        >
-                            <option value="">Please select one</option>
+    <GoBack />
 
-                            <option
-                                v-for="status in statuses"
-                                :key="status.id"
-                                :value="status.id"
-                            >
-                                {{ status.name }}
-                            </option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Type</label>
-                        <select
-                            class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="form.type"
-                            @change="getType"
-                        >
-                            <option value="">Please select one</option>
+    <div class="container w-max border-4 align-center mx-auto" v-if="info.incharge.length !== 0">
+        <div v-for="info in contact_infos" :key="contact_infos.id">
+            <h1 class="items-center text-center text-white font-extrabold bg-slate-600 px-2 py-2 rounded-md">Create PIC
+            </h1>
+            <div class="text-left">
+                <p class="m-5 font-extrabold text-xl text-center uppercase">{{ info.name }}</p>
+                <form @submit.prevent="updatePIC" class="inline-block align-middle">
+                    <div class="grid grid-cols-2 items-center">
+                        <div class="grid grid-cols-2 w-auto items-center">
+                            <div>
+                                <label class="ml-7">Name</label>
+                            </div>
+                            <div>
+                                <input type="text"
+                                    class="items-left rounded-md border-gray-500 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                    v-model="pic.name" />
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 w-auto items-center">
+                            <label class="ml-7">Email</label>
+                            <input type="email"
+                                class="items-left mt-1 rounded-md border-gray-500 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                v-model="pic.email" />
+                        </div>
 
-                            <option
-                                v-for="type in types"
-                                :key="type.id"
-                                :value="type.id"
-                            >
-                                {{ type.name }}
-                            </option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Industry</label>
-                        <input type="text"
-                            class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="form.industry" />
-                    </div>
+                        <div class="grid grid-cols-2 w-auto items-center">
+                            <label class="ml-7">Phone No.(Mobile)</label>
+                            <input type="text"
+                                class="items-left mt-1 rounded-md border-gray-500 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                v-model="pic.phone_mobile" />
+                        </div>
 
-                    <div class="form-group">
-                        <label>Company Name</label>
-                        <input type="text"
-                            class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="form.company_name" />
+                        <div class="grid grid-cols-2 items-center">
+                            <label class="ml-7">Phone No.(Office)</label>
+                            <input type="text"
+                                class="items-left mt-1 rounded-md border-gray-500 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                v-model="pic.phone_office" />
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label>Category</label>
-                        <select
-                            class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="form.category"
-                            @change="getCategory"
-                        >
-                            <option value="">Please select one</option>
-
-                            <option
-                                v-for="category in categories"
-                                :key="category.id"
-                                :value="category.id"
-                            >
-                                {{ category.name }}
-                            </option>
-                        </select>
+                    <div class="text-center">
+                        <button type="submit"
+                            class="mt-4 px-2 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150 item">
+                            Save
+                        </button>
                     </div>
-                    <div class="form-group">
-                        <label>Address</label>
-                        <input type="text"
-                            class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="form.address" />
-                    </div>
-                    <div class="form-group">
-                        <label>Remark</label>
-                        <input type="text"
-                            class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="form.remark" />
-                    </div>
-
-                    <button type="submit"
-                        class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150">
-                        Create
-                    </button>
                 </form>
+            </div>
+
+            <div>
+                <div>
+                    <table class="grid grid-cols-2 border-2 m-4">
+                        <tr class="grid grid-cols-2 ">
+                            <td class="px-1 py-1 text-s leading-5 text-gray-900 whitespace-no-wrap">Name</td>
+                            <td class="px-1 py-1 text-s leading-5 font-bold text-gray-900 whitespace-no-wrap">{{
+                                    pic.name
+                            }}</td>
+                        </tr>
+
+                        <tr class="grid grid-cols-2 ">
+                            <td class="px-1 py-1 text-s leading-5 text-gray-900 whitespace-no-wrap">Email</td>
+                            <td class="px-1 py-1 text-s leading-5 font-bold text-gray-900 whitespace-no-wrap">{{
+                                    pic.email
+                            }}</td>
+                        </tr>
+                        <tr class="grid grid-cols-2 ">
+                            <td class="px-1 py-1 text-s leading-5 text-gray-900 whitespace-no-wrap">Phone No.
+                                (Mobile)
+                            </td>
+                            <td class="px-1 py-1 text-s leading-5 font-bold text-gray-900 whitespace-no-wrap">{{
+                                    pic.phone_mobile
+                            }}</td>
+                        </tr>
+                        <tr class="grid grid-cols-2 ">
+                            <td class="px-1 py-1 text-s leading-5 text-gray-900 whitespace-no-wrap">Phone No.
+                                (Office)
+                            </td>
+                            <td class="px-1 py-1 text-s leading-5 font-bold text-gray-900 whitespace-no-wrap">{{
+                                    pic.phone_office
+                            }}</td>
+                        </tr>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
+
+    <div v-else>
+        <div>
+            <h3>No PIC data</h3>
+        </div>
+    </div>
+
+
 </template>
 
 <script>
 import GoBack from '../utils/GoBack.vue';
 
-
-const categoryAPI = "/api/contactCategory/index"
-const typeAPI = "/api/contactType/index"
-const statusAPI = "/api/contactStatus/index"
-const userAPI = "/api/user/index"
-
 export default {
+
     data() {
         return {
+            info: '',
+            contact_infos: [],
             form: {
-                status: '',
-                type: '',
-                industry: '',
-                company_name: '',
-                category: '',
-                address: '',
-                remark: '',
+                contact_id: '',
+                name: '',
+                email: '',
+                phone_mobile: '',
+                phone_office: '',
             },
-        };
-    },
+            disabled: 0
 
-    created() {
-        // this.showContact();
-        // this.getFormSelections();
+        }
+    },
+    mounted() {
+        this.showIncharge()
     },
     methods: {
-
-    //     showContact(){
-
-    //     },
-
-        updateContact() {
+        showIncharge() {
             axios
-                .put("/api/contacts/update/" + this.$route.params.id, {
-                    address: this.form.address,
-                    type: this.form.type,
-                    industry: this.form.industry,
-                    company_name: this.form.company_name,
-                    category: this.form.category,
-                    address: this.form.address,
-                    remark: this.form.remark
-                })
+                .get("/api/incharge/info/" + this.$route.params.id)
                 .then((res) => {
-                    this.$router.push({ name: "contact_index" });
+                    this.contact_infos = res.data.data;
+                }).catch((error) => {
+                    console.log(error);
                 });
         },
 
-    //     getFormSelections() {
-    //         const requestOne = axios.get(categoryAPI);
-    //         const requestTwo = axios.get(typeAPI);
-    //         const requestThree = axios.get(statusAPI);
-    //         const requestFour = axios.get(userAPI);
-
-    //         axios
-    //             .all([requestOne, requestTwo, requestThree, requestFour])
-    //             .then(axios
-    //                 .spread((...responses) => {
-    //                 const responseOne = responses[0]
-    //                 const responseTwo = responses[1]
-    //                 const responseThree = responses[2]
-    //                 const responseFour = responses[3]
-    //             // use/access the results
-    //             console.log(responseOne, responseTwo, responseThree, responseFour);
-    //             }))
-    //             .catch(errors => {
-    //                 console.error(errors);
-    //             })
-    //     }
+        updatePIC() {
+            axios
+                .put("/api/incharges/update/" + this.$route.params.id, {
+                    contact_id: this.contact_id,
+                    name: this.form.name,
+                    email: this.form.email,
+                    phone_mobile: this.form.phone_mobile,
+                    phone_office: this.form.phone_office,
+                })
+                .then(console.log(this.info.contact_id))
+                .then((res) => {
+                    this.$router.push({
+                        name: 'incharge_create',
+                        params: { id: this.$route.params.id },
+                    });
+                });
+        },
     },
-    components: { 
-        GoBack, 
-    }
-};
+    components: { GoBack }
+}
+
 </script>

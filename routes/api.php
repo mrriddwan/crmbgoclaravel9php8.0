@@ -44,6 +44,7 @@ Route::get('/user/index', [UserController::class, 'index'])->name('user:index');
 Route::post('/incharges/store', [ContactInchargeController::class, 'store'])->name('incharge:store');
 Route::get('/incharges/index', [ContactInchargeController::class, 'index'])->name('incharge:index');
 Route::get('/incharges/show/{incharge}', [ContactInchargeController::class, 'show'])->name('incharge:show');
+Route::put('/contacts/update/{incharge}', [ContactInchargeController::class, 'update'])->name('incharge:update');
 Route::delete('/incharges/delete/{incharge}', [ContactInchargeController::class, 'delete'])->name('incharge:delete');
 Route::get('/incharges/info/{incharge}', [ContactInchargeController::class, 'info'])->name('incharge:info');
 
