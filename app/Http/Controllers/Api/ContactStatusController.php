@@ -13,4 +13,21 @@ class ContactStatusController extends Controller
     {
         return ContactStatusResource::collection(ContactStatus::all());
     }
+
+    public function dropdown()
+    {
+        $status = ContactStatus::all()->only('id', 'name');
+
+        $data = ([
+            'value' => $status -> id,
+            'text' => $status -> name
+        ]);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Successfully fetch data status ',
+            'data' => $data,
+        ]);
+    }
+
 }

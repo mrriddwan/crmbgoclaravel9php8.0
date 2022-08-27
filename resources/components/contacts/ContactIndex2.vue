@@ -2,7 +2,7 @@
 
     <div>
         <router-link to="/contacts_create"
-            class="mr-10 mb-10 inline-flex items-center px-2 py-1 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150">
+            class="mb-5 inline-flex items-center px-2 py-1 bg-gray-800 border border-transparent rounded-md font-semibold text-m text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150">
             Create contact</router-link>
     </div>
 
@@ -31,10 +31,21 @@
     infoFn: (params) => `Page: ${params.firstRecordOnPage}`,
 }">
             <template #table-row="props">
-                <span v-if="props.column.field == 'name'">
-                    <span style="font-weight: bold; color: blue;">{{ props.row.name }}</span>
+                <span v-if="props.column.field === 'name'">
+                    <router-link :to="{
+                        name: 'contacts_info',
+                        params: { id: props.row.id },
+                    }" class="text-center items-center align-middle px-1 py-3 mr-2 bg-blue-400 border border-transparent rounded-md font- text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900">
+                    i
+                    </router-link>
                 </span>
                 <span v-if="props.column.field == 'action'">
+                    <router-link :to="{
+                        name: 'contacts_edit',
+                        params: { id: props.row.id },
+                    }"
+                        class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150">
+                        To Do</router-link>
                     <router-link :to="{
                         name: 'contacts_edit',
                         params: { id: props.row.id },
@@ -68,7 +79,7 @@ export default {
     data() {
         return {
 
-            statuses: [],
+            statuses: '',
             columns: [
 
                 {
@@ -109,7 +120,10 @@ export default {
                         enabled: true, // enable filter for this column
                         placeholder: 'Filter', // placeholder for filter input
                         filterValue: '', // initial populated value for this filter
-                        // filterDropdownItems: [], // dropdown (with selected values) instead of text input
+                        filterDropdownItems: [
+                               { value: 'n', text: 'Inactive' },               
+                            
+                        ], // dropdown (with selected values) instead of text input
                         filterFn: this.columnFilterFn, //custom filter function that
                         // trigger: 'enter', //only trigger on enter not on keyup 
                     },
@@ -122,7 +136,7 @@ export default {
                         enabled: true, // enable filter for this column
                         placeholder: 'Filter', // placeholder for filter input
                         filterValue: '', // initial populated value for this filter
-                        filterDropdownItems: [], // dropdown (with selected values) instead of text input
+                        // filterDropdownItems: [], // dropdown (with selected values) instead of text input
                         filterFn: this.columnFilterFn, //custom filter function that
                         // trigger: 'enter', //only trigger on enter not on keyup 
                     },
@@ -259,3 +273,4 @@ export default {
     }
 };
 </script>
+

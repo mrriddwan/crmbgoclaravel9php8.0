@@ -35,11 +35,17 @@ Route::get('/contacts/info/{contact}', [ContactController::class, 'info'])->name
 /*Sub-Contact API*/
 Route::get('/contactcategory/index', [ContactCategoryController::class, 'index'])->name('category:index');
 Route::get('/contacttype/index', [ContactTypeController::class, 'index'])->name('type:index');
+
 Route::get('/contactstatus/index', [ContactStatusController::class, 'index'])->name('status:index');
+Route::get('/contactstatus/dropdown', [ContactStatusController::class, 'dropdown'])->name('status:dropdown');
+
 Route::get('/user/index', [UserController::class, 'index'])->name('user:index');
+
 Route::post('/incharges/store', [ContactInchargeController::class, 'store'])->name('incharge:store');
 Route::get('/incharges/index', [ContactInchargeController::class, 'index'])->name('incharge:index');
 Route::get('/incharges/show/{incharge}', [ContactInchargeController::class, 'show'])->name('incharge:show');
+Route::delete('/incharges/delete/{incharge}', [ContactInchargeController::class, 'delete'])->name('incharge:delete');
+Route::get('/incharges/info/{incharge}', [ContactInchargeController::class, 'info'])->name('incharge:info');
 
 
 

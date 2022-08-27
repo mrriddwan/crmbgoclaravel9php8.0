@@ -24,6 +24,7 @@ class ContactInchargeRequest extends FormRequest
     public function rules()
     {
         return [
+            'contact_id' =>  ['required', 'int'],
             'name' => ['required', 'string'],
             'email' => ['required', 'email'],
             'phone_mobile' => ['nullable', 'string'],

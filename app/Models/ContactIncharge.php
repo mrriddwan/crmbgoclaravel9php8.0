@@ -10,6 +10,7 @@ class ContactIncharge extends Model
     use HasFactory;
 
     protected $fillable = [
+        'contact_id',
         'name',
         'email',
         'phone_mobile',

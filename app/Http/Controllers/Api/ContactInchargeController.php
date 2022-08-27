@@ -25,23 +25,37 @@ class ContactInchargeController extends Controller
 
         return new ContactInchargeResource($contact);
     }
-    
-    public function show(ContactIncharge $incharge)
-    {   
-        $data = ContactIncharge::with('contact')
-                ->where('id', $incharge->id)
-                ->get();
 
+    public function show(ContactIncharge $incharge)
+    {
+        // $data = ContactIncharge::with('contact')
+        //         ->where('id', $incharge->id)
+        //         ->get();
+
+        // return response()->json([
+        //     'status' => true,
+        //     'message' => 'Successfully fetch data Contact PIC ',
+        //     'data' => $data,
+        // ]);
+
+        $incharge = ContactIncharge::with('contact')
+            ->where('id', $incharge->id)
+            ->get();
+
+        // $data = $incharge->toArray();
 
         return response()->json([
             'status' => true,
-            'message' => 'Successfully fetch data Contact PIC ',
-            'data' => $data,
+            'message' => 'Successfully fetch data PIC ',
+            'data' => $incharge,
         ]);
+
+        // $incharge = ContactIncharge::find($id);
+        // return response()->json($incharge);
     }
 
     public function update(ContactInchargeRequest $request, ContactIncharge $incharge)
-    {   
+    {
         $incharge->update([
             $request->validated()
         ]);
@@ -57,5 +71,20 @@ class ContactInchargeController extends Controller
     {
         $incharge->delete();
         return response()->json('Contact PIC deleted.');
+    }
+
+    public function info(ContactIncharge $incharge)
+    {   
+        $incharge = ContactIncharge::with('contact')
+                ->where('id', $incharge->id)
+                ->get();
+
+        $data = $incharge->toArray();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Successfully fetch data PIC ',
+            'data' => $data,
+        ]);
     }
 }

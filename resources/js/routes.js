@@ -6,8 +6,8 @@ import ContactCreate from '../components/contacts/ContactCreate.vue';
 import ContactEdit from '../components/contacts/ContactEdit.vue';
 import ContactHistory from '../components/contacts/ContactHistory.vue';
 import ContactInfo from '../components/contacts/ContactInfo.vue';
+
 import InchargeCreate from '../components/contacts/InchargeCreate.vue';
-import InchargeInfo from '../components/contacts/InchargeInfo.vue';
 import InchargeEdit from '../components/contacts/InchargeEdit.vue';
 
 import ContactIndex2 from '../components/contacts/ContactIndex2.vue';
@@ -50,6 +50,7 @@ const routes = [
     {
         path: '/contacts/:id/info',
         name: 'contacts_info',
+
         component: ContactInfo
     },
 
@@ -60,15 +61,9 @@ const routes = [
     },
 
     {
-        path: '/incharge/create',
+        path: '/incharge/:id/create',
         name: 'incharge_create',
         component: InchargeCreate
-    },
-
-    {
-        path: '/incharge/info',
-        name: 'incharge_info',
-        component: InchargeInfo
     },
 
     {
