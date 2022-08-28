@@ -121,8 +121,8 @@ export default {
                         placeholder: 'Filter', // placeholder for filter input
                         filterValue: '', // initial populated value for this filter
                         filterDropdownItems: [
-                               { value: 'n', text: 'Inactive' },               
-                            
+                               { value: 'n', text: 'Inactive' },
+                            //    this.statuses                                           
                         ], // dropdown (with selected values) instead of text input
                         filterFn: this.columnFilterFn, //custom filter function that
                         // trigger: 'enter', //only trigger on enter not on keyup 
@@ -255,7 +255,7 @@ export default {
 
         getStatus() {
             axios
-                .get("/api/contactstatus/index")
+                .get("/api/contactstatus/dropdown")
                 .then((res) => {
                     this.statuses = res.data.data;
                 }).catch((error) => {

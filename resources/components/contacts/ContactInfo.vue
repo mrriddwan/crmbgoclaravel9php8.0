@@ -1,25 +1,30 @@
 <template>
 
-    <GoBack />
 
-    <div class="container max-w-50">
-        <table class="table border-black">
-            <thead class="bg-grey">
-                <tr class="text-center w-max">
-                    <th class="px-2 py-3 bg-black-50 col-span-2">
-                        Company Information
-                    </th>
-                </tr>
-            </thead>
+
+    <div class="container w-max border-4 align-center mx-auto h-max ">
+
+        <div class="max-h-10 mb-4 ml-4">
+            <GoBack class="" />
+        </div>
+
+        <div class="items-center text-center text-white font-extrabold bg-slate-600 px-2 py-2 rounded-md">
+            <h1 class="px-2 py-3 bg-black-50 col-span-2">
+                Company Information
+            </h1>
+        </div>
+
+
+        <table class="border-black m-4 grid">
             <tbody v-for="info in contact_infos" :key="contact_infos.id">
-                <tr>
+                <tr class="">
                     <td>Name</td>
-                    <td class="px-2 py-4 text-m leading-5 font-bold text-gray-900 whitespace-no-wrap">{{ info.name }}
+                    <td class="px-2 py-3 text-m leading-5 font-bold text-gray-900 whitespace-no-wrap">{{ info.name }}
                     </td>
                 </tr>
                 <tr>
                     <td>Industry</td>
-                    <td class="px-2 py-4 text-m leading-5 font-bold text-gray-900 whitespace-no-wrap">{{ info.industry
+                    <td class="px-2 py-3 text-m leading-5 font-bold text-gray-900 whitespace-no-wrap">{{ info.industry
                     }}</td>
                 </tr>
                 <tr>
@@ -39,8 +44,8 @@
                     }}</td>
                 </tr>
                 <tr>
-                    <td>Contact History</td>
-                    <td>History of To Do
+                    <td class="py-4">Contact History</td>
+                    <td class="px-2 py-4">History of To Do
                         <!-- <router-link :to="{
                                     name: 'contact_history',
                                     params: { id: info.id },
@@ -49,7 +54,7 @@
                                     Contact History</router-link> -->
                     </td>
                 </tr>
-                <tr class="col-span-2">
+                <tr class="col-span-2 px-2 py-4">
                     <td>PIC</td>
                     <td>
                         <router-link :to="{
@@ -61,33 +66,55 @@
                     </td>
                 </tr>
 
-                <span v-if="info.incharge.length !== 0">
-                    <span v-for="pic in info.incharge" :key="info.incharge.id" class="block">
+                <span v-if="info.incharge.length !== 0" class="px-2 py-4">
+                    <span v-for="pic in info.incharge" :key="info.incharge.id"
+                        class="m-3 grid grid-cols-2 items-center border-2">
                         <tr>
-                            <td class="px-2 py-4 text-m leading-5 text-gray-900 whitespace-no-wrap">Name</td>
-                            <td class="px-2 py-4 text-m leading-5 font-bold text-gray-900 whitespace-no-wrap">{{
-                                    pic.name
-                            }}</td>
+                            <div>
+                                <td class="px-2 py-4 text-m leading-5 text-gray-900 whitespace-no-wrap">Name</td>
+                                <td class="px-2 py-4 text-m leading-5 font-bold text-gray-900 whitespace-no-wrap">{{
+                                        pic.name
+                                }}</td>
+                            </div>
+                            <div>
+                                <td class="px-2 py-4 text-m leading-5 text-gray-900 whitespace-no-wrap">Email</td>
+                                <td class="px-2 py-4 text-m leading-5 font-bold text-gray-900 whitespace-no-wrap">{{
+                                        pic.email
+                                }}</td>
+                            </div>
                         </tr>
+
                         <tr>
-                            <td class="px-2 py-4 text-m leading-5 text-gray-900 whitespace-no-wrap">Email</td>
-                            <td class="px-2 py-4 text-m leading-5 font-bold text-gray-900 whitespace-no-wrap">{{
-                                    pic.email
-                            }}</td>
+                            <div>
+                                <td class="px-2 py-4 text-m leading-5 text-gray-900 whitespace-no-wrap">Phone No.
+                                    (Mobile)
+                                </td>
+                                <td class="px-2 py-4 text-m leading-5 font-bold text-gray-900 whitespace-no-wrap">{{
+                                        pic.phone_mobile
+                                }}</td>
+                            </div>
+
+                            <div>
+                                <td class="px-2 py-4 text-m leading-5 text-gray-900 whitespace-no-wrap">Phone No.
+                                    (Office)
+                                </td>
+                                <td class="px-2 py-4 text-m leading-5 font-bold text-gray-900 whitespace-no-wrap">{{
+                                        pic.phone_office
+                                }}</td>
+                            </div>
                         </tr>
-                        <tr>
-                            <td class="px-2 py-4 text-m leading-5 text-gray-900 whitespace-no-wrap">Phone No. (Mobile)
-                            </td>
-                            <td class="px-2 py-4 text-m leading-5 font-bold text-gray-900 whitespace-no-wrap">{{
-                                    pic.phone_mobile
-                            }}</td>
-                        </tr>
-                        <tr>
-                            <td class="px-2 py-4 text-m leading-5 text-gray-900 whitespace-no-wrap">Phone No. (Office)
-                            </td>
-                            <td class="px-2 py-4 text-m leading-5 font-bold text-gray-900 whitespace-no-wrap">{{
-                                    pic.phone_office
-                            }}</td>
+
+                        <tr class="ml-4">
+                            <router-link :to="{
+                                name: 'incharge_edit',
+                                params: { id: pic.id },
+                            }" class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-yellow-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150">
+                                Edit</router-link>
+                            <button
+                                class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                                @click="deletePIC(pic.id)">
+                                Delete
+                            </button>
                         </tr>
                     </span>
                 </span>
@@ -97,17 +124,16 @@
                         No PIC Data
                     </td>
                 </span>
-
-                
-
             </tbody>
         </table>
+
+        <div class="ml-4 mb-4">
+            <p>FORECAST</p>
+        </div>
     </div>
 
 
-    <div>
-        <p>FORECAST TABLE HERE</p>
-    </div>
+
 
 </template>
 

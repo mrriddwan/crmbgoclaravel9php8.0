@@ -27,39 +27,22 @@ class ContactInchargeController extends Controller
         return new ContactInchargeResource($contact);
     }
 
-    public function show(ContactIncharge $incharge)
+    public function show($id)
     {
-        // $data = ContactIncharge::with('contact')
-        //         ->where('id', $incharge->id)
-        //         ->get();
-
-        // return response()->json([
-        //     'status' => true,
-        //     'message' => 'Successfully fetch data Contact PIC ',
-        //     'data' => $data,
-        // ]);
-
-        $incharge = ContactIncharge::with('contact')
-            ->where('id', $incharge->id)
-            ->get();
-
-        // $data = $incharge->toArray();
-
-        return response()->json([
-            'status' => true,
-            'message' => 'Successfully fetch data PIC ',
-            'data' => $incharge,
-        ]);
-
-        // $incharge = ContactIncharge::find($id);
-        // return response()->json($incharge);
+        $incharge = ContactIncharge::find($id);
+        return response()->json($incharge);
     }
 
     public function update(ContactInchargeRequest $request, ContactIncharge $incharge)
     {
         $incharge->update([
-            $request->validated()
+            'contact_id' => $request->contact_id,
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone_mobile' => $request->phone_mobile,
+            'phone_mobile' => $request->phone_office,
         ]);
+
 
         return response()->json([
             'status' => true,

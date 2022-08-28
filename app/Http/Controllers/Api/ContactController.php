@@ -52,17 +52,6 @@ class ContactController extends Controller
     }
     public function show($id)
     {   
-        // $data = Contact::with('category', 'type', 'status', 'incharge', 'user')
-        //         ->where('id', $contact->id)
-        //         ->toArray()
-        //         ->get();
-
-        // return response()->json([
-        //     'status' => true,
-        //     'message' => 'Successfully fetch data Contact ',
-        //     'data' => $data,
-        // ]);
-
         $contact = Contact::find($id);
         return response()->json($contact);
     }
