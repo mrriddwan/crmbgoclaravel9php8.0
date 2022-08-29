@@ -21,6 +21,11 @@ class DatabaseSeeder extends Seeder
             Contact_CategorySeeder::class,
             ContactSeeder::class,
             ContactInchargeSeeder::class,
+            TaskSeeder::class,
+            PrioritySeeder::class,
+            TextColorSeeder::class,
+            ToDoSeeder::class,
+
         ]);
     }
 }

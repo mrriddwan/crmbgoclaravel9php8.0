@@ -27,4 +27,8 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
+// Route::get('/tasks/index', function () {
+//     return view('todo');
+// })->middleware(['auth'])->name('todo');
+
 

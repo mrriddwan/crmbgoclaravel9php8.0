@@ -11,7 +11,7 @@ use App\Models\Contact;
 class ContactFactory extends Factory
 {
 
-        /**
+    /**
      * The name of the factory's corresponding model.
      *
      * @var string
@@ -28,8 +28,8 @@ class ContactFactory extends Factory
         return [
             'name' => fake() -> company(),
             'address' => fake() -> address(),
-            'industry' => fake() -> text($maxNbChars=10),
-            'remark' => fake() -> text($maxNbChars=50),
+            'industry' => fake() -> word($maxNbChars=10),
+            'remark' => fake() -> realText($maxNbChars=50),
             'user_id' => random_int(2,10),
             'status_id' => random_int(1,5),
             'type_id' => random_int(1,5),

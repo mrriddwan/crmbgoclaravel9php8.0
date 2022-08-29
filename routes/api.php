@@ -49,6 +49,8 @@ Route::put('/incharges/update/{incharge}', [ContactInchargeController::class, 'u
 Route::delete('/incharges/delete/{incharge}', [ContactInchargeController::class, 'delete'])->name('incharge:delete');
 Route::get('/incharges/info/{incharge}', [ContactInchargeController::class, 'info'])->name('incharge:info');
 
+// Route::get()
+
 
 
 
