@@ -4,37 +4,44 @@ import { useRouter } from 'vue-router';
 
 export default function toDoComposables () {
     const users = ref([])
+
+    const contacts = ref([])
+    const contact = ref([])
+
     const statuses = ref([])
     const categories = ref([])
     const types = ref([])
     const tasks = ref([])
 
-
-    const company = ref([])
-    const companies = ref([])
     const router = useRouter()
     const errors = ref('')
 
-    const getCompanies = async () => {
-        let response = await axios.get('/api/companies')
-        companies.value = response.data.data;
+    const getContacts = async () => {
+        let response = await axios.get('/api/contacts/index')
+        contacts.value = response.data.data;
+    }
+
+    const getContact = async (id) => {
+        let response = await axios.get('/api/contacts/new/' + id)
+        contact.value = response.data.data;
     }
 
     const getUsers = async () => {
-        let response = await axios.get('/user/index')
+        let response = await axios.get('/api/user/index')
         users.value = response.data.data;
     }
 
-    const getCompany = async (id) => {
-        let response = await axios.get('/api/companies/' + id)
-        company.value = response.data.data;
+    const getTasks = async () => {
+        let response = await axios.get(`/api/tasks/index`)
+        tasks.value = response.data.data;
     }
+
 
     const storeToDo = async (data) => {
         errors.value = ''
         try {
-            await axios.post('/api/companies', data)
-            await router.push({name: 'companies.index'})
+            await axios.post('/api/todos/insert', data)
+            await router.push({name: 'todo_index'})
         } catch (e) {
             if (e.response.status === 422) {
                 errors.value = e.response.data.errors
@@ -60,14 +67,20 @@ export default function toDoComposables () {
 
 
     return {
-        companies,
-        company,
+        getContacts,
+        getContact,
+
+        contact,
+        contacts,
+
         errors,
 
-        getCompanies,
-        getCompany,
         getUsers,
+        users,
 
+        getTasks,
+        tasks,
+        
         storeToDo,
         updateCompany,
         destroyCompany

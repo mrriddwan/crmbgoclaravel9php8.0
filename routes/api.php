@@ -6,6 +6,8 @@ use App\Http\Controllers\Api\ContactStatusController;
 use App\Http\Controllers\Api\ContactTypeController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\ContactInchargeController;
+use App\Http\Controllers\Api\TaskController;
+use App\Http\Controllers\Api\ToDoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -40,6 +42,7 @@ Route::get('/contactstatus/index', [ContactStatusController::class, 'index'])->n
 Route::get('/contactstatus/dropdown', [ContactStatusController::class, 'dropdown'])->name('status:dropdown');
 
 Route::get('/user/index', [UserController::class, 'index'])->name('user:index');
+Route::get('/tasks/index', [TaskController::class, 'index'])->name('task:index');
 
 /*Incharge API*/
 Route::post('/incharges/store', [ContactInchargeController::class, 'store'])->name('incharge:store');
@@ -49,8 +52,14 @@ Route::put('/incharges/update/{incharge}', [ContactInchargeController::class, 'u
 Route::delete('/incharges/delete/{incharge}', [ContactInchargeController::class, 'delete'])->name('incharge:delete');
 Route::get('/incharges/info/{incharge}', [ContactInchargeController::class, 'info'])->name('incharge:info');
 
-// Route::get()
-
+/*To Do API*/
+Route::get('/todos/index', [ToDoController::class, 'index'])->name('todo:index');
+Route::post('/todos/insert', [ToDoController::class, 'insert'])->name('todo:insert');
+Route::post('/todos/store', [ToDoController::class, 'store'])->name('todo:store');
+Route::get('/todos/show/{todo}', [ToDoController::class, 'show'])->name('todo:show');
+Route::put('/todos/update/{todo}', [ToDoController::class, 'update'])->name('todo:update');
+Route::delete('/todos/delete/{todo}', [ToDoController::class, 'delete'])->name('todo:delete');
+Route::get('/todos/new/{todo}', [ToDoController::class, 'new'])->name('todo:new');
 
 
 

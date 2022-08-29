@@ -102,9 +102,10 @@ const routes = [
     },
 
     {
-        path: "/todo/insert/:id",
+        path: "/todo/:id/insert",
         name: "todo_insert",
         component: ToDoInsert,
+        props: true
     },
 
     // {

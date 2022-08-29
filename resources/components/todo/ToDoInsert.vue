@@ -22,9 +22,11 @@
                         >
                             <input
                                 type="checkbox"
-                                value=""
+                                true-value="1"
+                                false-value="2"
                                 id="large-toggle"
                                 class="sr-only peer"
+                                v-model="form.priority_id"
                             />
                             <div
                                 class="w-14 h-7 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"
@@ -48,7 +50,7 @@
                                 :key="user.id"
                                 :value="user.id"
                             >
-                                <!-- {{ contact.user.name }} -->
+                                {{ user.name }}
                             </option>
                         </select>
                     </div>
@@ -57,7 +59,7 @@
                         <input
                             type="date"
                             class="block mt-1 w-max rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="form.date_created"
+                            v-model="form.todo_created"
                         />
                     </div>
 
@@ -74,7 +76,7 @@
                                 :key="task.id"
                                 :value="task.id"
                             >
-                                <!-- {{ contact.user.name }} -->
+                                {{ task.name }}
                             </option>
                         </select>
                     </div>
@@ -94,6 +96,14 @@
                     >
                         Create
                     </button>
+
+                    <h1
+                        v-for="info in contact"
+                        :key="contact.id"
+                        :value="contact.id"
+                    >
+                        <h1>here is {{ info.name }}</h1>
+                    </h1>
                 </form>
             </div>
         </div>
@@ -103,38 +113,68 @@
 <script>
 import { reactive } from "vue";
 import toDoComposables from "../composables/todos";
+import { onMounted } from "vue";
 import GoBack from "../utils/GoBack.vue";
 
 export default {
-    setup() {
+    props: {
+        id: {
+            required: true,
+            type: String,
+        },
+    },
+
+    setup(props) {
         const form = reactive({
             priority_id: "",
             user_id: "",
-            date_created: "",
+            contact_id: "",
+            type_id: "",
+            status_id: "",
+            todo_created: "",
             task_id: "",
             remark: "",
-        })
+        });
 
-        const { errors, storeToDo } = toDoComposables()
+        // const errors = ref('')
 
-        const saveToDo = async () => {
-            await storeToDo({...form});
-        }
+        const {
+            errors,
+            storeToDo,
+
+            getUsers,
+            users,
+
+            getTasks,
+            tasks,
+
+            getContact,
+            contact,
+        } = toDoComposables();
+
+        onMounted(getTasks);
+        onMounted(getUsers);
+        onMounted(getContact(props.id));
+
+        const insertToDo = async (id) => {
+            await storeToDo({ ...form });
+        };
 
         return {
             form,
-            errors,
-            saveToDo
-        }
+            // errors,
+            insertToDo,
+            contact,
+            tasks,
+            users,
+        };
     },
 
     components: {
-        GoBack
-    }
-}
+        GoBack,
+    },
+};
 </script>
-
-
 
 <!-- 
 <script>
