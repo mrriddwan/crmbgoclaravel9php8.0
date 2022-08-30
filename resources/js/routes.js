@@ -21,6 +21,8 @@ import ToDoCreate from "../components/todo/ToDoCreate.vue";
 import ToDoEdit from "../components/todo/ToDoEdit.vue";
 import ToDoInsert from "../components/todo/ToDoInsert.vue";
 
+import ToDoIndex2 from "../components/todo/ToDoIndex2.vue";
+
 
 const routes = [
     /*                      
@@ -102,17 +104,17 @@ const routes = [
     },
 
     {
+        path: "/todo/index2",
+        name: "todo_index2",
+        component: ToDoIndex2,
+    },
+
+    {
         path: "/todo/:id/insert",
         name: "todo_insert",
         component: ToDoInsert,
         props: true
     },
-
-    // {
-    //     path: "/todo/create/:id",
-    //     name: "todo_create",
-    //     component: ToDoCreate,
-    // },
 
     {
         path: "/todo/create",
@@ -120,17 +122,18 @@ const routes = [
         component: ToDoCreate,
     },
 
+    {
+        path: "/todo/:id/edit",
+        name: "todo_edit",
+        component: ToDoEdit,
+        props:true
+    },
+
     // {
-    //     path: "/todo/:id/edit",
+    //     path: "/todo/edit",
     //     name: "todo_Edit",
     //     component: ToDoEdit,
     // },
-
-    {
-        path: "/todo/edit",
-        name: "todo_Edit",
-        component: ToDoEdit,
-    },
 ];
 
 export default createRouter({

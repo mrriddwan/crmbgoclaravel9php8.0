@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             TaskSeeder::class,
             PrioritySeeder::class,
             TextColorSeeder::class,
+            ActionSeeder::class,
             ToDoSeeder::class,
 
         ]);

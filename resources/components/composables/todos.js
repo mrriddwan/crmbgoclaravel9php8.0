@@ -3,32 +3,20 @@ import axios from "axios";
 import { useRouter } from 'vue-router';
 
 export default function toDoComposables () {
-    const users = ref([])
-
-    const contacts = ref([])
-    const contact = ref([])
-
-    const statuses = ref([])
-    const categories = ref([])
-    const types = ref([])
-    const tasks = ref([])
-
     const router = useRouter()
     const errors = ref('')
+    const todos = ref([])
+    const todo = ref([])
+    const tasks = ref([])
 
-    const getContacts = async () => {
-        let response = await axios.get('/api/contacts/index')
-        contacts.value = response.data.data;
+    const getToDos = async () => {
+        let response = await axios.get('/api/todos/index')
+        todos.value = response.data.data
     }
 
-    const getContact = async (id) => {
-        let response = await axios.get('/api/contacts/new/' + id)
-        contact.value = response.data.data;
-    }
-
-    const getUsers = async () => {
-        let response = await axios.get('/api/user/index')
-        users.value = response.data.data;
+    const getToDo = async (id) => {
+        let response = await axios.get(`/api/todos/new/${id}`)
+        todo.value = response.data.data;
     }
 
     const getTasks = async () => {
@@ -36,11 +24,10 @@ export default function toDoComposables () {
         tasks.value = response.data.data;
     }
 
-
     const storeToDo = async (data) => {
         errors.value = ''
         try {
-            await axios.post('/api/todos/insert', data)
+            await axios.post('/api/todos/store', data)
             await router.push({name: 'todo_index'})
         } catch (e) {
             if (e.response.status === 422) {
@@ -49,11 +36,23 @@ export default function toDoComposables () {
         }
     }
 
-    const updateCompany = async (id) => {
+    // const insertToDo = async (data) => {
+    //     errors.value = ''
+    //     try {
+    //         await axios.post('/api/todos/insert', data)
+    //         await router.push({name: 'todo_index'})
+    //     } catch (e) {
+    //         if (e.response.status === 422) {
+    //             errors.value = e.response.data.errors
+    //         }
+    //     }
+    // }
+
+    const updateToDo = async (id) => {
         errors.value = ''
         try {
-            await axios.put('/api/companies/' + id, company.value)
-            await router.push({name: 'companies.index'})
+            await axios.put('/api/todos/update/' + id, todo.value)
+            await router.push({name: 'todos_index'})
         } catch (e) {
             if (e.response.status === 422) {
                errors.value = e.response.data.errors
@@ -61,28 +60,24 @@ export default function toDoComposables () {
         }
     }
 
-    const destroyCompany = async (id) => {
+    const deleteToDo = async (id) => {
         await axios.delete('/api/companies/' + id)
     }
 
 
     return {
-        getContacts,
-        getContact,
-
-        contact,
-        contacts,
-
         errors,
-
-        getUsers,
-        users,
-
+        getToDos,
+        getToDo,
+        todos,
+        todo,
         getTasks,
         tasks,
         
         storeToDo,
-        updateCompany,
-        destroyCompany
+        // insertToDo,
+
+        updateToDo,
+        deleteToDo
     }
 }

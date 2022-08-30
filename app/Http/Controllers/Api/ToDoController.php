@@ -14,11 +14,35 @@ class ToDoController extends Controller
         // $contacts = Contact::with('category', 'type', 'status', 'incharge', 'user')->paginate(10);
         // $contact = (Contact::with('category', 'type', 'status', 'incharge', 'user'))->paginate(100);
         $todo = ToDo::with('contact', 'user', 'task', 'status', 'type', 'priority', 'color')->get();
-        
-
+    
         return ToDoResource::collection($todo);
     }
 
+    public function store(Request $request)
+    {
+        // $contact = Contact::create($request->validated());
+
+        // return new ContactResource($contact);
+        
+
+        $todo = ToDo::create([
+            'priority_id' => $request->priority_id,
+            'user_id' => $request->user_id,
+            'todo_created' => $request->todo_created,
+            'todo_deadline' => $request->todo_deadline,
+            'status_id' => $request->status_id,
+            'contact_id' => $request->contact_id,
+            'type_id' => $request->type_id,
+            'task_id' => $request->task_id,       
+            'remark' => $request->remark,
+        ]);
+
+        return response()->json([
+            'data' => $todo,
+            'status' => true,
+            'message' => 'Successfully store employee',
+        ]);
+    }
 
     public function insert(Request $request)
     {
@@ -57,20 +81,20 @@ class ToDoController extends Controller
     public function update(Request $request, ToDo $todo)
     {   
         $todo->update([
+            'priority_id' => $request->priority_id,
+            'date_created' => $request->todo_created,
+            'contact_id' => $request->contact_id,
             'user_id' => $request->user_id,
+            'task_id' => $request->task_id,
             'status_id' => $request->status_id,
             'type_id' => $request->type_id,
-            'industry' => $request->industry,
-            'name' => $request->name,
-            'category_id' => $request->category_id,
-            'address' => $request->address,
             'remark' => $request->remark,
         ]);
 
 
         return response()->json([
             'status' => true,
-            'message' => 'Successfully fetch data Contact ' . $todo->name,
+            'message' => 'Successfully update data To Do ' . $todo->name,
             'data' => $todo,
         ]);
     }

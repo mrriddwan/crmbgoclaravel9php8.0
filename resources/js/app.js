@@ -9,6 +9,14 @@ import ContactIndex from '../components/contacts/ContactIndex.vue'
 import '../css/app.css'
 import 'vue-good-table-next/dist/vue-good-table-next.css'
 import VueGoodTablePlugin from 'vue-good-table-next';
+//Bootstrap and jQuery libraries
+import "bootstrap/dist/css/bootstrap.min.css";
+import "jquery/dist/jquery.min.js";
+//Datatable Modules
+import "datatables.net-dt/js/dataTables.dataTables";
+import "datatables.net-dt/css/jquery.dataTables.min.css";
+import jQuery from 'jquery';
+window.$ = jQuery;
 
 
 

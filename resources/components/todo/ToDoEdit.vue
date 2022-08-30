@@ -1,7 +1,5 @@
 <template>
-    <div
-        class="container w-max-10 border-4 align-center mx-auto h-max px-5 py-5"
-    >
+    <div class="container w- border-4 align-center mx-auto h-max px-5 py-5">
         <div>
             <GoBack />
         </div>
@@ -14,7 +12,7 @@
 
         <div class="row mt-3">
             <div class="col-md-6">
-                <form @submit.prevent="insertToDo">
+                <form @submit.prevent="editToDo">
                     <div>
                         <label
                             for="large-toggle"
@@ -22,9 +20,11 @@
                         >
                             <input
                                 type="checkbox"
-                                value="1"
+                                true-value="1"
+                                false-value="2"
                                 id="large-toggle"
                                 class="sr-only peer"
+                                v-model="todo.priority_id"
                             />
                             <div
                                 class="w-14 h-7 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"
@@ -48,7 +48,7 @@
                                 :key="user.id"
                                 :value="user.id"
                             >
-                                <!-- {{ todo.user.name }} -->
+                                {{ user.name }}
                             </option>
                         </select>
                     </div>
@@ -57,7 +57,7 @@
                         <input
                             type="date"
                             class="block mt-1 w-max rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="todo.date_created"
+                            v-model="todo.todo_created"
                         />
                     </div>
                     <div class="form-group">
@@ -65,7 +65,7 @@
                         <input
                             type="date"
                             class="block mt-1 w-max rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="todo.date_deadline"
+                            v-model="todo.todo_deadline"
                         />
                     </div>
 
@@ -73,10 +73,16 @@
                         <label>Contact Status</label>
                         <select
                             class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="todo.status_id" @change="getStatus">
+                            v-model="todo.status_id"
+                            @change="getStatus"
+                        >
                             <option disabled value="">Please select one</option>
-                            <option v-for="status in statuses" :key="status.id" :value="status.id">
-                                <!-- {{ status.name }} -->
+                            <option
+                                v-for="status in statuses"
+                                :key="status.id"
+                                :value="status.id"
+                            >
+                                {{ status.name }}
                             </option>
                         </select>
                     </div>
@@ -85,25 +91,41 @@
                         <label>Contact Type</label>
                         <select
                             class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="todo.type_id" @change="getType">
+                            v-model="todo.type_id"
+                            @change="getType"
+                        >
                             <option disabled value="">Please select one</option>
-                            <option v-for="type in types" :key="type.id" :value="type.id">
-                                // {{ todo.name }}
+                            <option
+                                v-for="type in types"
+                                :key="type.id"
+                                :value="type.id"
+                            >
+                                {{ type.name }}
                             </option>
                         </select>
                     </div>
 
                     <div class="form-group">
                         <label>Contact Name</label>
-                        <select
-                            class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="todo.contact_id" @change="getContact">
-                            <option disabled value="">Please select one</option>
-                            <option v-for="contact in contacts" :key="contact.id" :value="contact.id">
-                                <!-- {{ todo.name }} -->
-                            </option>
-                        </select>
-                    </div>             
+                        <div>
+                            <select
+                                class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                v-model="todo.contact_id"
+                                @change="getContacts"
+                            >
+                                <option disabled value="">
+                                    Please select one
+                                </option>
+                                <option
+                                    v-for="contact in contacts"
+                                    :key="contact.id"
+                                    :value="contact.id"
+                                >
+                                    {{ contact.name }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
 
                     <div class="form-group">
                         <label>Task</label>
@@ -118,7 +140,7 @@
                                 :key="task.id"
                                 :value="task.id"
                             >
-                                <!-- {{ todo.user.name }} -->
+                                {{ task.name }}
                             </option>
                         </select>
                     </div>
@@ -136,7 +158,7 @@
                         type="submit"
                         class="inline-flex items-center px-4 py-2 mt-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
                     >
-                        Create
+                        Save Edit
                     </button>
                 </form>
             </div>
@@ -145,6 +167,74 @@
 </template>
 
 <script>
+import contactComposables from "../composables/contacts";
+import toDoComposables from "../composables/todos";
+import { onMounted } from "vue";
+import GoBack from "../utils/GoBack.vue";
+import { useRoute } from "vue-router";
+
+export default {
+    props: {
+        id: {
+            required: true,
+            type: String,
+        },
+    },
+    setup(props) {
+        // const errors = ref('')
+
+        const {
+            errors,
+            getUsers,
+            users,
+            getContacts,
+            contacts,
+            getStatuses,
+            statuses,
+            getCategories,
+            categories,
+            getTypes,
+            types,
+        } = contactComposables();
+
+        const { getTasks, tasks, updateToDo, getToDo, todo } =
+            toDoComposables();
+
+        const route = useRoute();
+
+        onMounted(getToDo(props.id));
+        onMounted(getUsers);
+        onMounted(getStatuses);
+        onMounted(getTypes);
+        onMounted(getContacts);
+        onMounted(getTasks);
+        onMounted(getCategories);
+
+        const editToDo = async () => {
+            await updateToDo(props.id);
+        };
+
+        return {
+            todo,
+            // errors,
+            editToDo,
+            contacts,
+
+            tasks,
+            users,
+            statuses,
+            categories,
+            types,
+        };
+    },
+
+    components: {
+        GoBack,
+    },
+};
+</script>
+
+<!-- <script>
 import GoBack from "../utils/GoBack.vue";
 import axios from "axios";
 
@@ -204,4 +294,4 @@ export default {
     },
     components: { GoBack },
 };
-</script>
+</script> -->
