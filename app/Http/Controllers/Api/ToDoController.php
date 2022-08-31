@@ -11,10 +11,32 @@ class ToDoController extends Controller
 {
     public function index()
     {
-        // $contacts = Contact::with('category', 'type', 'status', 'incharge', 'user')->paginate(10);
-        // $contact = (Contact::with('category', 'type', 'status', 'incharge', 'user'))->paginate(100);
-        $todo = ToDo::with('contact', 'user', 'task', 'status', 'type', 'priority', 'color')->get();
-    
+        $paginate = request('paginate');
+
+        $sort_direction = request('sort_direction');
+        $sort_field = request('sort_field');
+        // $todo = ToDo::with('contact', 'user', 'task', 'status', 'type', 'priority', 'color')->get();
+        // $todo = ToDo::with(['contact', 'user', 'task', 'status', 'type', 'priority', 'color'])
+        $todo = ToDo::select([
+            'to_dos.*',
+            'contact_statuses.name as status_name',
+            'contact_types.name as type_name',
+            'users.name as user_name',
+            'tasks.name as task_name',
+            'priorities.name as priority_name',
+            'text_colors.color_code as color_name',
+            'contacts.name as contact_name'
+        ])
+            ->join('contacts', 'to_dos.contact_id', '=', 'contacts.id')
+            ->join('contact_statuses', 'to_dos.status_id', '=', 'contact_statuses.id')            
+            ->join('contact_types', 'to_dos.type_id', '=', 'contact_types.id')
+            ->join('tasks', 'to_dos.task_id', '=', 'tasks.id')
+            ->join('priorities', 'to_dos.priority_id', '=', 'priorities.id')
+            ->join('users', 'to_dos.user_id', '=', 'users.id')
+            ->join('text_colors', 'to_dos.color_id', '=', 'text_colors.id')
+            ->orderBy($sort_field, $sort_direction)
+            ->paginate($paginate);
+
         return ToDoResource::collection($todo);
     }
 
@@ -23,7 +45,7 @@ class ToDoController extends Controller
         // $contact = Contact::create($request->validated());
 
         // return new ContactResource($contact);
-        
+
 
         $todo = ToDo::create([
             'priority_id' => $request->priority_id,
@@ -33,7 +55,7 @@ class ToDoController extends Controller
             'status_id' => $request->status_id,
             'contact_id' => $request->contact_id,
             'type_id' => $request->type_id,
-            'task_id' => $request->task_id,       
+            'task_id' => $request->task_id,
             'remark' => $request->remark,
         ]);
 
@@ -49,7 +71,7 @@ class ToDoController extends Controller
         // $contact = Contact::create($request->validated());
 
         // return new ContactResource($contact);
-        
+
 
         $todo = ToDo::create([
             'priority_id' => $request->priority_id,
@@ -69,17 +91,18 @@ class ToDoController extends Controller
         ]);
     }
     public function show($id)
-    {   
+    {
         $todo = ToDo::find($id);
         return response()->json($todo);
     }
 
-    public function new(ToDo $todo){
-            return new ToDoResource($todo);    
+    public function new(ToDo $todo)
+    {
+        return new ToDoResource($todo);
     }
 
     public function update(Request $request, ToDo $todo)
-    {   
+    {
         $todo->update([
             'priority_id' => $request->priority_id,
             'date_created' => $request->todo_created,

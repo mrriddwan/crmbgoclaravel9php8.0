@@ -24,6 +24,7 @@
         "datatables.net-dt": "^1.12.1",
         "datatables.net-vue3": "^1.0.0",
         "jquery": "^3.6.1",
+        "laravel-vue-pagination": "^3.0.0",
         "vue": "^3.2.36",
         "vue-good-table-next": "^0.2.1",
         "vue-loader": "^17.0.0",
