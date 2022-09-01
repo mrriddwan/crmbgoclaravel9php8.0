@@ -40,7 +40,7 @@ export default function contactComposables () {
     }
 
     const getUsers = async () => {
-        let response = await axios.get('/api/user/index')
+        let response = await axios.get('/api/users/index')
         users.value = response.data.data;
     }
 

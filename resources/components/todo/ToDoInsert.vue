@@ -23,7 +23,7 @@
                             <input
                                 type="checkbox"
                                 true-value="1"
-                                false-value="2"
+                                value="2"
                                 id="large-toggle"
                                 class="sr-only peer"
                                 v-model="form.priority_id"
@@ -41,7 +41,7 @@
                         <label>User</label>
                         <select
                             class="block mt-1 w-max rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="form.user_id"
+                            v-model="contact.user_id"
                             @change="getUsers"
                         >
                             <option disabled value="">Please select one</option>
@@ -97,13 +97,6 @@
                         Create
                     </button>
 
-                    <h1
-                        v-for="info in contact"
-                        :key="contact.id"
-                        :value="contact.id"
-                    >
-                        <h1>here is {{ info.name }}</h1>
-                    </h1>
                 </form>
             </div>
         </div>
@@ -111,6 +104,93 @@
 </template>
 
 <script>
+import GoBack from "../utils/GoBack.vue";
+import axios from "axios";
+
+export default {
+    data() {
+        return {
+            form: {
+                priority_id: "",
+                user_id: "",
+                date_created: "",
+                date_deadline: "",
+                status_id: "",
+                type_id: "",
+                contact_id: "",
+                task_id: "",
+                remark: "",
+                
+            },
+            tasks: [],
+            users: [],
+            contact: []
+                // name: ""
+        };
+    },
+
+    mounted() {
+        this.getTasks();
+        this.getUsers();
+        this.showContact();
+    },
+
+    methods: {
+        insertToDo() {
+            let contact = this.contact
+            axios
+                .post("/api/todos/insert/" + this.$route.params.id, {
+                    priority_id: this.form.priority_id,
+                    user_id: contact.user_id,
+                    todo_created: this.form.todo_created,
+                    status_id: contact.status_id,
+                    type_id: contact.type_id,
+                    contact_id: contact.id,
+                    task_id: this.form.task_id,
+                    remark: this.form.remark,
+                })
+                .then((res) => {
+                    this.$router.push({ name: "todo_index" });
+                });
+        },
+
+        showContact() {
+            axios
+                .get("/api/contacts/show/" + this.$route.params.id)
+                .then((res) => {
+                    this.contact = res.data.data;
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
+
+        getTasks() {
+            axios
+                .get("/api/tasks/index")
+                .then((res) => {
+                    this.tasks = res.data.data;
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
+
+        getUsers() {
+            axios
+                .get("/api/users/index")
+                .then((res) => {
+                    this.users = res.data.data;
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
+    },
+    components: { GoBack },
+};
+</script>
+<!-- <script>
 import { reactive } from "vue";
 import toDoComposables from "../composables/todos";
 import { onMounted } from "vue";
@@ -173,60 +253,5 @@ export default {
     components: {
         GoBack,
     },
-};
-</script>
-
-<!-- 
-<script>
-import GoBack from "../utils/GoBack.vue";
-import axios from "axios";
-
-export default {
-    data() {
-        return {
-            form: {
-                priority_id: "",
-                user_id: "",
-                date_created: "",
-                task_id: "",
-                remark: "",
-            },
-            tasks: [],
-        };
-    },
-
-    mounted() {
-        // this.getStatus();
-    },
-
-    methods: {
-        insertToDo() {
-            axios
-                .post("/api/contacts/store", {
-                    type_id: this.form.type_id,
-                    industry: this.form.industry,
-                    status_id: this.form.status_id,
-                    name: this.form.name,
-                    category_id: this.form.category_id,
-                    address: this.form.address,
-                    remark: this.form.remark,
-                })
-                .then((res) => {
-                    this.$router.push({ name: "contact_index" });
-                });
-        },
-
-        getTasks() {
-            axios
-                .get("/api/todotasks/index")
-                .then((res) => {
-                    this.tasks = res.data.data;
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
-        },
-    },
-    components: { GoBack },
 };
 </script> -->

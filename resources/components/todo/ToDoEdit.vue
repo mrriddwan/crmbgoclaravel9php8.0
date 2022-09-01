@@ -166,7 +166,7 @@
     </div>
 </template>
 
-<script>
+<!-- <script>
 import contactComposables from "../composables/contacts";
 import toDoComposables from "../composables/todos";
 import { onMounted } from "vue";
@@ -232,9 +232,9 @@ export default {
         GoBack,
     },
 };
-</script>
+</script> -->
 
-<!-- <script>
+<script>
 import GoBack from "../utils/GoBack.vue";
 import axios from "axios";
 
@@ -253,39 +253,101 @@ export default {
                 remark: "",
             },
             tasks: [],
-            contacts:[],
+            contacts: [],
             statuses: [],
             types: [],
-            users: []
+            users: [],
         };
     },
 
     mounted() {
-        // this.getStatus();
+        this.showToDo();
+        this.getTasks();
+        this.getContacts();
+        this.getStatus();
+        this.getUser();
+        this.getType();
     },
 
     methods: {
-        insertToDo() {
+        editToDo() {
             axios
-                .post("/api/contacts/store", {
-                    type_id: this.form.type_id,
-                    industry: this.form.industry,
-                    status_id: this.form.status_id,
-                    name: this.form.name,
-                    category_id: this.form.category_id,
-                    address: this.form.address,
-                    remark: this.form.remark,
+                .put("/api/todos/update/" + this.$route.params.id, {
+                    priority_id: this.todo.priority_id,
+                    user_id: this.todo.user_id,
+                    date_created: this.todo.date_created,
+                    status_id: this.todo.status_id,
+                    type_id: this.todo.type_id,
+                    contact_id: this.todo.contact_id,
+                    task_id: this.todo.task_id,
+                    remark: this.todo.remark,
+                    //need to add color id later
                 })
                 .then((res) => {
-                    this.$router.push({ name: "contact_index" });
+                    this.$router.push({ name: "todo_index" });
+                });
+        },
+
+        showToDo() {
+            axios
+                .get("/api/todos/show/" + this.$route.params.id)
+                .then((res) => {
+                    this.todo = res.data.data;
+                })
+                .catch((error) => {
+                    console.log(error);
                 });
         },
 
         getTasks() {
             axios
-                .get("/api/todotasks/index")
+                .get("/api/tasks/index")
                 .then((res) => {
                     this.tasks = res.data.data;
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
+
+        getStatus() {
+            axios
+                .get("/api/contactstatus/index")
+                .then((res) => {
+                    this.statuses = res.data.data;
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
+
+        getUser() {
+            axios
+                .get("/api/users/index")
+                .then((res) => {
+                    this.users = res.data.data;
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
+
+        getContacts() {
+            axios
+                .get("/api/contacts/index")
+                .then((res) => {
+                    this.contacts = res.data.data;
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
+
+        getType() {
+            axios
+                .get("/api/contacttype/index")
+                .then((res) => {
+                    this.types = res.data.data;
                 })
                 .catch((error) => {
                     console.log(error);
@@ -294,4 +356,4 @@ export default {
     },
     components: { GoBack },
 };
-</script> -->
+</script>

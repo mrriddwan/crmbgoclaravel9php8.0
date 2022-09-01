@@ -24,7 +24,6 @@ import { createApp } from 'vue';
 // DataTable(window, window.$);
 
 //Vue Good Table plugin
-import "bootstrap/dist/css/bootstrap.min.css";
 import 'vue-good-table-next/dist/vue-good-table-next.css'
 import '../css///bootstrapGlobal.css'
 

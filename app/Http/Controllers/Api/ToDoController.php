@@ -12,11 +12,13 @@ class ToDoController extends Controller
     public function index()
     {
         $paginate = request('paginate');
+        $search_term = request('q', '');
 
         $sort_direction = request('sort_direction');
         $sort_field = request('sort_field');
-        // $todo = ToDo::with('contact', 'user', 'task', 'status', 'type', 'priority', 'color')->get();
-        // $todo = ToDo::with(['contact', 'user', 'task', 'status', 'type', 'priority', 'color'])
+
+        $selectedStatus = request('selectedStatus');
+
         $todo = ToDo::select([
             'to_dos.*',
             'contact_statuses.name as status_name',
@@ -28,14 +30,28 @@ class ToDoController extends Controller
             'contacts.name as contact_name'
         ])
             ->join('contacts', 'to_dos.contact_id', '=', 'contacts.id')
-            ->join('contact_statuses', 'to_dos.status_id', '=', 'contact_statuses.id')            
+            ->join('contact_statuses', 'to_dos.status_id', '=', 'contact_statuses.id')
             ->join('contact_types', 'to_dos.type_id', '=', 'contact_types.id')
             ->join('tasks', 'to_dos.task_id', '=', 'tasks.id')
             ->join('priorities', 'to_dos.priority_id', '=', 'priorities.id')
             ->join('users', 'to_dos.user_id', '=', 'users.id')
             ->join('text_colors', 'to_dos.color_id', '=', 'text_colors.id')
+            ->when($selectedStatus, function ($query) use ($selectedStatus) {
+                $query->where('to_dos.status_id', $selectedStatus);
+            })            
+            
             ->orderBy($sort_field, $sort_direction)
+            ->search(trim($search_term))
             ->paginate($paginate);
+
+            // $locationData = LocationsStores::with("location")
+	        //             ->when($p_typesId, function ($query, $p_typesId) {
+           	//                 $query->where(function ($q) {
+			//                     $q  ->where("product_type_id", $p_typesId)
+			// 	                    ->orWhereNull('product_type_id');
+		    //                         });
+            //                 })
+	        //             ->get();
 
         return ToDoResource::collection($todo);
     }
@@ -57,6 +73,7 @@ class ToDoController extends Controller
             'type_id' => $request->type_id,
             'task_id' => $request->task_id,
             'remark' => $request->remark,
+            'color_id' => $request->color_id ?? '1',
         ]);
 
         return response()->json([
@@ -75,13 +92,14 @@ class ToDoController extends Controller
 
         $todo = ToDo::create([
             'priority_id' => $request->priority_id,
-            'date_created' => $request->todo_created,
+            'todo_created' => $request->todo_created,
             'contact_id' => $request->contact_id,
             'user_id' => $request->user_id,
             'task_id' => $request->task_id,
             'status_id' => $request->status_id,
             'type_id' => $request->type_id,
             'remark' => $request->remark,
+            'color_id' => $request->color_id ?? '1',
         ]);
 
         return response()->json([
@@ -93,7 +111,7 @@ class ToDoController extends Controller
     public function show($id)
     {
         $todo = ToDo::find($id);
-        return response()->json($todo);
+        return response()->json(['data' => $todo]);
     }
 
     public function new(ToDo $todo)

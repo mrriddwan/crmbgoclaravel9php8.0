@@ -21,7 +21,6 @@ import ToDoCreate from "../components/todo/ToDoCreate.vue";
 import ToDoEdit from "../components/todo/ToDoEdit.vue";
 import ToDoInsert from "../components/todo/ToDoInsert.vue";
 
-import ToDoIndex2 from "../components/todo/ToDoIndex2.vue";
 
 
 const routes = [
@@ -50,12 +49,11 @@ const routes = [
     {
         path: "/contacts/:id/info",
         name: "contacts_info",
-
         component: ContactInfo,
     },
 
     {
-        path: "/contacts/history",
+        path: "/contacts/:id/history",
         name: "contacts_history",
         component: ContactHistory,
     },
@@ -101,12 +99,6 @@ const routes = [
         path: "/todo/index",
         name: "todo_index",
         component: ToDoIndex,
-    },
-
-    {
-        path: "/todo/index2",
-        name: "todo_index2",
-        component: ToDoIndex2,
     },
 
     {

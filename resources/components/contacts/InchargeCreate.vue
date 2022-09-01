@@ -105,8 +105,8 @@
 
 
             <span v-else>
-                <div>
-                    <h3>No PIC data</h3>
+                <div class="uppercase text-center font-extrabold text-5xl bg-slate-400 rounded-md py-3 px-3">
+                    <h1><strong>No PIC data</strong></h1>
                 </div>
             </span>
         </div>

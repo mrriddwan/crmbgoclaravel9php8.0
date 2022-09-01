@@ -180,7 +180,7 @@ export default {
             axios
                 .get("/api/contacts/show/" + this.$route.params.id)
                 .then((res) => {
-                    this.contact = res.data;
+                    this.contact = res.data.data;
                 })
                 .catch((error) => {
                     console.log(error);
@@ -218,7 +218,7 @@ export default {
 
         getUser() {
             axios
-                .get("/api/user/index")
+                .get("/api/users/index")
                 .then((res) => {
                     this.users = res.data.data;
                 })

@@ -50,4 +50,43 @@ class ToDo extends Model
         return $this -> belongsTo(TextColor::class);
     }
 
+    public function scopeSearch($query, $term)
+    {   
+        $term = "%$term%";
+
+        $query->where(function($query) use ($term){
+            $query->where('todo_created', 'like', $term)
+                ->orWhere('todo_deadline', 'like', $term)
+                ->orWhere('to_dos.remark', 'like', $term)
+                ->orWhereHas('user', function ($query) use ($term) {
+                    $query->where('name', 'like', $term);
+                })
+                ->orWhereHas('contact', function ($query) use ($term) {
+                    $query->where('contacts.name', 'like', $term);
+                })
+                ->orWhereHas('task', function ($query) use ($term) {
+                    $query->where('tasks.name', 'like', $term);
+                })
+                ->orWhereHas('type', function ($query) use ($term) {
+                    $query->where('contact_types.name', 'like', $term);
+                })
+                ->orWhereHas('status', function ($query) use ($term) {
+                    $query->where('contact_statuses.name', 'like', $term);
+                })
+                ->orWhereHas('priority', function ($query) use ($term) {
+                    $query->where('priorities.name', 'like', $term);
+                })
+                ->orWhereHas('color', function ($query) use ($term) {
+                    $query->where('text_colors.color_code', 'like', $term);
+                });
+        });
+    }
+
+    // public function scopeStatusSearch($query){
+    //     $search_term = request('q','');
+
+
+                    
+    // }
+
 }

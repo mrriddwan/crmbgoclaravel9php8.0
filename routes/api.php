@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\ActionController;
 use App\Http\Controllers\Api\ContactCategoryController;
 use App\Http\Controllers\Api\ContactController;
 use App\Http\Controllers\Api\ContactStatusController;
@@ -37,12 +38,9 @@ Route::get('/contacts/info/{contact}', [ContactController::class, 'info'])->name
 /*Sub-Contact API*/
 Route::get('/contactcategory/index', [ContactCategoryController::class, 'index'])->name('category:index');
 Route::get('/contacttype/index', [ContactTypeController::class, 'index'])->name('type:index');
-
 Route::get('/contactstatus/index', [ContactStatusController::class, 'index'])->name('status:index');
 Route::get('/contactstatus/dropdown', [ContactStatusController::class, 'dropdown'])->name('status:dropdown');
-
-Route::get('/user/index', [UserController::class, 'index'])->name('user:index');
-Route::get('/tasks/index', [TaskController::class, 'index'])->name('task:index');
+Route::get('/users/index', [UserController::class, 'index'])->name('user:index');
 
 /*Incharge API*/
 Route::post('/incharges/store', [ContactInchargeController::class, 'store'])->name('incharge:store');
@@ -54,13 +52,16 @@ Route::get('/incharges/info/{incharge}', [ContactInchargeController::class, 'inf
 
 /*To Do API*/
 Route::get('/todos/index', [ToDoController::class, 'index'])->name('todo:index');
-Route::post('/todos/insert', [ToDoController::class, 'insert'])->name('todo:insert');
+Route::post('/todos/insert/{todo}', [ToDoController::class, 'insert'])->name('todo:insert');
 Route::post('/todos/store', [ToDoController::class, 'store'])->name('todo:store');
 Route::get('/todos/show/{todo}', [ToDoController::class, 'show'])->name('todo:show');
 Route::put('/todos/update/{todo}', [ToDoController::class, 'update'])->name('todo:update');
 Route::delete('/todos/delete/{todo}', [ToDoController::class, 'delete'])->name('todo:delete');
 Route::get('/todos/new/{todo}', [ToDoController::class, 'new'])->name('todo:new');
 
+/*Sub-To Do API*/
+Route::get('/tasks/index', [TaskController::class, 'index'])->name('task:index');
+Route::get('/actions/index', [ActionController::class, 'index'])->name('action:index');
 
 
 
