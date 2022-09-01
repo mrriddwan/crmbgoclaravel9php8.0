@@ -44,15 +44,6 @@ class ToDoController extends Controller
             ->search(trim($search_term))
             ->paginate($paginate);
 
-            // $locationData = LocationsStores::with("location")
-	        //             ->when($p_typesId, function ($query, $p_typesId) {
-           	//                 $query->where(function ($q) {
-			//                     $q  ->where("product_type_id", $p_typesId)
-			// 	                    ->orWhereNull('product_type_id');
-		    //                         });
-            //                 })
-	        //             ->get();
-
         return ToDoResource::collection($todo);
     }
 

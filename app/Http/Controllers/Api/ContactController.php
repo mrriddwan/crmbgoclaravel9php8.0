@@ -19,9 +19,32 @@ class ContactController extends Controller
 
     public function index()
     {
-        // $contacts = Contact::with('category', 'type', 'status', 'incharge', 'user')->paginate(10);
-        $contact = Contact::with('category', 'type', 'status', 'incharge', 'user')->get();
-        // $contact = (Contact::with('category', 'type', 'status', 'incharge', 'user'))->paginate(100);
+        $paginate = request('paginate');
+        $search_term = request('q', '');
+
+        $sort_direction = request('sort_direction');
+        $sort_field = request('sort_field');
+
+        $selectedStatus = request('selectedStatus');
+
+        $contact = Contact::select([
+            'contacts.*',
+            'contact_statuses.name as status_name',
+            'contact_types.name as type_name',
+            'users.name as user_name',
+            'contact_categories.name as category_name',
+        ])          
+            ->join('contact_statuses', 'contacts.status_id', '=', 'contact_statuses.id')
+            ->join('contact_types', 'contacts.type_id', '=', 'contact_types.id')
+            ->join('contact_categories', 'contacts.category_id', '=', 'contact_categories.id')
+            ->join('users', 'contacts.user_id', '=', 'users.id')
+            ->when($selectedStatus, function ($query) use ($selectedStatus) {
+                $query->where('contacts.status_id', $selectedStatus);
+            })                       
+            ->orderBy($sort_field, $sort_direction)
+            ->search(trim($search_term))
+            ->distinct()
+            ->paginate($paginate);
 
         return ContactResource::collection($contact);
     }

@@ -26,6 +26,7 @@ import { createApp } from 'vue';
 //Vue Good Table plugin
 import 'vue-good-table-next/dist/vue-good-table-next.css'
 import '../css///bootstrapGlobal.css'
+import "bootstrap/dist/css/bootstrap.min.css";
 
 import VueGoodTablePlugin from 'vue-good-table-next';
 import LaravelVuePagination from 'laravel-vue-pagination';

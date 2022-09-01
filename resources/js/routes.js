@@ -21,7 +21,7 @@ import ToDoCreate from "../components/todo/ToDoCreate.vue";
 import ToDoEdit from "../components/todo/ToDoEdit.vue";
 import ToDoInsert from "../components/todo/ToDoInsert.vue";
 
-
+import ContactIndex2 from "../components/contacts/ContactIndex2.vue"
 
 const routes = [
     /*                      
@@ -32,6 +32,12 @@ const routes = [
         path: "/dashboard",
         name: "contact_index",
         component: ContactIndex,
+    },
+
+    {
+        path: "/contact/index2",
+        name: "contact_index2",
+        component: ContactIndex2,
     },
 
     {
