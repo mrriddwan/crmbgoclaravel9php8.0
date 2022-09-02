@@ -136,4 +136,19 @@ class ToDoController extends Controller
         $todo->delete();
         return response()->json('Contact deleted.');
     }
+
+    public function info(ToDo $todo)
+    {   
+        $todo = ToDo::with('priority', 'type', 'status', 'user', 'contact', 'color', 'task')
+                ->where('id', $todo->id)
+                ->get();
+
+        $data = $todo->toArray();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Successfully fetch data Contact ',
+            'data' => $data,
+        ]);
+    }
 }

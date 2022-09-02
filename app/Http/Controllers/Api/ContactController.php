@@ -108,7 +108,7 @@ class ContactController extends Controller
 
     public function info(Contact $contact)
     {   
-        $contact = Contact::with('category', 'type', 'status', 'incharge', 'user')
+        $contact = Contact::with('category', 'type', 'status', 'incharge', 'user', 'todo')
                 ->where('id', $contact->id)
                 ->get();
 

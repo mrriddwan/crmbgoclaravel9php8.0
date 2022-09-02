@@ -191,9 +191,7 @@ export default {
 
     data() {
         return {
-            data: {
-                info: "",
-            },
+            info: "",
             contact_infos: [],
         };
     },

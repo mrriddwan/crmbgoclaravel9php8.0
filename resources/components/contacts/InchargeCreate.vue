@@ -14,14 +14,14 @@
                         <div>
                             <input type="text"
                                 class="items-left rounded-md border-gray-500 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                v-model="form.name" />
+                                v-model="form.name"/>
                         </div>
                     </div>
                     <div class="grid grid-cols-2 w-auto items-center">
                         <label class="ml-7">Email</label>
                         <input type="email"
                             class="items-left mt-1 rounded-md border-gray-500 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="form.email" />
+                            v-model="form.email"/>
                     </div>
 
                     <div class="grid grid-cols-2 w-auto items-center">
@@ -139,7 +139,6 @@ export default {
         this.showIncharge()
     },
     methods: {
-
         showIncharge() {
             axios
                 .get("/api/contacts/info/" + this.$route.params.id)
@@ -151,9 +150,11 @@ export default {
         },
 
         createPIC() {
+            const contact = this.contact_infos
+            console.log(contact[0].id)
             axios
                 .post("/api/incharges/store", {
-                    contact_id: this.contact_id,
+                    contact_id: contact[0].id,
                     name: this.form.name,
                     email: this.form.email,
                     phone_mobile: this.form.phone_mobile,
@@ -165,6 +166,7 @@ export default {
                         params: { id: this.$route.params.id },
                     });
                 });
+                this.showIncharge()
         },
 
         deletePIC(id) {

@@ -36,6 +36,10 @@ class Contact extends Model
         return $this -> belongsTo(ContactStatus::class);
     }
 
+    public function todo(){
+        return $this -> hasMany(ToDo::class)->with('task', 'user');
+    }
+
     public function incharge(){
         return $this -> hasMany(ContactIncharge::class);
     }

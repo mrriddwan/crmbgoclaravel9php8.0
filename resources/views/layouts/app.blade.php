@@ -14,8 +14,6 @@
 
     <!-- Scripts -->
     <script src="https://kit.fontawesome.com/9d3d9fc43b.js" crossorigin="anonymous"></script>
-    {{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    <script src = "http://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js" ></script> --}}
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>

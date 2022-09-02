@@ -58,6 +58,7 @@ Route::get('/todos/show/{todo}', [ToDoController::class, 'show'])->name('todo:sh
 Route::put('/todos/update/{todo}', [ToDoController::class, 'update'])->name('todo:update');
 Route::delete('/todos/delete/{todo}', [ToDoController::class, 'delete'])->name('todo:delete');
 Route::get('/todos/new/{todo}', [ToDoController::class, 'new'])->name('todo:new');
+Route::get('/todos/info/{todo}', [ToDoController::class, 'info'])->name('todo:info');
 
 /*Sub-To Do API*/
 Route::get('/tasks/index', [TaskController::class, 'index'])->name('task:index');
