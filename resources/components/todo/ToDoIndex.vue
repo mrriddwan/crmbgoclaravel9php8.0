@@ -12,7 +12,7 @@
         Create to do</router-link
     >
     <router-link
-        to="/contacts/index"
+        to="/dashboard"
         class="m-2 inline-block items-center px-2 py-1 bg-gray-800 border border-transparent rounded-md font-semibold text-m text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
     >
         Contact Index</router-link
@@ -36,7 +36,7 @@
                             >Select date</label
                         >
                         <input
-                            v-model="selectedDate"
+                            v-model.lazy="selectedDate"
                             class="border-gray-300"
                             type="date"
                         />
@@ -50,7 +50,7 @@
                             >Select month</label
                         >
                         <input
-                            v-model="selectedMonth"
+                            v-model.lazy="selectedMonth"
                             class="border-gray-300"
                             type="month"
                         />
@@ -105,6 +105,10 @@
             />
         </div>
 
+        <!-- <div>this is the selected day: {{ getSelectedDay() }}</div>
+        <div>this is the selected month: {{ getSelectedMonth() }}</div>
+        <div>this is the selected year: {{ getSelectedYear() }}</div> -->
+
         <div class="grid grid-cols-3 w-full text-center">
             <div class="text-left">
                 <button class="text-5xl text-left">&larr;</button>
@@ -112,14 +116,14 @@
             <span v-if="viewType === `day`">
                 <div class="">
                     <h3 class="uppercase font-extrabold">
-                        {{ currentDate }}
+                        {{ showToday(selectedDate) }}
                     </h3>
                 </div>
             </span>
             <span v-else>
                 <div>
                     <h3 class="uppercase font-extrabold">
-                        {{ currentMonth }}
+                        {{ showMonth(selectedMonth) }}
                     </h3>
                 </div>
             </span>
@@ -391,6 +395,7 @@
 <script>
 import LaravelVuePagination from "laravel-vue-pagination";
 import axios from "axios";
+import moment from "moment";
 
 export default {
     components: {
@@ -398,16 +403,24 @@ export default {
     },
 
     mounted() {
-        this.getToDos();
         this.getStatus();
         this.getActions();
         this.getUsers();
+        //initial date selection
         this.currentDate = this.showToday();
-        this.currentMonth = this.showThisMonth();
         console.log(this.currentDate)
+        this.selectedDate = this.currentDate;
+
+        //initial month selection
+        this.currentMonth = `${this.getSelectedMonth()}`;
+        console.log(this.currentMonth)
+        this.selectedMonth = this.currentMonth;
+
+        this.getToDos();
     },
     data() {
         return {
+            moment: moment,
             todos: [],
             paginate: 10,
             viewType: "day",
@@ -420,9 +433,11 @@ export default {
 
             currentDate: "",
             currentMonth: "",
+            currentYear: "",
 
             selectedDate: "",
             selectedMonth: "",
+            selectedYear: "",
 
             sort_direction: "desc",
             sort_field: "todo_created",
@@ -439,11 +454,21 @@ export default {
         selectedStatus: function (value) {
             this.getToDos();
         },
+
         selectedDate: function (value) {
-            this.getSelectedDate();
+            if (this.viewType === "day") {
+                this.selectedMonth = "";
+                this.getSelectedDate();
+                this.getToDos();
+            }
         },
+
         selectedMonth: function (value) {
-            this.getSelectedMonth();
+            if (this.viewType === "month") {
+                this.selectedDate = "";
+                this.selectedMonth = moment(this.selectedMonth).format("MM");
+                this.getToDos();
+            }
         },
     },
 
@@ -457,6 +482,10 @@ export default {
                     "/api/todos/index?" +
                         "q=" +
                         this.search +
+                        "&selectedDate=" +
+                        this.selectedDate +
+                        "&selectedMonth=" +
+                        this.selectedMonth +
                         "&selectedStatus=" +
                         this.selectedStatus +
                         "&paginate=" +
@@ -508,18 +537,6 @@ export default {
                     console.log(error);
                 });
         },
-
-        showToday() {
-            return new Date().toLocaleDateString();
-        },
-
-        showThisMonth() {
-            const date = `${Intl.DateTimeFormat("en-US", {
-                month: "long",
-            }).format(new Date())}-${new Date().getFullYear()}`;
-            return date;
-        },
-
         change_sort(field) {
             if (this.sort_field == field) {
                 this.sort_direction =
@@ -529,15 +546,36 @@ export default {
             }
             this.getToDos();
         },
-        
-        getSelectedDate(){
+
+        showToday(date) {
+            let month = moment(date).format("YYYY-MM-DD");
+            return month;
+        },
+
+        showMonth(date) {
+            let month = moment(date.toString()).format("MMMM-YYYY");
+            return month;
+        },
+
+        getSelectedDate() {
             this.currentDate = this.selectedDate;
+            this.showToday(this.currentDate);
             return this.currentDate;
         },
 
-        getSelectedMonth(){
-            this.currentMonth = this.selectedMonth;
-            return this.currentMonth;
+        getSelectedDay() {
+            let day = moment(this.currentDate).format("DD");
+            return day;
+        },
+
+        getSelectedMonth() {
+            let month = moment(this.currentDate).format("YYYY-MM");
+            return month;
+        },
+
+        getSelectedYear() {
+            let year = moment(this.currentDate).format("YYYY");
+            return year;
         },
 
         searchType() {},
@@ -552,3 +590,7 @@ export default {
     },
 };
 </script>
+
+<style scoped>
+@import "bootstrap/dist/css/bootstrap.min.css";
+</style>

@@ -18,6 +18,8 @@ class ToDoController extends Controller
         $sort_field = request('sort_field');
 
         $selectedStatus = request('selectedStatus');
+        $selectedDate = request('selectedDate');
+        $selectedMonth = request('selectedMonth');
 
         $todo = ToDo::select([
             'to_dos.*',
@@ -39,13 +41,19 @@ class ToDoController extends Controller
             ->when($selectedStatus, function ($query) use ($selectedStatus) {
                 $query->where('to_dos.status_id', $selectedStatus);
             })            
-            
+            ->when($selectedDate, function ($query) use ($selectedDate) {
+                $query->whereDate('to_dos.todo_created',('='), ($selectedDate));
+            })
+            ->when($selectedMonth, function ($query) use ($selectedMonth) {
+                $query->whereMonth('to_dos.todo_created',('='), ($selectedMonth));
+            })
             ->orderBy($sort_field, $sort_direction)
             ->search(trim($search_term))
             ->paginate($paginate);
 
         return ToDoResource::collection($todo);
     }
+    // whereDate('created_at', '=', date('Y-m-d'))
 
     public function store(Request $request)
     {

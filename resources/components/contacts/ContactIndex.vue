@@ -417,3 +417,7 @@ export default {
     },
 };
 </script>
+
+<style scoped>
+    @import "bootstrap/dist/css/bootstrap.min.css";
+</style>

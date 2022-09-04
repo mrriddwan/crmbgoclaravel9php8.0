@@ -25,8 +25,8 @@ class ToDoFactory extends Factory
     public function definition()
     {
         return [
-            'todo_created' => fake()->date(),
-            'todo_deadline' => fake()->date(),
+            'todo_created' => fake()->dateTimeThisYear('+2 month'),
+            'todo_deadline' => fake()->dateTimeThisYear('+5 month'),
             'remark' => fake()->realText($maxNbChars = 50),
             'contact_id' => random_int(1, 10),
             'user_id' => random_int(2, 10),
