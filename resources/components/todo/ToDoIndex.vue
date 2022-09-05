@@ -25,419 +25,378 @@
         Follow Up Index</router-link
     >
 
-    <div class="">
-        <div class="grid items-center">
-            <div class="inline-flex items-center">
-                <div class="inline-flex">
-                    <div class="items-center text-center">
-                        <label for="listByDayOrMonth" class="">View By</label>
-                        <select
-                            v-model="viewType"
-                            class="form-control text-center"
-                        >
-                            <option value="day">Day</option>
-                            <option value="month">Month</option>
-                        </select>
-                    </div>
-
-                    <div class="inline-flex">
-                        <span v-if="viewType === `day`">
-                            <div
-                                class="grid grid-rows-2 items-center text-center px-2 w-max"
-                            >
-                                <label for="listByDayOrMonth" class=""
-                                    >Select date</label
-                                >
-                                <input
-                                    v-model.lazy="selectedDate"
-                                    class="border-gray-300"
-                                    type="date"
-                                />
-                            </div>
-                        </span>
-                        <span v-else>
-                            <div
-                                class="grid grid-rows-2 items-center text-center px-2 w-max"
-                            >
-                                <label for="listByDayOrMonth" class=""
-                                    >Select month</label
-                                >
-                                <input
-                                    v-model.lazy="selectedMonth"
-                                    class="border-gray-300"
-                                    type="month"
-                                />
-                            </div>
-                        </span>
-                    </div>
-                </div>
-                <div class="grid">
-                    <div class="grid grid-cols-2">
-                        <div class="items-center text-center px-2 w-max">
-                            <label for="listByDayOrMonth" class=""
-                                >Select start date</label
-                            >
-                        </div>
-                        <div>
-                            <input
-                                v-model.lazy="selectedDateStart"
-                                class="border-gray-300"
-                                type="date"
-                            />
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-2">
-                        <div class="items-center text-center px-2 w-max">
-                            <label for="listByDayOrMonth" class=""
-                                >Select end date</label
-                            >
-                        </div>
-                        <div>
-                            <input
-                                v-model.lazy="selectedDateEnd"
-                                class="border-gray-300"
-                                type="date"
-                            />
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="inline-flex items-center text-center px-2 w-max">
-                <div>
-                    <label for="searchAny" class="text-center px-2"
-                        >Search term</label
-                    >
-                </div>
-                <div>
-                    <input
-                        v-model.lazy="search"
-                        type="search"
-                        class="form-control"
-                        placeholder="Search by any..."
-                    />
-                </div>
-            </div>
-
-            <div class="inline-flex items-center">
-                <label for="chooseUser" class="text-right px-2">User</label>
-                <select v-model="selectedUser" class="">
-                    <option value="">All User</option>
-                    <option
-                        v-for="user in users"
-                        :key="user.id"
-                        :value="user.id"
-                    >
-                        {{ user.name }}
-                    </option>
-                </select>
-            </div>
-        </div>
-        <div class="items-center text-center m-2 w-max">
-            <label for="paginate" class="px-2">Entry</label>
-            <select v-model="paginate" class="form-control">
-                <option value="10">10</option>
-                <option value="20">50</option>
-                <option value="30">100</option>
+    <div class="text-sm">
+        <div
+            class="m-2 inline-block items-center px-2 py-1 border-gray-500 border-2"
+        >
+            <p>view by</p>
+            <select v-model="viewType" class="form-control text-center">
+                <option value="day">Day</option>
+                <option value="month">Month</option>
             </select>
-            <label for="paginate" class="px-2">of 100 entries</label>
         </div>
-
-        <div class="py-2">
-            <Pagination
-                :data="todos"
-                @pagination-change-page="getToDos"
-                :size="'small'"
-                :align="'center'"
-                class="pagination"
+        <div
+            class="m-2 inline-block items-center px-2 py-1 border-gray-500 border-2"
+        >
+            <span v-if="viewType === `day`">
+                <p>select date</p>
+                <input
+                    v-model.lazy="selectedDate"
+                    class="border-gray-300"
+                    type="date"
+                />
+            </span>
+            <span v-else>
+                <p>select month/year</p>
+                <input
+                    v-model.lazy="selectedMonth"
+                    class="border-gray-300"
+                    type="month"
+                />
+            </span>
+        </div>
+        <div
+            class="m-2 inline-block items-center px-2 py-1 border-gray-500 border-2"
+        >
+            <p class="text-xs">Range date</p>
+            <input type="checkbox" v-model="rangeDate" />
+        </div>
+        <div
+            v-if="rangeDate"
+            class="m-1 inline-block items-center px-2 py-1 border-gray-500 border-2"
+        >
+            <div class="border-gray-800 border-2 flex px-2 py-2">
+                <p class="px-1 mt-1">select start date</p>
+                <input
+                    v-model.lazy="minDateRange"
+                    class="border-gray-300 w-36"
+                    type="date"
+                />
+            </div>
+            <div class="border-gray-800 border-2 flex px-2 py-2">
+                <p class="px-1 mt-1">select end date</p>
+                <input
+                    v-model.lazy="maxDateRange"
+                    class="border-gray-300 w-36"
+                    type="month"
+                />
+            </div>
+        </div>
+        <div
+            class="m-2 inline-block items-center px-2 py-1 border-gray-500 border-2"
+        >
+            <p>Filter term</p>
+            <input
+                v-model.lazy="search"
+                type="search"
+                class="form-control"
+                placeholder="Search by any..."
             />
         </div>
+        <div
+            class="m-2 inline-block items-center px-2 py-1 border-gray-500 border-2"
+        >
+            <p>Select user</p>
+            <select v-model="selectedUser" class="">
+                <option value="">All User</option>
+                <option v-for="user in users" :key="user.id" :value="user.id">
+                    {{ user.name }}
+                </option>
+            </select>
+        </div>
+    </div>
 
-        <!-- <div>this is the selected day: {{ getSelectedDay() }}</div>
+    <div
+        class="m-2 inline-block items-center px-2 py-1 border-gray-500 border-2"
+    >
+        <select v-model="paginate" class="form-control">
+            <option value="10">10</option>
+            <option value="20">50</option>
+            <option value="30">100</option>
+        </select>
+        <label for="paginate" class="px-2">of 100 entries</label>
+    </div>
+    <div class="py-2">
+        <Pagination
+            :data="todos"
+            @pagination-change-page="getToDos"
+            :size="'small'"
+            :align="'center'"
+            class="pagination"
+        />
+    </div>
+
+    <!-- <div>this is the selected day: {{ getSelectedDay() }}</div>
         <div>this is the selected month: {{ getSelectedMonth() }}</div>
         <div>this is the selected year: {{ getSelectedYear() }}</div> -->
 
-        <div class="grid grid-cols-3 w-full text-center">
-            <div class="text-left">
-                <button class="text-5xl text-left">&larr;</button>
-            </div>
-            <span v-if="viewType === `day`">
-                <div class="">
-                    <h3 class="uppercase font-extrabold">
-                        {{ showToday(selectedDate) }}
-                    </h3>
-                </div>
-            </span>
-            <span v-else>
-                <div>
-                    <h3 class="uppercase font-extrabold">
-                        {{ showMonth(selectedMonthYear) }}
-                    </h3>
-                </div>
-            </span>
-            <div class="text-right">
-                <button class="text-5xl text-right">&rarr;</button>
-            </div>
+    <div class="grid grid-cols-3 w-full text-center">
+        <div class="text-left">
+            <button class="text-5xl text-left">&larr;</button>
         </div>
+        <span v-if="viewType === `day`">
+            <div class="">
+                <h3 class="uppercase font-extrabold">
+                    {{ showToday(selectedDate) }}
+                </h3>
+            </div>
+        </span>
+        <span v-else>
+            <div>
+                <h3 class="uppercase font-extrabold">
+                    {{ showMonth(selectedMonthYear) }}
+                </h3>
+            </div>
+        </span>
+        <div class="text-right">
+            <button class="text-5xl text-right">&rarr;</button>
+        </div>
+    </div>
 
-        <div>
-            <table class="table table-hover table-bordered" id="example">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>
-                            <a
-                                href="#"
-                                @click.prevent="change_sort('todo_created')"
+    <div>
+        <table class="table table-hover table-bordered" id="example">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>
+                        <a
+                            href="#"
+                            @click.prevent="change_sort('todo_created')"
+                        >
+                            Date Created
+                        </a>
+                        <span
+                            v-if="
+                                sort_direction == 'desc' &&
+                                sort_field == 'todo_created'
+                            "
+                            >&uarr;</span
+                        >
+                        <span
+                            v-if="
+                                sort_direction == 'asc' &&
+                                sort_field == 'todo_created'
+                            "
+                            >&darr;</span
+                        >
+                    </th>
+                    <th>
+                        <a
+                            href="#"
+                            @click.prevent="change_sort('todo_deadline')"
+                        >
+                            Date Deadline
+                        </a>
+                        <span
+                            v-if="
+                                sort_direction == 'desc' &&
+                                sort_field == 'todo_deadline'
+                            "
+                            >&uarr;</span
+                        >
+                        <span
+                            v-if="
+                                sort_direction == 'asc' &&
+                                sort_field == 'todo_deadline'
+                            "
+                            >&darr;</span
+                        >
+                    </th>
+                    <th>
+                        <a href="#" @click.prevent="change_sort('status_name')">
+                            Status
+                        </a>
+                        <span
+                            v-if="
+                                sort_direction == 'desc' &&
+                                sort_field == 'status_name'
+                            "
+                            >&uarr;</span
+                        >
+                        <span
+                            v-if="
+                                sort_direction == 'asc' &&
+                                sort_field == 'status_name'
+                            "
+                            >&darr;</span
+                        >
+                        <select
+                            v-model="selectedStatus"
+                            class="form-control form-control-sm"
+                        >
+                            <option value="">All</option>
+                            <option
+                                v-for="status in statuses.data"
+                                :key="status.id"
+                                :value="status.id"
                             >
-                                Date Created
-                            </a>
-                            <span
-                                v-if="
-                                    sort_direction == 'desc' &&
-                                    sort_field == 'todo_created'
-                                "
-                                >&uarr;</span
+                                {{ status.name }}
+                            </option>
+                        </select>
+                    </th>
+                    <th>
+                        <a href="#" @click.prevent="change_sort('type_name')">
+                            Type
+                        </a>
+                        <span
+                            v-if="
+                                sort_direction == 'desc' &&
+                                sort_field == 'type_name'
+                            "
+                            >&uarr;</span
+                        >
+                        <span
+                            v-if="
+                                sort_direction == 'asc' &&
+                                sort_field == 'type_name'
+                            "
+                            >&darr;</span
+                        >
+                    </th>
+                    <th>
+                        <a
+                            href="#"
+                            @click.prevent="change_sort('contact_name')"
+                        >
+                            Contact
+                        </a>
+                        <span
+                            v-if="
+                                sort_direction == 'desc' &&
+                                sort_field == 'contact_name'
+                            "
+                            >&uarr;</span
+                        >
+                        <span
+                            v-if="
+                                sort_direction == 'asc' &&
+                                sort_field == 'contact_name'
+                            "
+                            >&darr;</span
+                        >
+                    </th>
+                    <th>
+                        <a href="#" @click.prevent="change_sort('user_name')">
+                            CS
+                        </a>
+                        <span
+                            v-if="
+                                sort_direction == 'desc' &&
+                                sort_field == 'user_name'
+                            "
+                            >&uarr;</span
+                        >
+                        <span
+                            v-if="
+                                sort_direction == 'asc' &&
+                                sort_field == 'user_name'
+                            "
+                            >&darr;</span
+                        >
+                    </th>
+                    <th>
+                        <a href="#" @click.prevent="change_sort('task_name')">
+                            Task
+                        </a>
+                        <span
+                            v-if="
+                                sort_direction == 'desc' &&
+                                sort_field == 'task_name'
+                            "
+                            >&uarr;</span
+                        >
+                        <span
+                            v-if="
+                                sort_direction == 'asc' &&
+                                sort_field == 'task_name'
+                            "
+                            >&darr;</span
+                        >
+                    </th>
+                    <th>
+                        <a href="#" @click.prevent="change_sort('remark')">
+                            Remark
+                        </a>
+                        <span
+                            v-if="
+                                sort_direction == 'desc' &&
+                                sort_field == 'todos_remark'
+                            "
+                            >&uarr;</span
+                        >
+                        <span
+                            v-if="
+                                sort_direction == 'asc' &&
+                                sort_field == 'todos_remark'
+                            "
+                            >&darr;</span
+                        >
+                    </th>
+                    <th>Progress</th>
+                    <th>Action</th>
+                    <th>-</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="todo in todos.data" :key="todo.id">
+                    <td>{{ todo.id }}</td>
+                    <td>{{ todo.todo_created }}</td>
+                    <td>
+                        <span v-if="todo.todo_deadline.length !== 0">
+                            {{ todo.todo_deadline }}
+                        </span>
+                        <span v-else> Unset yet </span>
+                    </td>
+                    <td>{{ todo.status.name }}</td>
+                    <td>{{ todo.type.name }}</td>
+                    <td>
+                        <router-link
+                            :to="`/contacts/${todo.contact.id}/info`"
+                            custom
+                            v-slot="{ navigate, href }"
+                        >
+                            <a :href="href" @click.stop="navigate">{{
+                                todo.contact.name
+                            }}</a>
+                        </router-link>
+                    </td>
+                    <td>{{ todo.user.name }}</td>
+                    <td>{{ todo.task.name }}</td>
+                    <td>{{ todo.remark }}</td>
+                    <td>Progress indication</td>
+                    <td>
+                        <select class="form-control form-control-sm">
+                            <option disable value="">Select Action</option>
+                            <option
+                                v-for="action in actions.data"
+                                :key="action.id"
+                                :value="action.id"
                             >
-                            <span
-                                v-if="
-                                    sort_direction == 'asc' &&
-                                    sort_field == 'todo_created'
-                                "
-                                >&darr;</span
-                            >
-                        </th>
-                        <th>
-                            <a
-                                href="#"
-                                @click.prevent="change_sort('todo_deadline')"
-                            >
-                                Date Deadline
-                            </a>
-                            <span
-                                v-if="
-                                    sort_direction == 'desc' &&
-                                    sort_field == 'todo_deadline'
-                                "
-                                >&uarr;</span
-                            >
-                            <span
-                                v-if="
-                                    sort_direction == 'asc' &&
-                                    sort_field == 'todo_deadline'
-                                "
-                                >&darr;</span
-                            >
-                        </th>
-                        <th>
-                            <a
-                                href="#"
-                                @click.prevent="change_sort('status_name')"
-                            >
-                                Status
-                            </a>
-                            <span
-                                v-if="
-                                    sort_direction == 'desc' &&
-                                    sort_field == 'status_name'
-                                "
-                                >&uarr;</span
-                            >
-                            <span
-                                v-if="
-                                    sort_direction == 'asc' &&
-                                    sort_field == 'status_name'
-                                "
-                                >&darr;</span
-                            >
-                            <select
-                                v-model="selectedStatus"
-                                class="form-control form-control-sm"
-                            >
-                                <option value="">All</option>
-                                <option
-                                    v-for="status in statuses.data"
-                                    :key="status.id"
-                                    :value="status.id"
-                                >
-                                    {{ status.name }}
-                                </option>
-                            </select>
-                        </th>
-                        <th>
-                            <a
-                                href="#"
-                                @click.prevent="change_sort('type_name')"
-                            >
-                                Type
-                            </a>
-                            <span
-                                v-if="
-                                    sort_direction == 'desc' &&
-                                    sort_field == 'type_name'
-                                "
-                                >&uarr;</span
-                            >
-                            <span
-                                v-if="
-                                    sort_direction == 'asc' &&
-                                    sort_field == 'type_name'
-                                "
-                                >&darr;</span
-                            >
-                        </th>
-                        <th>
-                            <a
-                                href="#"
-                                @click.prevent="change_sort('contact_name')"
-                            >
-                                Contact
-                            </a>
-                            <span
-                                v-if="
-                                    sort_direction == 'desc' &&
-                                    sort_field == 'contact_name'
-                                "
-                                >&uarr;</span
-                            >
-                            <span
-                                v-if="
-                                    sort_direction == 'asc' &&
-                                    sort_field == 'contact_name'
-                                "
-                                >&darr;</span
-                            >
-                        </th>
-                        <th>
-                            <a
-                                href="#"
-                                @click.prevent="change_sort('user_name')"
-                            >
-                                CS
-                            </a>
-                            <span
-                                v-if="
-                                    sort_direction == 'desc' &&
-                                    sort_field == 'user_name'
-                                "
-                                >&uarr;</span
-                            >
-                            <span
-                                v-if="
-                                    sort_direction == 'asc' &&
-                                    sort_field == 'user_name'
-                                "
-                                >&darr;</span
-                            >
-                        </th>
-                        <th>
-                            <a
-                                href="#"
-                                @click.prevent="change_sort('task_name')"
-                            >
-                                Task
-                            </a>
-                            <span
-                                v-if="
-                                    sort_direction == 'desc' &&
-                                    sort_field == 'task_name'
-                                "
-                                >&uarr;</span
-                            >
-                            <span
-                                v-if="
-                                    sort_direction == 'asc' &&
-                                    sort_field == 'task_name'
-                                "
-                                >&darr;</span
-                            >
-                        </th>
-                        <th>
-                            <a href="#" @click.prevent="change_sort('remark')">
-                                Remark
-                            </a>
-                            <span
-                                v-if="
-                                    sort_direction == 'desc' &&
-                                    sort_field == 'remark'
-                                "
-                                >&uarr;</span
-                            >
-                            <span
-                                v-if="
-                                    sort_direction == 'asc' &&
-                                    sort_field == 'remark'
-                                "
-                                >&darr;</span
-                            >
-                        </th>
-                        <th>Progress</th>
-                        <th>Action</th>
-                        <th>-</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="todo in todos.data" :key="todo.id">
-                        <td>{{ todo.id }}</td>
-                        <td>{{ todo.todo_created }}</td>
-                        <td>
-                            <span v-if="todo.todo_deadline.length !== 0">
-                                {{ todo.todo_deadline }}
-                            </span>
-                            <span v-else> Unset yet </span>
-                        </td>
-                        <td>{{ todo.status.name }}</td>
-                        <td>{{ todo.type.name }}</td>
-                        <td>
-                            <router-link
-                                :to="`/contacts/${todo.contact.id}/info`"
-                                custom
-                                v-slot="{ navigate, href }"
-                            >
-                                <a :href="href" @click.stop="navigate">{{
-                                    todo.contact.name
-                                }}</a>
-                            </router-link>
-                        </td>
-                        <td>{{ todo.user.name }}</td>
-                        <td>{{ todo.task.name }}</td>
-                        <td>{{ todo.remark }}</td>
-                        <td>Progress indication</td>
-                        <td>
-                            <select class="form-control form-control-sm">
-                                <option disable value="">Select Action</option>
-                                <option
-                                    v-for="action in actions.data"
-                                    :key="action.id"
-                                    :value="action.id"
-                                >
-                                    {{ action.name }}
-                                </option>
-                            </select>
-                        </td>
-                        <td>
-                            <router-link
-                                :to="{
-                                    name: 'todo_edit',
-                                    params: { id: todo.id },
-                                }"
-                                class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-yellow-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
-                            >
-                                <i class="fa-solid fa-pen-to-square"></i
-                                >Edit</router-link
-                            >
-                            <button
-                                class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-red-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
-                                @click="deleteToDo(todo.id)"
-                            >
-                                Delete
-                            </button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+                                {{ action.name }}
+                            </option>
+                        </select>
+                    </td>
+                    <td>
+                        <router-link
+                            :to="{
+                                name: 'todo_edit',
+                                params: { id: todo.id },
+                            }"
+                            class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-yellow-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                        >
+                            <i class="fa-solid fa-pen-to-square"></i
+                            >Edit</router-link
+                        >
+                        <button
+                            class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-red-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                            @click="deleteToDo(todo.id)"
+                        >
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </template>
 
@@ -459,23 +418,26 @@ export default {
         this.currentDate = this.showToday();
         this.selectedDate = this.currentDate;
         // console.log(this.currentDate);
+
         //initial month selection
-        this.currentMonth = this.getSelectedMonth();
+        this.currentMonth = this.getSelectedMonth(this.currentDate);
         this.selectedMonth = this.currentMonth;
-        // console.log(this.selectedMonth);
+        console.log(this.selectedMonth);
 
-        this.currentYear = this.getSelectedYear();
+        this.currentYear = this.getSelectedYear(this.currentDate);
         this.selectedYear = this.currentYear;
-        // console.log(this.selectedYear);
+        console.log(this.selectedYear);
 
-        this.selectedMonthYear = (this.selectedYear + '-' + this.selectedMonth + '-' + '01')
-        // console.log(this.selectedMonthYear);
+        this.selectedMonthYear =
+            this.currentYear + "-" + this.currentMonth + "-" + "01";
+        console.log(this.selectedMonthYear);
 
         this.getToDos();
     },
     data() {
         return {
             moment: moment,
+            rangeDate: false,
             todos: [],
             paginate: 10,
             viewType: "day",
@@ -489,6 +451,9 @@ export default {
             currentDate: "",
             currentMonth: "",
             currentYear: "",
+
+            minDateRange: "",
+            maxDateRange: "",
 
             selectedDate: "",
             selectedMonth: "",
@@ -517,33 +482,54 @@ export default {
         selectedDate: function (value) {
             if (this.viewType === "day") {
                 this.selectedMonth = "";
+                this.selectedYear = "";
                 this.getSelectedDate();
                 this.getToDos();
             }
         },
-
-        selectedMonth: function (value) {
-            const month = this.selectedMonth;
-            const year = this.selectedYear;
-            const day = '01';
-            console.log(' ');
-            console.log('this is month before moment ' + month);
-            console.log(' ');
-            console.log('this is year before moment ' + year);
-            console.log(' ');
-            if (this.viewType === "month") {
+        viewType: function (value) {
+            if (value === "month") {
                 this.selectedDate = "";
-                this.selectedMonth = moment(month).format("MM");
-                this.selectedYear = moment(year).format("YYYY");
-                console.log(' ');
-                console.log('this is month after moment ' + this.selectedMonth);
-                console.log(' ');
-                console.log('this is year after moment ' + this.selectedYear);
-
-                this.selectedMonthYear = (this.selectedYear + '-' + this.selectedMonth + '-' + day)
+                this.selectedMonth = this.currentMonth;
+                this.selectedYear = this.currentYear;
                 this.getToDos();
             }
-            // console.log(showMonth(`${selectedMonth}-${selectedYear}`))
+            if (value=== "day") {
+                this.selectedMonth = "";
+                this.selectedYear = "";
+                this.getSelectedDate();
+                this.getToDos();
+            }
+            
+        },
+
+        selectedMonth: function (value) {
+            if (value === "month") {
+                const month = this.selectedMonth;
+                const year = this.selectedYear;
+                const monthYear = year + month + "-" + "01";
+                console.log(" ");
+                console.log("this is before any changes" + month);
+                console.log(" ");
+                console.log("this is before any changes" + year);
+                console.log(" ");
+                console.log("this is before any changes" + monthYear);
+
+                this.selectedDate = "";
+                this.getSelectedYear(monthYear);
+                this.getSelectedMonth(monthYear);
+
+                this.getToDos();
+
+                // console.log("this is before any changes" + monthYear);
+
+                // this.getSelectedMonth(monthYear);
+                // this.getSelectedYear(monthYear);
+
+                // console.log(" ");
+
+                // this.getToDos();
+            }
         },
     },
 
@@ -630,7 +616,6 @@ export default {
         },
 
         showMonth(date) {
-            console.log('this is before show month momentjs '+ date);
             let month = moment(date).format("MMMM-YYYY");
             return month;
         },
@@ -642,18 +627,18 @@ export default {
         },
 
         getSelectedDay() {
-            let day = moment(this.currentDate).format("DD");
+            let day = moment().format("DD");
             return day;
         },
 
-        getSelectedMonth() {
-            let month = moment(this.currentDate).format("MM");
-            return month;
+        getSelectedMonth(date) {
+            this.selectedMonth = moment(date).format("MM");
+            return this.selectedMonth;
         },
 
-        getSelectedYear() {
-            let year = moment(this.currentDate).format("YYYY");
-            return year;
+        getSelectedYear(date) {
+            this.selectedYear = moment(date).format("YYYY");
+            return this.selectedYear;
         },
 
         searchType() {},

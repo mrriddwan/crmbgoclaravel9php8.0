@@ -14,9 +14,9 @@
 
         <div
             class="items-center text-center text-white font-extrabold bg-slate-400 px-1 py-1 rounded-md"
-            v-for="contact in contacts" :key="contact.id"
+            v-for="contact_info in contact" :key="contact.id"
         >
-            <h2 class="px-2 py-3 bg-black-50">{{ contact.name }}</h2>
+            <h2 class="px-2 py-3 bg-black-50">{{ contact_info.name }}</h2>
         </div>
 
         <div class="row mt-3">

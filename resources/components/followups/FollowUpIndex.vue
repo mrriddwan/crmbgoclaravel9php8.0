@@ -25,139 +25,111 @@
         To Do Index</router-link
     >
 
-    <div class="">
-        <div class="grid items-center">
-            <div class="inline-flex items-center">
-                <div class="inline-flex">
-                    <div class="items-center text-center">
-                        <label for="listByDayOrMonth" class="">View By</label>
-                        <select
-                            v-model="viewType"
-                            class="form-control text-center"
-                        >
-                            <option value="day">Day</option>
-                            <option value="month">Month</option>
-                        </select>
-                    </div>
-
-                    <div class="inline-flex">
-                        <span v-if="viewType === `day`">
-                            <div
-                                class="grid grid-rows-2 items-center text-center px-2 w-max"
-                            >
-                                <label for="listByDayOrMonth" class=""
-                                    >Select date</label
-                                >
-                                <input
-                                    v-model.lazy="selectedDate"
-                                    class="border-gray-300"
-                                    type="date"
-                                />
-                            </div>
-                        </span>
-                        <span v-else>
-                            <div
-                                class="grid grid-rows-2 items-center text-center px-2 w-max"
-                            >
-                                <label for="listByDayOrMonth" class=""
-                                    >Select month</label
-                                >
-                                <input
-                                    v-model.lazy="selectedMonth"
-                                    class="border-gray-300"
-                                    type="month"
-                                />
-                            </div>
-                        </span>
-                    </div>
-                </div>
-                <div class="grid">
-                    <div class="grid grid-cols-2">
-                        <div class="items-center text-center px-2 w-max">
-                            <label for="listByDayOrMonth" class=""
-                                >Select start date</label
-                            >
-                        </div>
-                        <div>
-                            <input
-                                v-model.lazy="selectedDateStart"
-                                class="border-gray-300"
-                                type="date"
-                            />
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-2">
-                        <div class="items-center text-center px-2 w-max">
-                            <label for="listByDayOrMonth" class=""
-                                >Select end date</label
-                            >
-                        </div>
-                        <div>
-                            <input
-                                v-model.lazy="selectedDateEnd"
-                                class="border-gray-300"
-                                type="date"
-                            />
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="inline-flex items-center text-center px-2 w-max">
-                <div>
-                    <label for="searchAny" class="text-center px-2"
-                        >Search term</label
-                    >
-                </div>
-                <div>
-                    <input
-                        v-model.lazy="search"
-                        type="search"
-                        class="form-control"
-                        placeholder="Search by any..."
-                    />
-                </div>
-            </div>
-
-            <div class="inline-flex items-center">
-                <label for="chooseUser" class="text-right px-2">User</label>
-                <select v-model="selectedUser" class="">
-                    <option value="">All User</option>
-                    <option
-                        v-for="user in users"
-                        :key="user.id"
-                        :value="user.id"
-                    >
-                        {{ user.name }}
-                    </option>
-                </select>
-            </div>
-        </div>
-        <div class="items-center text-center m-2 w-max">
-            <label for="paginate" class="px-2">Entry</label>
-            <select v-model="paginate" class="form-control">
-                <option value="10">10</option>
-                <option value="20">50</option>
-                <option value="30">100</option>
+    <div class="text-sm">
+        <div
+            class="m-2 inline-block items-center px-2 py-1 border-gray-500 border-2"
+        >
+            <p>view by</p>
+            <select v-model="viewType" class="form-control text-center">
+                <option value="day">Day</option>
+                <option value="month">Month</option>
             </select>
-            <label for="paginate" class="px-2">of 100 entries</label>
         </div>
-
-        <div class="py-2">
-            <Pagination
-                :data="todos"
-                @pagination-change-page="getToDos"
-                :size="'small'"
-                :align="'center'"
-                class="pagination"
+        <div
+            class="m-2 inline-block items-center px-2 py-1 border-gray-500 border-2"
+        >
+            <span v-if="viewType === `day`">
+                <p>select date</p>
+                <input
+                    v-model.lazy="selectedDate"
+                    class="border-gray-300"
+                    type="date"
+                />
+            </span>
+            <span v-else>
+                <p>select month/year</p>
+                <input
+                    v-model.lazy="selectedMonth"
+                    class="border-gray-300"
+                    type="date"
+                />
+            </span>
+        </div>
+        <div
+            class="m-2 inline-block items-center px-2 py-1 border-gray-500 border-2"
+        >
+            <p class="text-xs">Range date</p>
+            <input type="checkbox" v-model="rangeDate" />
+        </div>
+        <div
+            v-if="rangeDate"
+            class="m-1 inline-block items-center px-2 py-1 border-gray-500 border-2"
+        >
+            <div class="border-gray-800 border-2 flex px-2 py-2">
+                <p class="px-1 mt-1">select start date</p>
+                <input
+                    v-model.lazy="selectedDate"
+                    class="border-gray-300 w-36"
+                    type="date"
+                />
+            </div>
+            <div class="border-gray-800 border-2 flex px-2 py-2">
+                <p class="px-1 mt-1">select end date</p>
+                <input
+                    v-model.lazy="selectedMonth"
+                    class="border-gray-300 w-36"
+                    type="month"
+                />
+            </div>
+        </div>
+        <div
+            class="m-2 inline-block items-center px-2 py-1 border-gray-500 border-2"
+        >
+            <p>Filter term</p>
+            <input
+                v-model.lazy="search"
+                type="search"
+                class="form-control"
+                placeholder="Search by any..."
             />
         </div>
+        <div
+            class="m-2 inline-block items-center px-2 py-1 border-gray-500 border-2"
+        >
+            <p>Select user</p>
+            <select v-model="selectedUser" class="">
+                <option value="">All User</option>
+                <option v-for="user in users" :key="user.id" :value="user.id">
+                    {{ user.name }}
+                </option>
+            </select>
+        </div>
+    </div>
+
+    <div class="m-2 inline-block items-center px-2 py-1 border-gray-500 border-2">
+        <select v-model="paginate" class="form-control">
+            <option value="10">10</option>
+            <option value="20">50</option>
+            <option value="30">100</option>
+        </select>
+        <label for="paginate" class="px-2">of 100 entries</label>
+    </div>
+    <div class="py-2">
+        <Pagination
+            :data="todos"
+            @pagination-change-page="getToDos"
+            :size="'small'"
+            :align="'center'"
+            class="pagination"
+        />
+    </div>
+
+
 
         <!-- <div>this is the selected day: {{ getSelectedDay() }}</div>
         <div>this is the selected month: {{ getSelectedMonth() }}</div>
         <div>this is the selected year: {{ getSelectedYear() }}</div> -->
-
+    <div>
         <div class="grid grid-cols-3 w-full text-center">
             <div class="text-left">
                 <button class="text-5xl text-left">&larr;</button>
@@ -322,17 +294,15 @@
                     <tr>
                         <td>#1</td>
                         <td>Date of follow up</td>
-                        <td>
-                            Time of follow up
-                        </td>
+                        <td>Time of follow up</td>
                         <td>Contact name</td>
                         <td>User name</td>
-                        <td>
-                            Task in Follow up Form
-                        </td>
+                        <td>Task in Follow up Form</td>
                         <td>Remark from Follow up form</td>
-                        <td>[[Delete button ]] and [[Link button to view in todo]]</td>
-                        
+                        <td>
+                            [[Delete button ]] and [[Link button to view in
+                            todo]]
+                        </td>
                     </tr>
                     <!-- <tr v-for="todo in todos.data" :key="todo.id">
                         <td>{{ todo.id }}</td>
@@ -401,6 +371,7 @@
 import LaravelVuePagination from "laravel-vue-pagination";
 import axios from "axios";
 import moment from "moment";
+import Checkbox from "../../../vendor/laravel/breeze/stubs/inertia-vue/resources/js/Components/Checkbox.vue";
 
 export default {
     components: {
@@ -427,6 +398,7 @@ export default {
     data() {
         return {
             moment: moment,
+            rangeDate: false,
             todos: [],
             paginate: 10,
             viewType: "day",

@@ -31,7 +31,8 @@ class ToDoController extends Controller
             'tasks.name as task_name',
             'priorities.name as priority_name',
             'text_colors.color_code as color_name',
-            'contacts.name as contact_name'
+            'contacts.name as contact_name',
+            'to_do_sources.name as source_name'
         ])
             ->join('contacts', 'to_dos.contact_id', '=', 'contacts.id')
             ->join('contact_statuses', 'to_dos.status_id', '=', 'contact_statuses.id')
@@ -40,6 +41,7 @@ class ToDoController extends Controller
             ->join('priorities', 'to_dos.priority_id', '=', 'priorities.id')
             ->join('users', 'to_dos.user_id', '=', 'users.id')
             ->join('text_colors', 'to_dos.color_id', '=', 'text_colors.id')
+            ->join('to_do_sources', 'to_dos.source_id', '=', 'to_do_sources.id')
             ->when($selectedStatus, function ($query) use ($selectedStatus) {
                 $query->where('to_dos.status_id', $selectedStatus);
             })
@@ -76,7 +78,7 @@ class ToDoController extends Controller
             'contact_id' => $request->contact_id,
             'type_id' => $request->type_id,
             'task_id' => $request->task_id,
-            'remark' => $request->remark,
+            'todo_remark' => $request->remark,
             'color_id' => $request->color_id ?? '1',
         ]);
 
@@ -102,7 +104,7 @@ class ToDoController extends Controller
             'task_id' => $request->task_id,
             'status_id' => $request->status_id,
             'type_id' => $request->type_id,
-            'remark' => $request->remark,
+            'todo_remark' => $request->remark,
             'color_id' => $request->color_id ?? '1',
         ]);
 
@@ -133,7 +135,7 @@ class ToDoController extends Controller
             'task_id' => $request->task_id,
             'status_id' => $request->status_id,
             'type_id' => $request->type_id,
-            'remark' => $request->remark,
+            'todo_remark' => $request->remark,
         ]);
 
 

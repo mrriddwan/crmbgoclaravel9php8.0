@@ -25,7 +25,7 @@ class ContactInchargeFactory extends Factory
     {
         return [
             'contact_id' => random_int(1,200),
-            'name' => fake()->company(),
+            'name' => fake()->name(),
             'email' => fake()->email(),
             'phone_mobile' => fake()-> phoneNumber(),
             'phone_office' => fake()-> phoneNumber(),

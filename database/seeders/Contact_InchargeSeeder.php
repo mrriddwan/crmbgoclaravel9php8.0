@@ -15,6 +15,6 @@ class Contact_InchargeSeeder extends Seeder
      */
     public function run()
     {
-        ContactIncharge::factory(10)->create();
+        ContactIncharge::factory(100)->create();
     }
 }

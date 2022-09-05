@@ -57,7 +57,7 @@ class ToDo extends Model
         $query->where(function($query) use ($term){
             $query->where('todo_created', 'like', $term)
                 ->orWhere('todo_deadline', 'like', $term)
-                ->orWhere('to_dos.remark', 'like', $term)
+                ->orWhere('to_dos.todo_remark', 'like', $term)
                 ->orWhereHas('user', function ($query) use ($term) {
                     $query->where('name', 'like', $term);
                 })
