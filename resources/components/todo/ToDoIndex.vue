@@ -49,7 +49,7 @@
             <span v-else>
                 <p>select month/year</p>
                 <input
-                    v-model.lazy="selectedMonth"
+                    v-model.lazy="currentMonth"
                     class="border-gray-300"
                     type="month"
                 />
@@ -125,10 +125,6 @@
             class="pagination"
         />
     </div>
-
-    <!-- <div>this is the selected day: {{ getSelectedDay() }}</div>
-        <div>this is the selected month: {{ getSelectedMonth() }}</div>
-        <div>this is the selected year: {{ getSelectedYear() }}</div> -->
 
     <div class="grid grid-cols-3 w-full text-center">
         <div class="text-left">
@@ -417,22 +413,14 @@ export default {
         //initial date selection
         this.currentDate = this.showToday();
         this.selectedDate = this.currentDate;
-        // console.log(this.currentDate);
+        this.getToDos();
 
         //initial month selection
-        this.currentMonth = this.getSelectedMonth(this.currentDate);
-        this.selectedMonth = this.currentMonth;
-        console.log(this.selectedMonth);
-
-        this.currentYear = this.getSelectedYear(this.currentDate);
-        this.selectedYear = this.currentYear;
-        console.log(this.selectedYear);
-
+        this.selectedMonth = this.getSelectedMonth(this.currentDate);
+        this.selectedYear = this.getSelectedYear(this.currentDate);
         this.selectedMonthYear =
-            this.currentYear + "-" + this.currentMonth + "-" + "01";
-        console.log(this.selectedMonthYear);
-
-        this.getToDos();
+            this.selectedYear + "-" + this.selectedMonth + "-" + "01";
+        this.currentMonth = this.selectedYear + "-" + this.selectedMonth;
     },
     data() {
         return {
@@ -488,48 +476,31 @@ export default {
             }
         },
         viewType: function (value) {
-            if (value === "month") {
+            if (value === "day") {
+                if (this.viewType === "day") {
+                    this.selectedMonth = "";
+                    this.selectedYear = "";
+                    this.getSelectedDate();
+                    this.getToDos();
+                }
+            } else {
                 this.selectedDate = "";
-                this.selectedMonth = this.currentMonth;
-                this.selectedYear = this.currentYear;
+                const monthYear = this.selectedMonthYear;
+                this.getSelectedMonth(monthYear);
+                this.getSelectedYear(monthYear);
                 this.getToDos();
+                this.selectedDate = this.currentDate;
             }
-            if (value=== "day") {
-                this.selectedMonth = "";
-                this.selectedYear = "";
-                this.getSelectedDate();
-                this.getToDos();
-            }
-            
         },
 
-        selectedMonth: function (value) {
-            if (value === "month") {
-                const month = this.selectedMonth;
-                const year = this.selectedYear;
-                const monthYear = year + month + "-" + "01";
-                console.log(" ");
-                console.log("this is before any changes" + month);
-                console.log(" ");
-                console.log("this is before any changes" + year);
-                console.log(" ");
-                console.log("this is before any changes" + monthYear);
-
-                this.selectedDate = "";
-                this.getSelectedYear(monthYear);
-                this.getSelectedMonth(monthYear);
-
-                this.getToDos();
-
-                // console.log("this is before any changes" + monthYear);
-
-                // this.getSelectedMonth(monthYear);
-                // this.getSelectedYear(monthYear);
-
-                // console.log(" ");
-
-                // this.getToDos();
-            }
+        currentMonth: function (value) {
+            this.selectedDate = "";
+            const monthYear = this.currentMonth + "-" + "01";
+            this.selectedMonthYear = monthYear;
+            this.getSelectedMonth(monthYear);
+            this.getSelectedYear(monthYear);
+            this.getToDos();
+            this.selectedDate = this.currentDate;
         },
     },
 
