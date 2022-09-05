@@ -6,7 +6,7 @@ use App\Models\ContactIncharge;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class ContactInchargeSeeder extends Seeder
+class Contact_InchargeSeeder extends Seeder
 {
     /**
      * Run the database seeds.

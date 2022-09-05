@@ -40,237 +40,344 @@
             </div>
         </div>
 
-        <Pagination
-            :data="contacts"
-            @pagination-change-page="getContacts"
-            :size="'small'"
-            :align="'center'"
-            class="pagination"
-        />
+        <div class="py-3">
+            <Pagination
+                :data="contacts"
+                @pagination-change-page="getContacts"
+                :size="'small'"
+                :align="'center'"
+                class="pagination"
+            />
+        </div>
 
-        <div>
+        <div class="py-3">
             <table class="table table-hover table-bordered" id="example">
                 <thead>
                     <tr>
-                        <th>
-                            <a
-                                href="#"
-                                @click.prevent="change_sort('created_at')"
-                            >
-                                Date Created
-                            </a>
-                            <span
-                                v-if="
-                                    sort_direction == 'desc' &&
-                                    sort_field == 'created_at'
-                                "
-                                >&uarr;</span
-                            >
-                            <span
-                                v-if="
-                                    sort_direction == 'asc' &&
-                                    sort_field == 'created_at'
-                                "
-                                >&darr;</span
-                            >
-                        </th>
-                        <th>
-                            <a
-                                href="#"
-                                @click.prevent="change_sort('user_name')"
-                            >
-                                CS
-                            </a>
-                            <span
-                                v-if="
-                                    sort_direction == 'desc' &&
-                                    sort_field == 'user_name'
-                                "
-                                >&uarr;</span
-                            >
-                            <span
-                                v-if="
-                                    sort_direction == 'asc' &&
-                                    sort_field == 'user_name'
-                                "
-                                >&darr;</span
-                            >
-                        </th>
-                        <th>
-                            <a
-                                href="#"
-                                @click.prevent="change_sort('status_name')"
-                            >
-                                Status
-                            </a>
-                            <span
-                                v-if="
-                                    sort_direction == 'desc' &&
-                                    sort_field == 'status_name'
-                                "
-                                >&uarr;</span
-                            >
-                            <span
-                                v-if="
-                                    sort_direction == 'asc' &&
-                                    sort_field == 'status_name'
-                                "
-                                >&darr;</span
-                            >
-                            <select
-                                v-model="selectedStatus"
-                                class="form-control form-control-sm"
-                            >
-                                <option value="">All</option>
-                                <option
-                                    v-for="status in statuses.data"
-                                    :key="status.id"
-                                    :value="status.id"
+                        <th class="py-3">
+                            <div class="text-sm text-center h-6">
+                                <a
+                                    href="#"
+                                    @click.prevent="change_sort('created_at')"
                                 >
-                                    {{ status.name }}
-                                </option>
-                            </select>
+                                    Date Created
+                                </a>
+                                <span
+                                    v-if="
+                                        sort_direction == 'desc' &&
+                                        sort_field == 'created_at'
+                                    "
+                                    >&uarr;</span
+                                >
+                                <span
+                                    v-if="
+                                        sort_direction == 'asc' &&
+                                        sort_field == 'created_at'
+                                    "
+                                    >&darr;</span
+                                >
+                            </div>
+
+                            <div class="text-sm text-center h-6">
+                                <input
+                                    v-model.lazy="search"
+                                    type="search"
+                                    class="w-16 placeholder:text-xs placeholder:text-center h-8"
+                                    placeholder="Search date"
+                                />
+                            </div>
                         </th>
-                        <th>
-                            <a
-                                href="#"
-                                @click.prevent="change_sort('type_name')"
-                            >
-                                Type
-                            </a>
-                            <span
-                                v-if="
-                                    sort_direction == 'desc' &&
-                                    sort_field == 'type_name'
-                                "
-                                >&uarr;</span
-                            >
-                            <span
-                                v-if="
-                                    sort_direction == 'asc' &&
-                                    sort_field == 'type_name'
-                                "
-                                >&darr;</span
-                            >
+                        <th class="py-3">
+                            <div class="text-sm text-center h-6">
+                                <a
+                                    href="#"
+                                    @click.prevent="change_sort('user_name')"
+                                >
+                                    CS
+                                </a>
+                                <span
+                                    v-if="
+                                        sort_direction == 'desc' &&
+                                        sort_field == 'user_name'
+                                    "
+                                    >&uarr;</span
+                                >
+                                <span
+                                    v-if="
+                                        sort_direction == 'asc' &&
+                                        sort_field == 'user_name'
+                                    "
+                                    >&darr;</span
+                                >
+                            </div>
+                            <div class="text-sm text-center h-6">
+                                <input
+                                    v-model.lazy="search"
+                                    type="search"
+                                    class="w-16 placeholder:text-xs placeholder:text-center h-8"
+                                    placeholder="Search user"
+                                />
+                            </div>
                         </th>
-                        <th>
-                            <a
-                                href="#"
-                                @click.prevent="change_sort('industry')"
-                            >
-                                Industry
-                            </a>
-                            <span
-                                v-if="
-                                    sort_direction == 'desc' &&
-                                    sort_field == 'industry'
-                                "
-                                >&uarr;</span
-                            >
-                            <span
-                                v-if="
-                                    sort_direction == 'asc' &&
-                                    sort_field == 'industry'
-                                "
-                                >&darr;</span
-                            >
+                        <th class="py-3">
+                            <div class="text-sm text-center h-6">
+                                <a
+                                    href="#"
+                                    @click.prevent="change_sort('status_name')"
+                                >
+                                    Status
+                                </a>
+                                <span
+                                    v-if="
+                                        sort_direction == 'desc' &&
+                                        sort_field == 'status_name'
+                                    "
+                                    >&uarr;</span
+                                >
+                                <span
+                                    v-if="
+                                        sort_direction == 'asc' &&
+                                        sort_field == 'status_name'
+                                    "
+                                    >&darr;</span
+                                >
+                            </div>
+                            <div class="text-sm text-center h-6">
+                                <select
+                                    v-model="selectedStatus"
+                                    class="form-control form-control-sm"
+                                >
+                                    <option value="">All</option>
+                                    <option
+                                        v-for="status in statuses.data"
+                                        :key="status.id"
+                                        :value="status.id"
+                                    >
+                                        {{ status.name }}
+                                    </option>
+                                </select>
+                            </div>
                         </th>
-                        <th>
-                            <a
-                                href="#"
-                                @click.prevent="change_sort('name')"
-                            >
-                                Contact
-                            </a>
-                            <span
-                                v-if="
-                                    sort_direction == 'desc' &&
-                                    sort_field == 'name'
-                                "
-                                >&uarr;</span
-                            >
-                            <span
-                                v-if="
-                                    sort_direction == 'asc' &&
-                                    sort_field == 'name'
-                                "
-                                >&darr;</span
-                            >
+                        <th class="py-3">
+                            <div class="text-sm text-center h-6">
+                                <a
+                                    href="#"
+                                    @click.prevent="change_sort('type_name')"
+                                >
+                                    Type
+                                </a>
+                                <span
+                                    v-if="
+                                        sort_direction == 'desc' &&
+                                        sort_field == 'type_name'
+                                    "
+                                    >&uarr;</span
+                                >
+                                <span
+                                    v-if="
+                                        sort_direction == 'asc' &&
+                                        sort_field == 'type_name'
+                                    "
+                                    >&darr;</span
+                                >
+                            </div>
+                            <div class="text-sm text-center h-6">
+                                <div class="text-sm text-center h-6">
+                                    <input
+                                        v-model.lazy="search"
+                                        type="search"
+                                        class="w-16 placeholder:text-xs placeholder:text-center h-8"
+                                        placeholder="Search type"
+                                    />
+                                </div>
+                            </div>
                         </th>
-                        <th>
-                            <a
-                                href="#"
-                                @click.prevent="change_sort('category_name')"
-                            >
-                                Category
-                            </a>
-                            <span
-                                v-if="
-                                    sort_direction == 'desc' &&
-                                    sort_field == 'category_name'
-                                "
-                                >&uarr;</span
-                            >
-                            <span
-                                v-if="
-                                    sort_direction == 'asc' &&
-                                    sort_field == 'category_name'
-                                "
-                                >&darr;</span
-                            >
+                        <th class="py-3">
+                            <div class="text-sm text-center h-6">
+                                <a
+                                    href="#"
+                                    @click.prevent="change_sort('industry')"
+                                >
+                                    Industry
+                                </a>
+                                <span
+                                    v-if="
+                                        sort_direction == 'desc' &&
+                                        sort_field == 'industry'
+                                    "
+                                    >&uarr;</span
+                                >
+                                <span
+                                    v-if="
+                                        sort_direction == 'asc' &&
+                                        sort_field == 'industry'
+                                    "
+                                    >&darr;</span
+                                >
+                            </div>
+                            <div class="text-sm text-center h-6">
+                                <div class="text-sm text-center h-6">
+                                    <input
+                                        v-model.lazy="search"
+                                        type="search"
+                                        class="w-16 placeholder:text-xs placeholder:text-center h-8"
+                                        placeholder="Search industry"
+                                    />
+                                </div>
+                            </div>
                         </th>
-                        <th>
-                            <a
-                                href="#"
-                                @click.prevent="change_sort('address')"
-                            >
-                                Address
-                            </a>
-                            <span
-                                v-if="
-                                    sort_direction == 'desc' &&
-                                    sort_field == 'address'
-                                "
-                                >&uarr;</span
-                            >
-                            <span
-                                v-if="
-                                    sort_direction == 'asc' &&
-                                    sort_field == 'address'
-                                "
-                                >&darr;</span
-                            >
+                        <th class="py-3">
+                            <div class="text-sm text-center h-6">
+                                <a
+                                    href="#"
+                                    @click.prevent="change_sort('name')"
+                                >
+                                    Contact
+                                </a>
+                                <span
+                                    v-if="
+                                        sort_direction == 'desc' &&
+                                        sort_field == 'name'
+                                    "
+                                    >&uarr;</span
+                                >
+                                <span
+                                    v-if="
+                                        sort_direction == 'asc' &&
+                                        sort_field == 'name'
+                                    "
+                                    >&darr;</span
+                                >
+                            </div>
+                            <div class="text-sm text-center h-6">
+                                <div class="text-sm text-center h-6">
+                                    <input
+                                        v-model.lazy="search"
+                                        type="search"
+                                        class="w-16 placeholder:text-xs placeholder:text-center h-8"
+                                        placeholder="Search contact"
+                                    />
+                                </div>
+                            </div>
                         </th>
-                        <th>
-                            <a href="#" @click.prevent="change_sort('remark')">
-                                Remark
-                            </a>
-                            <span
-                                v-if="
-                                    sort_direction == 'desc' &&
-                                    sort_field == 'remark'
-                                "
-                                >&uarr;</span
-                            >
-                            <span
-                                v-if="
-                                    sort_direction == 'asc' &&
-                                    sort_field == 'remark'
-                                "
-                                >&darr;</span
-                            >
+                        <th class="py-3">
+                            <div class="text-sm text-center h-6">
+                                <a
+                                    href="#"
+                                    @click.prevent="
+                                        change_sort('category_name')
+                                    "
+                                >
+                                    Category
+                                </a>
+                                <span
+                                    v-if="
+                                        sort_direction == 'desc' &&
+                                        sort_field == 'category_name'
+                                    "
+                                    >&uarr;</span
+                                >
+                                <span
+                                    v-if="
+                                        sort_direction == 'asc' &&
+                                        sort_field == 'category_name'
+                                    "
+                                    >&darr;</span
+                                >
+                            </div>
+                            <div class="text-sm text-center h-6">
+                                <div class="text-sm text-center h-6">
+                                    <input
+                                        v-model.lazy="search"
+                                        type="search"
+                                        class="w-16 placeholder:text-xs placeholder:text-center h-8"
+                                        placeholder="Search category"
+                                    />
+                                </div>
+                            </div>
                         </th>
-                        <th>Action</th>
+                        <th class="py-3">
+                            <div class="text-sm text-center h-6">
+                                <a
+                                    href="#"
+                                    @click.prevent="change_sort('address')"
+                                >
+                                    Address
+                                </a>
+                                <span
+                                    v-if="
+                                        sort_direction == 'desc' &&
+                                        sort_field == 'address'
+                                    "
+                                    >&uarr;</span
+                                >
+                                <span
+                                    v-if="
+                                        sort_direction == 'asc' &&
+                                        sort_field == 'address'
+                                    "
+                                    >&darr;</span
+                                >
+                            </div>
+                            <div class="text-sm text-center h-6">
+                                <div class="text-sm text-center h-6">
+                                    <input
+                                        v-model.lazy="search"
+                                        type="search"
+                                        class="w-16 placeholder:text-xs placeholder:text-center h-8"
+                                        placeholder="Search address"
+                                    />
+                                </div>
+                            </div>
+                        </th>
+                        <th class="py-3">
+                            <div class="text-sm text-center h-6">
+                                <a
+                                    href="#"
+                                    @click.prevent="change_sort('remark')"
+                                >
+                                    Remark
+                                </a>
+                                <span
+                                    v-if="
+                                        sort_direction == 'desc' &&
+                                        sort_field == 'remark'
+                                    "
+                                    >&uarr;</span
+                                >
+                                <span
+                                    v-if="
+                                        sort_direction == 'asc' &&
+                                        sort_field == 'remark'
+                                    "
+                                    >&darr;</span
+                                >
+                            </div>
+                            <div class="text-sm text-center h-6">
+                                <div class="text-sm text-center h-6">
+                                    <input
+                                        v-model.lazy="search"
+                                        type="search"
+                                        class="w-16 placeholder:text-xs placeholder:text-center h-8"
+                                        placeholder="Search remark"
+                                    />
+                                </div>
+                            </div>
+                        </th>
+                        <th class="py-3">
+                            <div class="text-sm text-center h-6">Action</div>
+                            <div class="text-sm text-center h-6"></div>
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="contact in contacts.data" :key="contact.id">
-                        <td>{{ contact.created_at }}</td>
-                        <td>{{ contact.user.name }}</td>
-                        <td>{{ contact.status.name }}</td>
-                        <td>{{ contact.type.name }}</td>
-                        <td>{{ contact.industry }}</td>
-                        <td>
+                        <td class="text-xs">{{ contact.created_at }}</td>
+                        <td class="text-xs">{{ contact.user.name }}</td>
+                        <td class="text-xs">{{ contact.status.name }}</td>
+                        <td class="text-xs">{{ contact.type.name }}</td>
+                        <td class="text-xs">{{ contact.industry }}</td>
+                        <td class="text-xs">
                             <router-link
                                 :to="`/contacts/${contact.id}/info`"
                                 custom
@@ -281,10 +388,10 @@
                                 }}</a>
                             </router-link>
                         </td>
-                        <td>{{ contact.category.name }}</td>
-                        <td>{{ contact.address }}</td>
-                        <td>{{ contact.remark }}</td>
-                        <td>
+                        <td class="text-xs">{{ contact.category.name }}</td>
+                        <td class="text-xs">{{ contact.address }}</td>
+                        <td class="text-xs">{{ contact.remark }}</td>
+                        <td class="text-xs">
                             <router-link
                                 :to="{
                                     name: 'todo_insert',
@@ -334,7 +441,7 @@ export default {
     data() {
         return {
             contacts: [],
-            paginate: 10,
+            paginate: 50,
 
             search: "",
             selectedStatus: "",
@@ -419,5 +526,5 @@ export default {
 </script>
 
 <style scoped>
-    @import "bootstrap/dist/css/bootstrap.min.css";
+@import "bootstrap/dist/css/bootstrap.min.css";
 </style>

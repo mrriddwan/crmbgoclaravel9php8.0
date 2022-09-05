@@ -21,7 +21,9 @@ import ToDoCreate from "../components/todo/ToDoCreate.vue";
 import ToDoEdit from "../components/todo/ToDoEdit.vue";
 import ToDoInsert from "../components/todo/ToDoInsert.vue";
 
-
+/**ToDo Imports */
+import FollowUpIndex from "../components/followups/FollowUpIndex.vue";
+import FollowUpCreate from "../components/followups/FollowUpCreate.vue";
 
 const routes = [
     /*                      
@@ -33,12 +35,6 @@ const routes = [
         name: "contact_index",
         component: ContactIndex,
     },
-
-    // {
-    //     path: "/contacts/index",
-    //     name: "contact_index",
-    //     component: ContactIndex,
-    // },
 
     {
         path: "/contacts/create",
@@ -98,7 +94,7 @@ const routes = [
         component: ForecastEdit,
     },
     /*                                                  
-            Forecast Routes 
+            To Do Routes 
     */
 
     {
@@ -111,7 +107,7 @@ const routes = [
         path: "/todo/:id/insert",
         name: "todo_insert",
         component: ToDoInsert,
-        props: true
+        props: true,
     },
 
     {
@@ -124,14 +120,24 @@ const routes = [
         path: "/todo/:id/edit",
         name: "todo_edit",
         component: ToDoEdit,
-        props:true
+        props: true,
     },
 
-    // {
-    //     path: "/todo/edit",
-    //     name: "todo_Edit",
-    //     component: ToDoEdit,
-    // },
+    /*                                                  
+            To Do Routes 
+    */
+
+    {
+        path: "/followup/index",
+        name: "followup_index",
+        component: FollowUpIndex,
+    },
+
+    {
+        path: "/followup/create",
+        name: "followup_create",
+        component: FollowUpCreate,
+    },
 ];
 
 export default createRouter({

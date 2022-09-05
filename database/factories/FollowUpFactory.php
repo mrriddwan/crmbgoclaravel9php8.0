@@ -2,20 +2,20 @@
 
 namespace Database\Factories;
 
-use App\Models\ToDo;
+use App\Models\FollowUp;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\ToDo>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\FollowUp>
  */
-class ToDoFactory extends Factory
+class FollowUpFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = ToDo::class;
+    protected $model = FollowUp::class;
 
     /**
      * Define the model's default state.
@@ -25,17 +25,16 @@ class ToDoFactory extends Factory
     public function definition()
     {
         return [
-            'todo_created' => fake()->dateTimeThisYear('+2 month'),
-            'todo_deadline' => fake()->dateTimeThisYear('+5 month'),
-            'todo_remark' => fake()->realText($maxNbChars = 50),
-            'contact_id' => random_int(1, 10),
+            'follow_ups_created' => fake()->dateTimeThisYear('+2 month'),
+            'follow_ups_time' => fake()->time($format = 'H:i', $max = 'now'),
+            'followup_remark' => fake()->realText($maxNbChars = 50),
+            'todo_id' => random_int(1, 150),
+            'contact_id' => random_int(1, 100),
             'user_id' => random_int(2, 10),
             'task_id' => random_int(1, 5),
             'status_id' => random_int(1, 5),
             'type_id' => random_int(1, 5),
             'priority_id' => random_int(1, 2),
-            'color_id' => random_int(1, 5),
-            'source_id' => random_int(1, 2),
         ];
     }
 }

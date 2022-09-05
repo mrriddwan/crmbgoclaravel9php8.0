@@ -2,14 +2,14 @@
     <h1
         class="items-center text-center text-6xl text-white font-extrabold bg-slate-400 px-2 py-2 rounded-md"
     >
-        To Do Index
+        Follow up Index
     </h1>
 
     <router-link
-        to="/todo/create"
+        to="/followup/create"
         class="m-2 inline-block items-center px-2 py-1 bg-blue-800 border border-transparent rounded-md font-semibold text-m text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
     >
-        Create to do</router-link
+        Create follow up</router-link
     >
     <router-link
         to="/dashboard"
@@ -19,10 +19,10 @@
     >
 
     <router-link
-        to="/followup/index"
+        to="/todo/index"
         class="m-2 inline-block items-center px-2 py-1 bg-gray-800 border border-transparent rounded-md font-semibold text-m text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
     >
-        Follow Up Index</router-link
+        To Do Index</router-link
     >
 
     <div class="">
@@ -172,7 +172,7 @@
             <span v-else>
                 <div>
                     <h3 class="uppercase font-extrabold">
-                        {{ showMonth(selectedMonthYear) }}
+                        {{ showMonth(selectedMonth) }}
                     </h3>
                 </div>
             </span>
@@ -185,7 +185,7 @@
             <table class="table table-hover table-bordered" id="example">
                 <thead>
                     <tr>
-                        <th>ID</th>
+                        <th>#List no.</th>
                         <th>
                             <a
                                 href="#"
@@ -213,7 +213,7 @@
                                 href="#"
                                 @click.prevent="change_sort('todo_deadline')"
                             >
-                                Date Deadline
+                                Time
                             </a>
                             <span
                                 v-if="
@@ -226,63 +226,6 @@
                                 v-if="
                                     sort_direction == 'asc' &&
                                     sort_field == 'todo_deadline'
-                                "
-                                >&darr;</span
-                            >
-                        </th>
-                        <th>
-                            <a
-                                href="#"
-                                @click.prevent="change_sort('status_name')"
-                            >
-                                Status
-                            </a>
-                            <span
-                                v-if="
-                                    sort_direction == 'desc' &&
-                                    sort_field == 'status_name'
-                                "
-                                >&uarr;</span
-                            >
-                            <span
-                                v-if="
-                                    sort_direction == 'asc' &&
-                                    sort_field == 'status_name'
-                                "
-                                >&darr;</span
-                            >
-                            <select
-                                v-model="selectedStatus"
-                                class="form-control form-control-sm"
-                            >
-                                <option value="">All</option>
-                                <option
-                                    v-for="status in statuses.data"
-                                    :key="status.id"
-                                    :value="status.id"
-                                >
-                                    {{ status.name }}
-                                </option>
-                            </select>
-                        </th>
-                        <th>
-                            <a
-                                href="#"
-                                @click.prevent="change_sort('type_name')"
-                            >
-                                Type
-                            </a>
-                            <span
-                                v-if="
-                                    sort_direction == 'desc' &&
-                                    sort_field == 'type_name'
-                                "
-                                >&uarr;</span
-                            >
-                            <span
-                                v-if="
-                                    sort_direction == 'asc' &&
-                                    sort_field == 'type_name'
                                 "
                                 >&darr;</span
                             >
@@ -372,13 +315,26 @@
                                 >&darr;</span
                             >
                         </th>
-                        <th>Progress</th>
                         <th>Action</th>
-                        <th>-</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="todo in todos.data" :key="todo.id">
+                    <tr>
+                        <td>#1</td>
+                        <td>Date of follow up</td>
+                        <td>
+                            Time of follow up
+                        </td>
+                        <td>Contact name</td>
+                        <td>User name</td>
+                        <td>
+                            Task in Follow up Form
+                        </td>
+                        <td>Remark from Follow up form</td>
+                        <td>[[Delete button ]] and [[Link button to view in todo]]</td>
+                        
+                    </tr>
+                    <!-- <tr v-for="todo in todos.data" :key="todo.id">
                         <td>{{ todo.id }}</td>
                         <td>{{ todo.todo_created }}</td>
                         <td>
@@ -434,7 +390,7 @@
                                 Delete
                             </button>
                         </td>
-                    </tr>
+                    </tr> -->
                 </tbody>
             </table>
         </div>
@@ -458,18 +414,13 @@ export default {
         //initial date selection
         this.currentDate = this.showToday();
         this.selectedDate = this.currentDate;
-        // console.log(this.currentDate);
+
         //initial month selection
         this.currentMonth = this.getSelectedMonth();
         this.selectedMonth = this.currentMonth;
-        // console.log(this.selectedMonth);
 
         this.currentYear = this.getSelectedYear();
         this.selectedYear = this.currentYear;
-        // console.log(this.selectedYear);
-
-        this.selectedMonthYear = (this.selectedYear + '-' + this.selectedMonth + '-' + '01')
-        // console.log(this.selectedMonthYear);
 
         this.getToDos();
     },
@@ -493,7 +444,6 @@ export default {
             selectedDate: "",
             selectedMonth: "",
             selectedYear: "",
-            selectedMonthYear: "",
 
             selectedDateStart: "",
             selectedDateEnd: "",
@@ -523,27 +473,15 @@ export default {
         },
 
         selectedMonth: function (value) {
-            const month = this.selectedMonth;
-            const year = this.selectedYear;
-            const day = '01';
-            console.log(' ');
-            console.log('this is month before moment ' + month);
-            console.log(' ');
-            console.log('this is year before moment ' + year);
-            console.log(' ');
+            console.log(this.selectedMonth);
+            console.log(this.selectedYear);
             if (this.viewType === "month") {
                 this.selectedDate = "";
-                this.selectedMonth = moment(month).format("MM");
-                this.selectedYear = moment(year).format("YYYY");
-                console.log(' ');
-                console.log('this is month after moment ' + this.selectedMonth);
-                console.log(' ');
-                console.log('this is year after moment ' + this.selectedYear);
-
-                this.selectedMonthYear = (this.selectedYear + '-' + this.selectedMonth + '-' + day)
+                this.selectedMonth = moment(this.selectedMonth).format("MM");
+                this.selectedYear = moment(this.selectedMonth).format("YYYY");
+                console.log(this.selectedYear);
                 this.getToDos();
             }
-            // console.log(showMonth(`${selectedMonth}-${selectedYear}`))
         },
     },
 
@@ -630,8 +568,7 @@ export default {
         },
 
         showMonth(date) {
-            console.log('this is before show month momentjs '+ date);
-            let month = moment(date).format("MMMM-YYYY");
+            let month = moment(date.toString()).format("MMMM-YYYY");
             return month;
         },
 
@@ -648,6 +585,7 @@ export default {
 
         getSelectedMonth() {
             let month = moment(this.currentDate).format("MM");
+            this.showMonth(this.currentDate);
             return month;
         },
 

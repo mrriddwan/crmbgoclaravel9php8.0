@@ -24,7 +24,7 @@ class ContactInchargeFactory extends Factory
     public function definition()
     {
         return [
-            'contact_id' => random_int(2,50),
+            'contact_id' => random_int(1,200),
             'name' => fake()->company(),
             'email' => fake()->email(),
             'phone_mobile' => fake()-> phoneNumber(),

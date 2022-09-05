@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\ToDoSource;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -20,12 +22,14 @@ class DatabaseSeeder extends Seeder
             Contact_StatusSeeder::class,
             Contact_CategorySeeder::class,
             ContactSeeder::class,
-            ContactInchargeSeeder::class,
+            Contact_InchargeSeeder::class,
             TaskSeeder::class,
             PrioritySeeder::class,
             TextColorSeeder::class,
             ActionSeeder::class,
+            ToDoSourceSeeder::class,
             ToDoSeeder::class,
+            FollowUpSeeder::class,
 
         ]);
     }

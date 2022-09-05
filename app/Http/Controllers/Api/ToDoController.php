@@ -18,8 +18,10 @@ class ToDoController extends Controller
         $sort_field = request('sort_field');
 
         $selectedStatus = request('selectedStatus');
+        
         $selectedDate = request('selectedDate');
         $selectedMonth = request('selectedMonth');
+        // $selectedYear = request('selectedYear');
 
         $todo = ToDo::select([
             'to_dos.*',
@@ -40,13 +42,16 @@ class ToDoController extends Controller
             ->join('text_colors', 'to_dos.color_id', '=', 'text_colors.id')
             ->when($selectedStatus, function ($query) use ($selectedStatus) {
                 $query->where('to_dos.status_id', $selectedStatus);
-            })            
+            })
             ->when($selectedDate, function ($query) use ($selectedDate) {
-                $query->whereDate('to_dos.todo_created',('='), ($selectedDate));
+                $query->whereDate('to_dos.todo_created', ('='), ($selectedDate));
             })
             ->when($selectedMonth, function ($query) use ($selectedMonth) {
-                $query->whereMonth('to_dos.todo_created',('='), ($selectedMonth));
+                $query->whereMonth('to_dos.todo_created', ('='), ($selectedMonth));
             })
+            // ->when($selectedYear, function ($query) use ($selectedYear) {
+            //     $query->whereYear('to_dos.todo_created', ('='), ($selectedYear));
+            // })
             ->orderBy($sort_field, $sort_direction)
             ->search(trim($search_term))
             ->paginate($paginate);
@@ -146,10 +151,10 @@ class ToDoController extends Controller
     }
 
     public function info(ToDo $todo)
-    {   
+    {
         $todo = ToDo::with('priority', 'type', 'status', 'user', 'contact', 'color', 'task')
-                ->where('id', $todo->id)
-                ->get();
+            ->where('id', $todo->id)
+            ->get();
 
         $data = $todo->toArray();
 
