@@ -88,7 +88,8 @@ class ToDoController extends Controller
             'type_id' => $request->type_id,
             'task_id' => $request->task_id,
             'todo_remark' => $request->remark,
-            'color_id' => $request->color_id ?? '1',
+            'color_id' => $request->color_id ?? 1,
+            'source_id'=> 1,
         ]);
 
         return response()->json([
@@ -108,13 +109,15 @@ class ToDoController extends Controller
         $todo = ToDo::create([
             'priority_id' => $request->priority_id,
             'todo_created' => $request->todo_created,
+            'todo_deadline' => $request->todo_deadline ?? '2000-01-01',
             'contact_id' => $request->contact_id,
             'user_id' => $request->user_id,
             'task_id' => $request->task_id,
             'status_id' => $request->status_id,
             'type_id' => $request->type_id,
-            'todo_remark' => $request->remark,
+            'todo_remark' => $request->todo_remark ,
             'color_id' => $request->color_id ?? '1',
+            'source_id'=> $request->source_id
         ]);
 
         return response()->json([

@@ -18,9 +18,10 @@ class ToDo extends Model
         'status_id',
         'type_id',
         'priority_id',
-        'remark',
+        'todo_remark',
         'color_id',
-        'action_id'
+        'action_id',
+        'source_id',
     ];
 
     public function user(){
@@ -53,6 +54,10 @@ class ToDo extends Model
 
     public function action(){
         return $this -> belongsTo(Action::class);
+    }
+
+    public function source(){
+        return $this -> belongsTo(ToDoSource::class);
     }
 
 

@@ -35,7 +35,7 @@ class ToDoFactory extends Factory
             'type_id' => random_int(1, 5),
             'priority_id' => random_int(1, 2),
             'color_id' => random_int(1, 5),
-            'source_id' => random_int(1, 2),
+            'source_id' => random_int(1, 3),
         ];
     }
 }

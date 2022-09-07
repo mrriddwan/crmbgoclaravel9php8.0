@@ -182,7 +182,7 @@ export default {
                 type_id: "",
                 contact_id: "",
                 task_id: "",
-                remark: "",
+                todo_remark: "",
             },
             tasks: [],
             contacts: [],
@@ -212,7 +212,7 @@ export default {
                     type_id: this.todo.type_id,
                     contact_id: this.todo.contact_id,
                     task_id: this.todo.task_id,
-                    remark: this.todo.remark,
+                    todo_remark: this.todo.remark,
                     //need to add color id later
                 })
                 .then((res) => {

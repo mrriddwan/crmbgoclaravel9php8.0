@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\FollowUpResource;
 use App\Models\FollowUp;
+use App\Models\ToDo;
 use Illuminate\Http\Request;
 
 class FollowUpController extends Controller
@@ -34,7 +35,6 @@ class FollowUpController extends Controller
             'tasks.name as task_name',
             'priorities.name as priority_name',
             'contacts.name as contact_name',
-            'actions.name as action_name',
         ])  
             ->join('contacts', 'follow_ups.contact_id', '=', 'contacts.id')
             ->join('contact_statuses', 'follow_ups.status_id', '=', 'contact_statuses.id')
@@ -42,21 +42,20 @@ class FollowUpController extends Controller
             ->join('tasks', 'follow_ups.task_id', '=', 'tasks.id')
             ->join('priorities', 'follow_ups.priority_id', '=', 'priorities.id')
             ->join('users', 'follow_ups.user_id', '=', 'users.id')
-            ->leftJoin('actions', 'follow_ups.action_id', '=', 'actions.id')
             ->when($selectedStatus, function ($query) use ($selectedStatus) {
                 $query->where('follow_ups.status_id', $selectedStatus);
             })
             ->when($selectedDate, function ($query) use ($selectedDate) {
-                $query->whereDate('follow_ups.todo_created', ('='), ($selectedDate));
+                $query->whereDate('follow_ups.followup_created', ('='), ($selectedDate));
             })
             ->when($selectedMonth, function ($query) use ($selectedMonth) {
-                $query->whereMonth('follow_ups.todo_created', ('='), ($selectedMonth));
+                $query->whereMonth('follow_ups.followup_created', ('='), ($selectedMonth));
             })
             ->when($selectedYear, function ($query) use ($selectedYear) {
-                $query->whereYear('follow_ups.todo_created', ('='), ($selectedYear));
+                $query->whereYear('follow_ups.followup_created', ('='), ($selectedYear));
             })
             ->when($selectedDateStart && $selectedDateEnd, function ($query) use ($selectedDateStart, $selectedDateEnd) {
-                $query->whereBetween('follow_ups.todo_created', [$selectedDateStart, $selectedDateEnd]);
+                $query->whereBetween('follow_ups.followup_created', [$selectedDateStart, $selectedDateEnd]);
             })
 
             ->orderBy($sort_field, $sort_direction)
@@ -74,8 +73,8 @@ class FollowUpController extends Controller
 
         $followup = FollowUp::create([
             'priority_id' => $request->priority_id,
-            'follow_ups_created' => $request->follow_ups_created,
-            'follow_ups_time' => $request->follow_ups_time,
+            'followup_created' => $request->followup_created,
+            'followup_time' => $request->followup_time,
             'task_id' => $request->task_id,
             'followup_remark' => $request->followup_remark,
             'todo_id' => $request->todo_id,
@@ -130,7 +129,7 @@ class FollowUpController extends Controller
     public function delete(FollowUp $followup)
     {
         $followup->delete();
-        return response()->json('Contact deleted.');
+        return response()->json('Follow up deleted.');
     }
 
     public function info(FollowUp $followup)

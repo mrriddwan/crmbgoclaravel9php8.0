@@ -18,11 +18,15 @@ class ToDoSourceSeeder extends Seeder
         DB::table('to_do_sources')->insert([
             [
                 'id' => 1,
-                'name' => 'Contact List'
+                'name' => 'Contact'
             ],
             [
                 'id' => 2,
-                'name' => 'Follow Up List'
+                'name' => 'Follow Up'
+            ],
+            [
+                'id' => 3,
+                'name' => 'Internal'
             ],
         ]);
     }

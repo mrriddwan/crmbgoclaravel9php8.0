@@ -6,12 +6,6 @@
     </h1>
 
     <router-link
-        to="/followup/create"
-        class="m-2 inline-block items-center px-2 py-1 bg-blue-800 border border-transparent rounded-md font-semibold text-m text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
-    >
-        Create follow up</router-link
-    >
-    <router-link
         to="/dashboard"
         class="m-2 inline-block items-center px-2 py-1 bg-gray-800 border border-transparent rounded-md font-semibold text-m text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
     >
@@ -118,7 +112,7 @@
     </div>
     <div class="py-2">
         <Pagination
-            :data="todos"
+            :data="followups"
             @pagination-change-page="getFollowUps"
             :size="'small'"
             :align="'center'"
@@ -157,21 +151,21 @@
                     <th>
                         <a
                             href="#"
-                            @click.prevent="change_sort('todo_created')"
+                            @click.prevent="change_sort('followup_created')"
                         >
                             Date Created
                         </a>
                         <span
                             v-if="
                                 sort_direction == 'desc' &&
-                                sort_field == 'todo_created'
+                                sort_field == 'followup_created'
                             "
                             >&uarr;</span
                         >
                         <span
                             v-if="
                                 sort_direction == 'asc' &&
-                                sort_field == 'todo_created'
+                                sort_field == 'followup_created'
                             "
                             >&darr;</span
                         >
@@ -179,21 +173,21 @@
                     <th>
                         <a
                             href="#"
-                            @click.prevent="change_sort('todo_deadline')"
+                            @click.prevent="change_sort('followup_time')"
                         >
                             Time
                         </a>
                         <span
                             v-if="
                                 sort_direction == 'desc' &&
-                                sort_field == 'todo_deadline'
+                                sort_field == 'followup_time'
                             "
                             >&uarr;</span
                         >
                         <span
                             v-if="
                                 sort_direction == 'asc' &&
-                                sort_field == 'todo_deadline'
+                                sort_field == 'followup_time'
                             "
                             >&darr;</span
                         >
@@ -259,20 +253,20 @@
                         >
                     </th>
                     <th>
-                        <a href="#" @click.prevent="change_sort('remark')">
+                        <a href="#" @click.prevent="change_sort('followup_remark')">
                             Remark
                         </a>
                         <span
                             v-if="
                                 sort_direction == 'desc' &&
-                                sort_field == 'remark'
+                                sort_field == 'followup_remark'
                             "
                             >&uarr;</span
                         >
                         <span
                             v-if="
                                 sort_direction == 'asc' &&
-                                sort_field == 'remark'
+                                sort_field == 'followup_remark'
                             "
                             >&darr;</span
                         >
@@ -281,75 +275,53 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>#1</td>
-                    <td>Date of follow up</td>
-                    <td>Time of follow up</td>
-                    <td>Contact name</td>
-                    <td>User name</td>
-                    <td>Task in Follow up Form</td>
-                    <td>Remark from Follow up form</td>
+                <tr
+                    v-for="(followup, index) in followups.data"
+                    :key="followup.id"
+                >
+                    <td>{{ index + 1 }}</td>
+                    <td>{{ followup.followup_created }}</td>
                     <td>
-                        [[Delete button ]] and [[Link button to view in todo]]
+                        <span v-if="followup.followup_time">
+                            {{ followup.followup_time }}
+                        </span>
+                        <span v-else> No time set</span>
+                    </td>
+                    <td>
+                        <router-link
+                            :to="`/contacts/${followup.contact.id}/info`"
+                            custom
+                            v-slot="{ navigate, href }"
+                        >
+                            <a :href="href" @click.stop="navigate">{{
+                                followup.contact.name
+                            }}</a>
+                        </router-link>
+                    </td>
+                    <td>{{ followup.user.name }}</td>
+                    <td>{{ followup.task.name }}</td>
+                    <td>{{ followup.followup_remark }}</td>
+                    <td>
+                        <button
+                            class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-red-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                            @click="deleteFollowUp(followup.id)"
+                        >
+                        <TrashIcon class="h-3 w-3" />
+                        </button>
+
+                        <router-link
+                            :to="{
+                                name: 'todo_index',
+                                params: { selectedDate: followup.followup_created  },
+                            }"
+                            class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-blue-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                        >
+                            <i class="fa-solid fa-pen-to-square"></i
+                            ><EyeIcon class="h-4 w-4 mr-1" />@Todo</router-link
+                        >
                     </td>
                 </tr>
-                <!-- <tr v-for="todo in todos.data" :key="todo.id">
-                        <td>{{ todo.id }}</td>
-                        <td>{{ todo.todo_created }}</td>
-                        <td>
-                            <span v-if="todo.todo_deadline.length !== 0">
-                                {{ todo.todo_deadline }}
-                            </span>
-                            <span v-else> Unset yet </span>
-                        </td>
-                        <td>{{ todo.status.name }}</td>
-                        <td>{{ todo.type.name }}</td>
-                        <td>
-                            <router-link
-                                :to="`/contacts/${todo.contact.id}/info`"
-                                custom
-                                v-slot="{ navigate, href }"
-                            >
-                                <a :href="href" @click.stop="navigate">{{
-                                    todo.contact.name
-                                }}</a>
-                            </router-link>
-                        </td>
-                        <td>{{ todo.user.name }}</td>
-                        <td>{{ todo.task.name }}</td>
-                        <td>{{ todo.remark }}</td>
-                        <td>Progress indication</td>
-                        <td>
-                            <select class="form-control form-control-sm">
-                                <option disable value="">Select Action</option>
-                                <option
-                                    v-for="action in actions.data"
-                                    :key="action.id"
-                                    :value="action.id"
-                                >
-                                    {{ action.name }}
-                                </option>
-                            </select>
-                        </td>
-                        <td>
-                            <router-link
-                                :to="{
-                                    name: 'todo_edit',
-                                    params: { id: todo.id },
-                                }"
-                                class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-yellow-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
-                            >
-                                <i class="fa-solid fa-pen-to-square"></i
-                                >Edit</router-link
-                            >
-                            <button
-                                class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-red-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
-                                @click="deleteToDo(todo.id)"
-                            >
-                                Delete
-                            </button>
-                        </td>
-                    </tr> -->
+
             </tbody>
         </table>
     </div>
@@ -359,10 +331,13 @@
 import LaravelVuePagination from "laravel-vue-pagination";
 import axios from "axios";
 import moment from "moment";
+import { TrashIcon, EyeIcon } from "@heroicons/vue/24/solid";
 
 export default {
     components: {
         Pagination: LaravelVuePagination,
+        TrashIcon,
+        EyeIcon
     },
 
     mounted() {
@@ -385,9 +360,9 @@ export default {
         return {
             moment: moment,
             rangeDate: false,
-            todos: [],
+            followups: [],
             paginate: 10,
-            viewType: "day",
+            viewType: "month",
             search: "",
 
             statuses: "",
@@ -411,7 +386,7 @@ export default {
             selectedDateEnd: "",
 
             sort_direction: "desc",
-            sort_field: "todo_created",
+            sort_field: "followup_created",
             actions: "",
         };
     },
@@ -470,7 +445,7 @@ export default {
             }
             axios
                 .get(
-                    "/api/todos/index?" +
+                    "/api/followups/index?" +
                         "q=" +
                         this.search +
                         "&selectedDate=" +
@@ -491,7 +466,7 @@ export default {
                         this.sort_field
                 )
                 .then((res) => {
-                    this.todos = res.data;
+                    this.followups = res.data;
                 })
                 .catch((error) => {
                     console.log(error);
@@ -574,11 +549,11 @@ export default {
 
         searchType() {},
 
-        deleteToDo(id) {
+        deleteFollowUp(id) {
             if (!window.confirm("Are you sure?")) {
                 return;
             }
-            axios.delete("/api/todos/delete/" + id);
+            axios.delete("/api/followups/delete/" + id);
             this.getFollowUps();
         },
     },

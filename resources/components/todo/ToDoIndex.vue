@@ -123,27 +123,33 @@
         />
     </div>
 
-    <div class="grid grid-cols-3 w-full text-center">
+    <div class="grid grid-cols-3 w-full text-center bg-slate-500">
         <div class="text-left">
-            <button class="text-5xl text-left">&larr;</button>
+            <button
+                class="text-xl  text-left px-3 py-3"
+                id="decrementDate"
+                @click="decrementDate"
+            >
+                <ChevronDoubleLeftIcon class="h-5 w-4 bg-blue-300 rounded-lg" />
+            </button>
         </div>
         <span v-show="viewType === `day`">
-            <div class="">
-                <h3 class="uppercase font-extrabold">
+            <div class="mt-2">
+                <h3 class="uppercase text-white font-extrabold">
                     {{ showToday(selectedDate) }}
                 </h3>
             </div>
         </span>
         <span v-show="viewType === `month`">
-            <div>
-                <h3 class="uppercase font-extrabold">
+            <div class="mt-2">
+                <h3 class="uppercase text-white font-extrabold">
                     {{ showMonth(selectedMonthYear) }}
                 </h3>
             </div>
         </span>
         <span v-show="viewType === `range`">
-            <div>
-                <h3 class="uppercase font-extrabold">
+            <div class="mt-2">
+                <h3 class="uppercase text-white font-extrabold">
                     {{ showToday(selectedDateStart) }} ---
                     {{ showToday(selectedDateEnd) }}
                 </h3>
@@ -151,7 +157,13 @@
         </span>
 
         <div class="text-right">
-            <button class="text-5xl text-right">&rarr;</button>
+            <button
+                class="text-5xl text-right px-3 py-3"
+                id="incrementDate"
+                @click="incrementDate"
+            >
+                <ChevronDoubleRightIcon class="h-5 w-4  bg-blue-300 rounded-lg" />
+            </button>
         </div>
     </div>
 
@@ -160,6 +172,25 @@
             <thead>
                 <tr>
                     <th>#</th>
+                    <th>
+                        <a href="#" @click.prevent="change_sort('source_name')">
+                            Source
+                        </a>
+                        <span
+                            v-if="
+                                sort_direction == 'desc' &&
+                                sort_field == 'source_name'
+                            "
+                            >&uarr;</span
+                        >
+                        <span
+                            v-if="
+                                sort_direction == 'asc' &&
+                                sort_field == 'source_name'
+                            "
+                            >&darr;</span
+                        >
+                    </th>
                     <th>
                         <a
                             href="#"
@@ -342,12 +373,18 @@
             <tbody>
                 <tr v-for="(todo, index) in todos.data" :key="todo.id">
                     <td>{{ index + 1 }}</td>
+                    <td>{{ todo.source.name }}</td>
                     <td>{{ todo.todo_created }}</td>
                     <td>
-                        <span v-if="todo.todo_deadline.length !== 0">
+                        <span v-if="todo.todo_deadline === '2000-01-01'">
+                            None
+                        </span>
+                        <span v-else-if="todo.todo_deadline !== '2000-01-01'">
                             {{ todo.todo_deadline }}
                         </span>
-                        <span v-else> Unset yet </span>
+                        <span v-else="todo.todo_deadline.length === 0">
+                            Unset yet
+                        </span>
                     </td>
                     <td>{{ todo.status.name }}</td>
                     <td>{{ todo.type.name }}</td>
@@ -366,8 +403,8 @@
                     <td>{{ todo.task.name }}</td>
                     <td>{{ todo.todo_remark }}</td>
                     <td>Progress indication</td>
-                    <td>
-                        <span v-if="todo.action">
+                    <td class="text-center align-middle">
+                        <span v-if="todo.action" class="block align-middle font-extrabold uppercase text-white bg-green-500 rounded-md py-1 px-2 text-center text-sm">
                             {{ todo.action.name }}
                             <!-- <select
                                 disabled
@@ -437,13 +474,20 @@
 import LaravelVuePagination from "laravel-vue-pagination";
 import axios from "axios";
 import moment from "moment";
-import { PencilSquareIcon, TrashIcon } from "@heroicons/vue/24/solid";
+import {
+    PencilSquareIcon,
+    TrashIcon,
+    ChevronDoubleLeftIcon,
+    ChevronDoubleRightIcon,
+} from "@heroicons/vue/24/solid";
 
 export default {
     components: {
         Pagination: LaravelVuePagination,
         PencilSquareIcon,
         TrashIcon,
+        ChevronDoubleLeftIcon,
+        ChevronDoubleRightIcon,
     },
     mounted() {
         this.getStatus();
@@ -465,6 +509,9 @@ export default {
         //initialise date range
         this.selectedDateStart = this.selectedDate;
         this.selectedDateEnd = this.selectedDate;
+
+        this.incrementDate();
+        this.decrementDate();
     },
     data() {
         return {
@@ -578,8 +625,6 @@ export default {
             const [selectedDateStart, selectedDateEnd] = newVal.split("|");
             this.getSelectedDateStart(selectedDateStart);
             this.getSelectedDateEnd(selectedDateEnd);
-            console.log(this.selectedDateEnd);
-            console.log(this.selectedDateStart);
             this.getToDos();
             this.selectedDate = this.getSelectedDate(this.currentDate);
             this.selectedMonth = this.currentMonth;
@@ -738,14 +783,59 @@ export default {
                 params: { id: contactId, todoId: toDoId },
             });
         },
-        // updateAction(id) {
-        //     axios.put(`/api/todos/updateaction/${id}`)
-        //     alert("Task updated");
-        //     this.$router.push({
-        //         name: "followup_create",
-        //         params: { id: idContact },
-        //     });
-        // },
+
+        incrementDate() {
+            if (this.viewType === "day") {
+                document.getElementById("incrementDate").disabled = false;
+                return (this.selectedDate = moment(this.selectedDate).add(
+                    1,
+                    "d"
+                ));
+            } else if (this.viewType === "month") {
+                document.getElementById("incrementDate").disabled = false;
+                var monthYear =  this.selectedYear + "-" + this.selectedMonth + "-" + "01";
+                console.log('monthYear : ' + monthYear)
+                
+                var monthYearAdd = moment(monthYear).add(1, "M").format('YYYY-MM-DD');
+
+                console.log('monthYearAdd : ' + monthYearAdd)
+
+                this.selectedMonthYear = monthYearAdd;
+                var month = this.getSelectedMonth(monthYearAdd)
+                var year = this.getSelectedYear(monthYearAdd)
+                return this.currentMonth = year + "-" + month;
+
+ 
+            } else {
+                document.getElementById("incrementDate").disabled = true;
+            }
+        },
+
+        decrementDate() {
+            if (this.viewType === "day") {
+                document.getElementById("decrementDate").disabled = false;
+                return (this.selectedDate = moment(this.selectedDate).subtract(
+                    1,
+                    "d"
+                ));
+            } else if (this.viewType === "month") {
+                document.getElementById("decrementDate").disabled = false;
+                var monthYear =  this.selectedYear + "-" + this.selectedMonth + "-" + "01";
+                console.log('monthYear : ' + monthYear)
+                
+                var monthYearMinus = moment(monthYear).subtract(1, "M").format('YYYY-MM-DD');
+
+                console.log('monthYearMinus : ' + monthYearMinus)
+
+                this.selectedMonthYear = monthYearMinus;
+                var month = this.getSelectedMonth(monthYearMinus)
+                var year = this.getSelectedYear(monthYearMinus)
+                return this.currentMonth = year + "-" + month;
+                
+            } else {
+                document.getElementById("decrementDate").disabled = true;
+            }
+        },
     },
 };
 </script>

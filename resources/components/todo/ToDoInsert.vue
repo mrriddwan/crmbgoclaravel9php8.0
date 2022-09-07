@@ -140,14 +140,15 @@ export default {
             let contact = this.contact
             axios
                 .post("/api/todos/insert/" + this.$route.params.id, {
-                    priority_id: this.form.priority_id,
+                    priority_id: this.form.priority_id === "" ? 2 : 1,
                     user_id: contact.user_id,
                     todo_created: this.form.todo_created,
                     status_id: contact.status_id,
                     type_id: contact.type_id,
                     contact_id: contact.id,
                     task_id: this.form.task_id,
-                    remark: this.form.remark,
+                    todo_remark: this.form.remark,
+                    source_id: 1,
                 })
                 .then((res) => {
                     this.$router.push({ name: "todo_index" });

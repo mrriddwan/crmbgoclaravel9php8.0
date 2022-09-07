@@ -69,7 +69,7 @@ Route::get('/actions/index', [ActionController::class, 'index'])->name('action:i
 /*Follow Up API*/
 Route::get('/followups/index', [FollowUpController::class, 'index'])->name('followup:index');
 Route::post('/followups/store', [FollowUpController::class, 'store'])->name('followup:store');
-Route::get('/followups/show/{followup}', [FollowUpController::class, 'show'])->name('followup:show');
+Route::delete('/followups/delete/{followup}', [FollowUpController::class, 'delete'])->name('followup:delete');
 
 
 

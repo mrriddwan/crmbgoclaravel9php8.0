@@ -101,6 +101,7 @@ const routes = [
         path: "/todo/index",
         name: "todo_index",
         component: ToDoIndex,
+        props: true,
     },
 
     {

@@ -179,6 +179,8 @@ import GoBack from "../utils/GoBack.vue";
 
 export default {
     setup() {
+        let priority_id = ref(2)
+
         const form = reactive({
             priority_id: "",
             user_id: "",
@@ -188,7 +190,8 @@ export default {
             todo_created: "",
             todo_deadline: "",
             task_id: "",
-            remark: "",
+            todo_remark: "",
+            source_id: 3,
         });
 
         // const errors = ref('')
@@ -230,6 +233,7 @@ export default {
             statuses,
             categories,
             types,
+            priority_id,
         };
     },
 

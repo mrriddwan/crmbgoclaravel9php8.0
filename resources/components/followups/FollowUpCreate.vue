@@ -35,26 +35,29 @@
                             <input
                                 type="checkbox"
                                 true-value="1"
-                                value="2"
+                                false-value="2"
                                 id="large-toggle"
                                 class="sr-only peer"
                                 v-model="form.priority_id"
                             />
+                            <!-- <input type="hidden" v-model="checkedPriority" value="2" /> -->
                             <div
                                 class="w-14 h-7 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"
                             ></div>
+                            
                             <span
                                 class="ml-3 text-md font-extrabold uppercase text-black"
                                 >Urgent</span
                             >
                         </label>
+                        
                     </div>
                     <div class="form-group">
                         <label>Date of Follow Up</label>
                         <input
                             type="date"
                             class="block mt-1 w-max rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="form.followup_created"
+                            v-model="form.created"
                         />
                     </div>
 
@@ -113,10 +116,11 @@ import axios from "axios";
 export default {
     data() {
         return {
+            checkedPriority: [],
             form: {
                 priority_id: "",
-                follow_ups_created: "",
-                follow_ups_time: "",
+                followup_created: "",
+                followup_time: "",
                 task_id: "",
                 followup_remark: "",
                 todo_id: "",
@@ -128,7 +132,6 @@ export default {
             tasks: [],
             users: [],
             contact: [],
-            // name: ""
         };
     },
 
@@ -139,20 +142,33 @@ export default {
     },
 
     methods: {
-        insertToDo() {
-            let contact = this.contact;
+        createFollowUp() {
+            const contact = this.contact.data;
+            
+            axios.post("/api/followups/store", {
+                priority_id: this.form.priority_id === "" ? 2 : 1,
+                followup_created: this.form.created,
+                followup_time: this.form.time,
+                task_id: this.form.task_id,
+                followup_remark: this.form.remark,
+                todo_id: this.$route.params.todoId,
+                contact_id: contact.id,
+                user_id: contact.user_id,
+                status_id: contact.status_id,
+                type_id: contact.type_id,
+            });
             axios
-                .post("/api/followups/store", {
-                    priority_id: this.form.priority_id,
-                    follow_ups_created: this.form.follow_ups_created,
-                    follow_ups_time: this.form.follow_ups_time,
-                    task_id: contact.task_id,
-                    followup_remark: this.form.followup_remark,
-                    todo_id: this.$route.params.todoId,
-                    contact_id: contact.contact_id,
+                .post("/api/todos/insert/" + this.$route.params.id, {
+                    priority_id: this.form.priority_id === "" ? 2 : 1,
                     user_id: contact.user_id,
+                    todo_created: this.form.created,
+                    // todo_deadline: "2000-01-01",
                     status_id: contact.status_id,
                     type_id: contact.type_id,
+                    contact_id: contact.id,
+                    task_id: this.form.task_id,
+                    todo_remark: this.form.remark,
+                    source_id: 2,
                 })
                 .then((res) => {
                     this.$router.push({ name: "followup_index" });

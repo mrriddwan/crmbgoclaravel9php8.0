@@ -24,8 +24,10 @@ class ToDoResource extends JsonResource
             'task' => $this->task->only('id', 'name'),
             'status' => $this->status->only('id', 'name'),
             'type' => $this->type->only('id', 'name'),
-            // 'color' => $this->color->only('id', 'color_code'),
-            'action' => $this->action
+            'color' => $this->color->only('id', 'color_code'),
+            'action' => $this->action,
+            'priority' => $this->priority->only('id', 'name'),
+            'source' => $this->source->only('id', 'name'),
             
         ];
     }
