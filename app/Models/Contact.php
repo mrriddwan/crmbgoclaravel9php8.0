@@ -12,7 +12,7 @@ class Contact extends Model
     protected $fillable = [
         'name',
         'address',
-        'industry',
+        'industry_id',
         'status_id',
         'type_id',
         'category_id',
@@ -30,6 +30,10 @@ class Contact extends Model
 
     public function type(){
         return $this -> belongsTo(ContactType::class);
+    }
+
+    public function industry(){
+        return $this -> belongsTo(ContactIndustry::class);
     }
 
     public function status(){

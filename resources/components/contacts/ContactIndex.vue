@@ -9,7 +9,7 @@
         to="/contacts/create"
         class="m-2 inline-block items-center px-2 py-1 bg-gray-800 border border-transparent rounded-md font-semibold text-m text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
     >
-        Create to do</router-link
+        Create contact</router-link
     >
 
     <router-link
@@ -376,7 +376,7 @@
                         <td class="text-xs">{{ contact.user.name }}</td>
                         <td class="text-xs">{{ contact.status.name }}</td>
                         <td class="text-xs">{{ contact.type.name }}</td>
-                        <td class="text-xs">{{ contact.industry }}</td>
+                        <td class="text-xs">{{ contact.industry.name }}</td>
                         <td class="text-xs">
                             <router-link
                                 :to="`/contacts/${contact.id}/info`"

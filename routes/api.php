@@ -7,9 +7,11 @@ use App\Http\Controllers\Api\ContactStatusController;
 use App\Http\Controllers\Api\ContactTypeController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\ContactInchargeController;
+use App\Http\Controllers\Api\ContactIndustryController;
 use App\Http\Controllers\Api\FollowUpController;
 use App\Http\Controllers\Api\TaskController;
 use App\Http\Controllers\Api\ToDoController;
+use App\Models\ContactIndustry;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -40,8 +42,10 @@ Route::get('/contacts/info/{contact}', [ContactController::class, 'info'])->name
 Route::get('/contactcategory/index', [ContactCategoryController::class, 'index'])->name('category:index');
 Route::get('/contacttype/index', [ContactTypeController::class, 'index'])->name('type:index');
 Route::get('/contactstatus/index', [ContactStatusController::class, 'index'])->name('status:index');
-Route::get('/contactstatus/dropdown', [ContactStatusController::class, 'dropdown'])->name('status:dropdown');
+Route::get('/contactindustry/index', [ContactIndustryController::class, 'index'])->name('industry:index');
+// Route::get('/contactstatus/dropdown', [ContactStatusController::class, 'dropdown'])->name('status:dropdown');
 Route::get('/users/index', [UserController::class, 'index'])->name('user:index');
+
 
 /*Incharge API*/
 Route::post('/incharges/store', [ContactInchargeController::class, 'store'])->name('incharge:store');

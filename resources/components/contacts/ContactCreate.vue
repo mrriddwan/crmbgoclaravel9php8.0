@@ -9,9 +9,15 @@
                         <label>Status</label>
                         <select
                             class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="form.status_id" @change="getStatus">
+                            v-model="form.status_id"
+                            @change="getStatus"
+                        >
                             <option disabled value="">Please select one</option>
-                            <option v-for="status in statuses" :key="status.id" :value="status.id">
+                            <option
+                                v-for="status in statuses"
+                                :key="status.id"
+                                :value="status.id"
+                            >
                                 {{ status.name }}
                             </option>
                         </select>
@@ -20,9 +26,15 @@
                         <label>Type</label>
                         <select
                             class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="form.type_id" @change="getType">
+                            v-model="form.type_id"
+                            @change="getType"
+                        >
                             <option disabled value="">Please select one</option>
-                            <option v-for="type in types" :key="type.id" :value="type.id">
+                            <option
+                                v-for="type in types"
+                                :key="type.id"
+                                :value="type.id"
+                            >
                                 {{ type.name }}
                             </option>
                         </select>
@@ -30,43 +42,69 @@
 
                     <div class="form-group">
                         <label>Industry</label>
-                        <input type="text"
+                        <select
                             class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="form.industry" />
-                    </div>
-
-                    <div class="form-group">
-                        <label>Company Name</label>
-                        <input type="text"
-                            class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="form.name" />
+                            v-model="form.industry"
+                            @change="getIndustry"
+                        >
+                            <option disabled value="">Please select one</option>
+                            <option
+                                v-for="industry in industries"
+                                :key="industry.id"
+                                :value="industry.id"
+                            >
+                                {{ industry.name }}
+                            </option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label>Category</label>
                         <select
                             class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="form.category_id" @change="getCategory">
+                            v-model="form.category_id"
+                            @change="getCategory"
+                        >
                             <option disabled value="">Please select one</option>
-                            <option v-for="category in categories" :key="category.id" :value="category.id">
+                            <option
+                                v-for="category in categories"
+                                :key="category.id"
+                                :value="category.id"
+                            >
                                 {{ category.name }}
                             </option>
                         </select>
                     </div>
+
+                    <div class="form-group">
+                        <label>Company Name</label>
+                        <input
+                            type="text"
+                            class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                            v-model="form.name"
+                        />
+                    </div>
+
                     <div class="form-group">
                         <label>Address</label>
-                        <input type="text"
+                        <input
+                            type="text"
                             class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="form.address" />
+                            v-model="form.address"
+                        />
                     </div>
                     <div class="form-group">
                         <label>Remark</label>
-                        <input type="text"
+                        <input
+                            type="text"
                             class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="form.remark" />
+                            v-model="form.remark"
+                        />
                     </div>
 
-                    <button type="submit"
-                        class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150">
+                    <button
+                        type="submit"
+                        class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                    >
                         Create
                     </button>
                 </form>
@@ -76,31 +114,33 @@
 </template>
 
 <script>
-import GoBack from '../utils/GoBack.vue';
-import axios from 'axios';
+import GoBack from "../utils/GoBack.vue";
+import axios from "axios";
 
 export default {
     data() {
         return {
             form: {
-                status_id: '',
-                type_id: '',
-                industry: '',
-                company_name: '',
-                category_id: '',
-                address: '',
-                remark: '',
+                status_id: "",
+                type_id: "",
+                industry: "",
+                company_name: "",
+                category_id: "",
+                address: "",
+                remark: "",
             },
             types: [],
             categories: [],
-            statuses: []
+            statuses: [],
+            industries: [],
         };
     },
 
-    created () {
+    created() {
         this.getStatus();
         this.getCategory();
         this.getType();
+        this.getIndustry();
     },
 
     // created() {
@@ -119,22 +159,42 @@ export default {
                     name: this.form.name,
                     category_id: this.form.category_id,
                     address: this.form.address,
-                    remark: this.form.remark
+                    remark: this.form.remark,
                 })
                 .then((res) => {
-                    this.$router.push({ name: "contact_index" });
+                    if (window.confirm("Proceed to add incharge?")) {
+                        console.log(res.data.data.id);
+                        // contact_id = res.data.data.id
+                        this.$router.push(
+                            { name: "incharge_create" },
+                            { params: res.data.data.id }
+                        );
+                    } else {
+                        this.$router.push({ name: "contact_index" });
+                    }
                 });
         },
 
+        getIndustry() {
+            axios
+                .get("/api/contactindustry/index")
+                .then((res) => {
+                    this.industries = res.data.data;
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
 
         getStatus() {
             axios
                 .get("/api/contactstatus/index")
                 .then((res) => {
                     this.statuses = res.data.data;
-                }).catch((error) => {
-                    console.log(error);
                 })
+                .catch((error) => {
+                    console.log(error);
+                });
         },
 
         getCategory() {
@@ -142,9 +202,10 @@ export default {
                 .get("/api/contactcategory/index")
                 .then((res) => {
                     this.categories = res.data.data;
-                }).catch((error) => {
-                    console.log(error);
                 })
+                .catch((error) => {
+                    console.log(error);
+                });
         },
 
         getType() {
@@ -152,13 +213,12 @@ export default {
                 .get("/api/contacttype/index")
                 .then((res) => {
                     this.types = res.data.data;
-                }).catch((error) => {
-                    console.log(error);
                 })
+                .catch((error) => {
+                    console.log(error);
+                });
         },
-
-
     },
-    components: { GoBack }
+    components: { GoBack },
 };
 </script>

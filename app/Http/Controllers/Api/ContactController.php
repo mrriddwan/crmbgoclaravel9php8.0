@@ -33,10 +33,12 @@ class ContactController extends Controller
             'contact_types.name as type_name',
             'users.name as user_name',
             'contact_categories.name as category_name',
+            'contact_industries.name as industry_name'
         ])          
             ->join('contact_statuses', 'contacts.status_id', '=', 'contact_statuses.id')
             ->join('contact_types', 'contacts.type_id', '=', 'contact_types.id')
             ->join('contact_categories', 'contacts.category_id', '=', 'contact_categories.id')
+            ->join('contact_industries', 'contacts.industry_id', '=', 'contact_industries.id')
             ->join('users', 'contacts.user_id', '=', 'users.id')
             ->when($selectedStatus, function ($query) use ($selectedStatus) {
                 $query->where('contacts.status_id', $selectedStatus);
@@ -88,6 +90,7 @@ class ContactController extends Controller
             'industry' => $request->industry,
             'name' => $request->name,
             'category_id' => $request->category_id,
+            'industry_id' => $request->industry_id,
             'address' => $request->address,
             'remark' => $request->remark,
         ]);
@@ -108,7 +111,7 @@ class ContactController extends Controller
 
     public function info(Contact $contact)
     {   
-        $contact = Contact::with('category', 'type', 'status', 'incharge', 'user', 'todo')
+        $contact = Contact::with('category', 'type', 'status', 'incharge', 'user', 'todo', 'industry')
                 ->where('id', $contact->id)
                 ->get();
 

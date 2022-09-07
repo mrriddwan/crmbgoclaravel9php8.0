@@ -28,12 +28,12 @@ class ContactFactory extends Factory
         return [
             'name' => fake() -> company(),
             'address' => fake() -> address(),
-            'industry' => fake() -> word($maxNbChars=10),
             'remark' => fake() -> realText($maxNbChars=50),
             'user_id' => random_int(2,10),
             'status_id' => random_int(1,5),
             'type_id' => random_int(1,5),
             'category_id' => random_int(1,5),
+            'industry_id' => random_int(1,5),
         ];
     }
 }

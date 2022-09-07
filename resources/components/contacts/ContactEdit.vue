@@ -68,13 +68,21 @@
 
                     <div class="form-group mb-4">
                         <label class="font-bold">Industry</label>
-                        <input
-                            type="text"
-                            name="industry"
-                            id="industry"
-                            class="block mt-4 w-max rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="contact.industry"
-                        />
+                        <select
+                            class="block mt-1 w-max rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                            v-model="contact.industry_id"
+                            @change="getIndustry"
+                        >
+                            <option value="">Please select one</option>
+
+                            <option
+                                v-for="industry in industries"
+                                :key="industry.id"
+                                :value="industry.id"
+                            >
+                                {{ industry.name }}
+                            </option>
+                        </select>
                     </div>
 
                     <div class="mt-1 mb-4">
@@ -155,7 +163,7 @@ export default {
                 status_id: "",
                 type_id: "",
                 category_id: "",
-                industry: "",
+                industry_id: "",
                 name: "",
                 address: "",
                 remark: "",
@@ -164,6 +172,7 @@ export default {
             statuses: [],
             types: [],
             categories: [],
+            industries: [],
         };
     },
 
@@ -173,6 +182,7 @@ export default {
         this.getCategory();
         this.getUser();
         this.getType();
+        this.getIndustry();
         // this.getFormSelections();
     },
     methods: {
@@ -194,7 +204,7 @@ export default {
                     address: this.contact.address,
                     type_id: this.contact.type_id,
                     status_id: this.contact.status_id,
-                    industry: this.contact.industry,
+                    industry: this.contact.industry_id,
                     name: this.contact.name,
                     category_id: this.contact.category_id,
                     address: this.contact.address,
@@ -214,6 +224,16 @@ export default {
                 .catch((error) => {
                     console.log(error);
                 });
+        },
+
+        getIndustry(){
+            axios
+                .get("/api/contactindustry/index")
+                .then((res) => {
+                    this.industries = res.data.data;
+                }).catch((error) => {
+                    console.log(error);
+                })
         },
 
         getUser() {

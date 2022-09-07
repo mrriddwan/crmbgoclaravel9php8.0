@@ -21,13 +21,33 @@
                     >
                         {{ info.name }}
                     </td>
+                    <td>
+                        <router-link
+                            :to="{
+                                name: 'todo_insert',
+                                params: { id: info.id },
+                            }"
+                            class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-green-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                        >
+                            To Do</router-link
+                        >
+                        <router-link
+                            :to="{
+                                name: 'contacts_edit',
+                                params: { id: info.id },
+                            }"
+                            class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-yellow-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                        >
+                            Edit</router-link
+                        >
+                    </td>
                 </tr>
                 <tr>
                     <td>Industry</td>
                     <td
                         class="px-2 py-3 text-m leading-5 font-bold text-gray-900 whitespace-no-wrap"
                     >
-                        {{ info.industry }}
+                        {{ info.industry.name }}
                     </td>
                 </tr>
                 <tr>

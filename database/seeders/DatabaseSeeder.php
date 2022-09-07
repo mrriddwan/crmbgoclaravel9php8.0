@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             Contact_TypeSeeder::class,
             Contact_StatusSeeder::class,
             Contact_CategorySeeder::class,
+            Contact_IndustrySeeder::class,
             ContactSeeder::class,
             Contact_InchargeSeeder::class,
             TaskSeeder::class,

@@ -18,32 +18,37 @@ return new class extends Migration
             $table->timestamps();
             $table->string('name', 100);
             $table->string('address');
-            $table->string('industry', 50);
             $table->string('remark');
             $table->unsignedBigInteger('user_id')->nullable()->constrained();
             $table->unsignedBigInteger('status_id')->nullable()->constrained();
             $table->unsignedBigInteger('type_id')->nullable()->constrained();
             $table->unsignedBigInteger('category_id')->nullable()->constrained();
-
+            $table->unsignedBigInteger('industry_id')->nullable()->constrained();
+            
             $table->foreign('user_id')
-                  ->references('id')
-                  ->on('users')
-                  ->onDelete('cascade');
-                  
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade');
+
             $table->foreign('status_id')
-                  ->references('id')
-                  ->on('contact_statuses')
-                  ->onDelete('cascade');
+                ->references('id')
+                ->on('contact_statuses')
+                ->onDelete('cascade');
 
             $table->foreign('type_id')
-                  ->references('id')
-                  ->on('contact_types')
-                  ->onDelete('cascade');
+                ->references('id')
+                ->on('contact_types')
+                ->onDelete('cascade');
+
+            $table->foreign('industry_id')
+                ->references('id')
+                ->on('contact_industries')
+                ->onDelete('cascade');
 
             $table->foreign('category_id')
-                  ->references('id')
-                  ->on('contact_categories')
-                  ->onDelete('cascade');
+                ->references('id')
+                ->on('contact_categories')
+                ->onDelete('cascade');
         });
     }
 

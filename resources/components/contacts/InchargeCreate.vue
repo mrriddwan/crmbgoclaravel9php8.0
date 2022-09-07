@@ -166,6 +166,7 @@ export default {
                         params: { id: this.$route.params.id },
                     });
                 });
+                this.form.reset();
                 this.showIncharge()
         },
 
