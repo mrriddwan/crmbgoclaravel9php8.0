@@ -13,10 +13,15 @@
         </div>
 
         <div
-            class="items-center text-center text-white font-extrabold bg-slate-400 px-1 py-1 rounded-md"
-            v-for="contact_info in contact" :key="contact.id"
+            class="items-center text-center text-black font-extrabold px-1 py-3 rounded-md w-max mx-auto"
         >
-            <h2 class="px-2 py-3 bg-black-50">{{ contact_info.name }}</h2>
+            <h2
+                v-for="contact_info in contact"
+                :key="contact_info.id"
+                class="px-2 py-1 text-4xl bg-amber-300"
+            >
+                {{ contact_info.name }}
+            </h2>
         </div>
 
         <div class="row mt-3">
@@ -95,7 +100,6 @@
                     >
                         Create
                     </button>
-
                 </form>
             </div>
         </div>
@@ -111,20 +115,20 @@ export default {
         return {
             form: {
                 priority_id: "",
+                follow_ups_created: "",
+                follow_ups_time: "",
+                task_id: "",
+                followup_remark: "",
+                todo_id: "",
+                contact_id: "",
                 user_id: "",
-                date_created: "",
-                date_deadline: "",
                 status_id: "",
                 type_id: "",
-                contact_id: "",
-                task_id: "",
-                remark: "",
-                
             },
             tasks: [],
             users: [],
-            contact: []
-                // name: ""
+            contact: [],
+            // name: ""
         };
     },
 
@@ -136,20 +140,22 @@ export default {
 
     methods: {
         insertToDo() {
-            let contact = this.contact
+            let contact = this.contact;
             axios
-                .post("/api/todos/insert/" + this.$route.params.id, {
+                .post("/api/followups/store", {
                     priority_id: this.form.priority_id,
+                    follow_ups_created: this.form.follow_ups_created,
+                    follow_ups_time: this.form.follow_ups_time,
+                    task_id: contact.task_id,
+                    followup_remark: this.form.followup_remark,
+                    todo_id: this.$route.params.todoId,
+                    contact_id: contact.contact_id,
                     user_id: contact.user_id,
-                    todo_created: this.form.todo_created,
                     status_id: contact.status_id,
                     type_id: contact.type_id,
-                    contact_id: contact.id,
-                    task_id: this.form.task_id,
-                    remark: this.form.remark,
                 })
                 .then((res) => {
-                    this.$router.push({ name: "todo_index" });
+                    this.$router.push({ name: "followup_index" });
                 });
         },
 
@@ -157,7 +163,7 @@ export default {
             axios
                 .get("/api/contacts/show/" + this.$route.params.id)
                 .then((res) => {
-                    this.contact = res.data.data;
+                    this.contact = res.data;
                 })
                 .catch((error) => {
                     console.log(error);

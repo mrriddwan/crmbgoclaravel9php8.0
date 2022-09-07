@@ -18,10 +18,13 @@ class ToDoController extends Controller
         $sort_field = request('sort_field');
 
         $selectedStatus = request('selectedStatus');
-        
+
         $selectedDate = request('selectedDate');
         $selectedMonth = request('selectedMonth');
-        // $selectedYear = request('selectedYear');
+        $selectedYear = request('selectedYear');
+
+        $selectedDateStart = request('selectedDateStart');
+        $selectedDateEnd = request('selectedDateEnd');
 
         $todo = ToDo::select([
             'to_dos.*',
@@ -32,7 +35,8 @@ class ToDoController extends Controller
             'priorities.name as priority_name',
             'text_colors.color_code as color_name',
             'contacts.name as contact_name',
-            'to_do_sources.name as source_name'
+            'to_do_sources.name as source_name',
+            'actions.name as action_name',
         ])
             ->join('contacts', 'to_dos.contact_id', '=', 'contacts.id')
             ->join('contact_statuses', 'to_dos.status_id', '=', 'contact_statuses.id')
@@ -42,6 +46,7 @@ class ToDoController extends Controller
             ->join('users', 'to_dos.user_id', '=', 'users.id')
             ->join('text_colors', 'to_dos.color_id', '=', 'text_colors.id')
             ->join('to_do_sources', 'to_dos.source_id', '=', 'to_do_sources.id')
+            ->leftJoin('actions', 'to_dos.action_id', '=', 'actions.id')
             ->when($selectedStatus, function ($query) use ($selectedStatus) {
                 $query->where('to_dos.status_id', $selectedStatus);
             })
@@ -51,9 +56,13 @@ class ToDoController extends Controller
             ->when($selectedMonth, function ($query) use ($selectedMonth) {
                 $query->whereMonth('to_dos.todo_created', ('='), ($selectedMonth));
             })
-            // ->when($selectedYear, function ($query) use ($selectedYear) {
-            //     $query->whereYear('to_dos.todo_created', ('='), ($selectedYear));
-            // })
+            ->when($selectedYear, function ($query) use ($selectedYear) {
+                $query->whereYear('to_dos.todo_created', ('='), ($selectedYear));
+            })
+            ->when($selectedDateStart && $selectedDateEnd, function ($query) use ($selectedDateStart, $selectedDateEnd) {
+                $query->whereBetween('to_dos.todo_created', [$selectedDateStart, $selectedDateEnd]);
+            })
+
             ->orderBy($sort_field, $sort_direction)
             ->search(trim($search_term))
             ->paginate($paginate);
@@ -141,7 +150,19 @@ class ToDoController extends Controller
 
         return response()->json([
             'status' => true,
-            'message' => 'Successfully update data To Do ' . $todo->name,
+            'message' => 'Successfully update data To Do ' . $todo->id,
+            'data' => $todo,
+        ]);
+    }
+    
+    public function action(Request $request, ToDo $todo)
+    {
+        $todo->update([
+            'action_id' => $request->action_id,
+        ]);
+        return response()->json([
+            'status' => true,
+            'message' => 'Successfully update data To Do ' . $todo->id,
             'data' => $todo,
         ]);
     }

@@ -134,7 +134,7 @@ const routes = [
     },
 
     {
-        path: "/followup/create",
+        path: "/followup/:id/create",
         name: "followup_create",
         component: FollowUpCreate,
     },

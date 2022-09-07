@@ -12,4 +12,8 @@ class Action extends Model
     protected $fillable = [
         'name'
     ];
+
+    public function todo(){
+        return $this->belongsTo(ToDo::class);
+    }
 }

@@ -20,6 +20,7 @@ class ToDo extends Model
         'priority_id',
         'remark',
         'color_id',
+        'action_id'
     ];
 
     public function user(){
@@ -49,6 +50,12 @@ class ToDo extends Model
     public function color(){
         return $this -> belongsTo(TextColor::class);
     }
+
+    public function action(){
+        return $this -> belongsTo(Action::class);
+    }
+
+
 
     public function scopeSearch($query, $term)
     {   

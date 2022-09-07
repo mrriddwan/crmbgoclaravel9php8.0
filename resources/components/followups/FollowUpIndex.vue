@@ -49,9 +49,9 @@
             <span v-else>
                 <p>select month/year</p>
                 <input
-                    v-model.lazy="selectedMonth"
+                    v-model.lazy="currentMonth"
                     class="border-gray-300"
-                    type="date"
+                    type="month"
                 />
             </span>
         </div>
@@ -62,13 +62,13 @@
             <input type="checkbox" v-model="rangeDate" />
         </div>
         <div
-            v-if="rangeDate"
+            v-show="rangeDate"
             class="m-1 inline-block items-center px-2 py-1 border-gray-500 border-2"
         >
             <div class="border-gray-800 border-2 flex px-2 py-2">
                 <p class="px-1 mt-1">select start date</p>
                 <input
-                    v-model.lazy="selectedDate"
+                    v-model.lazy="minDateRange"
                     class="border-gray-300 w-36"
                     type="date"
                 />
@@ -76,7 +76,7 @@
             <div class="border-gray-800 border-2 flex px-2 py-2">
                 <p class="px-1 mt-1">select end date</p>
                 <input
-                    v-model.lazy="selectedMonth"
+                    v-model.lazy="maxDateRange"
                     class="border-gray-300 w-36"
                     type="month"
                 />
@@ -106,7 +106,9 @@
         </div>
     </div>
 
-    <div class="m-2 inline-block items-center px-2 py-1 border-gray-500 border-2">
+    <div
+        class="m-2 inline-block items-center px-2 py-1 border-gray-500 border-2"
+    >
         <select v-model="paginate" class="form-control">
             <option value="10">10</option>
             <option value="20">50</option>
@@ -117,194 +119,181 @@
     <div class="py-2">
         <Pagination
             :data="todos"
-            @pagination-change-page="getToDos"
+            @pagination-change-page="getFollowUps"
             :size="'small'"
             :align="'center'"
             class="pagination"
         />
     </div>
 
-
-
-        <!-- <div>this is the selected day: {{ getSelectedDay() }}</div>
-        <div>this is the selected month: {{ getSelectedMonth() }}</div>
-        <div>this is the selected year: {{ getSelectedYear() }}</div> -->
-    <div>
-        <div class="grid grid-cols-3 w-full text-center">
-            <div class="text-left">
-                <button class="text-5xl text-left">&larr;</button>
-            </div>
-            <span v-if="viewType === `day`">
-                <div class="">
-                    <h3 class="uppercase font-extrabold">
-                        {{ showToday(selectedDate) }}
-                    </h3>
-                </div>
-            </span>
-            <span v-else>
-                <div>
-                    <h3 class="uppercase font-extrabold">
-                        {{ showMonth(selectedMonth) }}
-                    </h3>
-                </div>
-            </span>
-            <div class="text-right">
-                <button class="text-5xl text-right">&rarr;</button>
-            </div>
+    <div class="grid grid-cols-3 w-full text-center">
+        <div class="text-left">
+            <button class="text-5xl text-left">&larr;</button>
         </div>
+        <span v-if="viewType === `day`">
+            <div class="">
+                <h3 class="uppercase font-extrabold">
+                    {{ showToday(selectedDate) }}
+                </h3>
+            </div>
+        </span>
+        <span v-else>
+            <div>
+                <h3 class="uppercase font-extrabold">
+                    {{ showMonth(selectedMonthYear) }}
+                </h3>
+            </div>
+        </span>
+        <div class="text-right">
+            <button class="text-5xl text-right">&rarr;</button>
+        </div>
+    </div>
 
-        <div>
-            <table class="table table-hover table-bordered" id="example">
-                <thead>
-                    <tr>
-                        <th>#List no.</th>
-                        <th>
-                            <a
-                                href="#"
-                                @click.prevent="change_sort('todo_created')"
-                            >
-                                Date Created
-                            </a>
-                            <span
-                                v-if="
-                                    sort_direction == 'desc' &&
-                                    sort_field == 'todo_created'
-                                "
-                                >&uarr;</span
-                            >
-                            <span
-                                v-if="
-                                    sort_direction == 'asc' &&
-                                    sort_field == 'todo_created'
-                                "
-                                >&darr;</span
-                            >
-                        </th>
-                        <th>
-                            <a
-                                href="#"
-                                @click.prevent="change_sort('todo_deadline')"
-                            >
-                                Time
-                            </a>
-                            <span
-                                v-if="
-                                    sort_direction == 'desc' &&
-                                    sort_field == 'todo_deadline'
-                                "
-                                >&uarr;</span
-                            >
-                            <span
-                                v-if="
-                                    sort_direction == 'asc' &&
-                                    sort_field == 'todo_deadline'
-                                "
-                                >&darr;</span
-                            >
-                        </th>
-                        <th>
-                            <a
-                                href="#"
-                                @click.prevent="change_sort('contact_name')"
-                            >
-                                Contact
-                            </a>
-                            <span
-                                v-if="
-                                    sort_direction == 'desc' &&
-                                    sort_field == 'contact_name'
-                                "
-                                >&uarr;</span
-                            >
-                            <span
-                                v-if="
-                                    sort_direction == 'asc' &&
-                                    sort_field == 'contact_name'
-                                "
-                                >&darr;</span
-                            >
-                        </th>
-                        <th>
-                            <a
-                                href="#"
-                                @click.prevent="change_sort('user_name')"
-                            >
-                                CS
-                            </a>
-                            <span
-                                v-if="
-                                    sort_direction == 'desc' &&
-                                    sort_field == 'user_name'
-                                "
-                                >&uarr;</span
-                            >
-                            <span
-                                v-if="
-                                    sort_direction == 'asc' &&
-                                    sort_field == 'user_name'
-                                "
-                                >&darr;</span
-                            >
-                        </th>
-                        <th>
-                            <a
-                                href="#"
-                                @click.prevent="change_sort('task_name')"
-                            >
-                                Task
-                            </a>
-                            <span
-                                v-if="
-                                    sort_direction == 'desc' &&
-                                    sort_field == 'task_name'
-                                "
-                                >&uarr;</span
-                            >
-                            <span
-                                v-if="
-                                    sort_direction == 'asc' &&
-                                    sort_field == 'task_name'
-                                "
-                                >&darr;</span
-                            >
-                        </th>
-                        <th>
-                            <a href="#" @click.prevent="change_sort('remark')">
-                                Remark
-                            </a>
-                            <span
-                                v-if="
-                                    sort_direction == 'desc' &&
-                                    sort_field == 'remark'
-                                "
-                                >&uarr;</span
-                            >
-                            <span
-                                v-if="
-                                    sort_direction == 'asc' &&
-                                    sort_field == 'remark'
-                                "
-                                >&darr;</span
-                            >
-                        </th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>#1</td>
-                        <td>Date of follow up</td>
-                        <td>Time of follow up</td>
-                        <td>Contact name</td>
-                        <td>User name</td>
-                        <td>Task in Follow up Form</td>
-                        <td>Remark from Follow up form</td>
-                        <td>
-                            [[Delete button ]] and [[Link button to view in
-                            todo]]
-                        </td>
-                    </tr>
-                    <!-- <tr v-for="todo in todos.data" :key="todo.id">
+    <div>
+        <table class="table table-hover table-bordered" id="example">
+            <thead>
+                <tr>
+                    <th>#List no.</th>
+                    <th>
+                        <a
+                            href="#"
+                            @click.prevent="change_sort('todo_created')"
+                        >
+                            Date Created
+                        </a>
+                        <span
+                            v-if="
+                                sort_direction == 'desc' &&
+                                sort_field == 'todo_created'
+                            "
+                            >&uarr;</span
+                        >
+                        <span
+                            v-if="
+                                sort_direction == 'asc' &&
+                                sort_field == 'todo_created'
+                            "
+                            >&darr;</span
+                        >
+                    </th>
+                    <th>
+                        <a
+                            href="#"
+                            @click.prevent="change_sort('todo_deadline')"
+                        >
+                            Time
+                        </a>
+                        <span
+                            v-if="
+                                sort_direction == 'desc' &&
+                                sort_field == 'todo_deadline'
+                            "
+                            >&uarr;</span
+                        >
+                        <span
+                            v-if="
+                                sort_direction == 'asc' &&
+                                sort_field == 'todo_deadline'
+                            "
+                            >&darr;</span
+                        >
+                    </th>
+                    <th>
+                        <a
+                            href="#"
+                            @click.prevent="change_sort('contact_name')"
+                        >
+                            Contact
+                        </a>
+                        <span
+                            v-if="
+                                sort_direction == 'desc' &&
+                                sort_field == 'contact_name'
+                            "
+                            >&uarr;</span
+                        >
+                        <span
+                            v-if="
+                                sort_direction == 'asc' &&
+                                sort_field == 'contact_name'
+                            "
+                            >&darr;</span
+                        >
+                    </th>
+                    <th>
+                        <a href="#" @click.prevent="change_sort('user_name')">
+                            CS
+                        </a>
+                        <span
+                            v-if="
+                                sort_direction == 'desc' &&
+                                sort_field == 'user_name'
+                            "
+                            >&uarr;</span
+                        >
+                        <span
+                            v-if="
+                                sort_direction == 'asc' &&
+                                sort_field == 'user_name'
+                            "
+                            >&darr;</span
+                        >
+                    </th>
+                    <th>
+                        <a href="#" @click.prevent="change_sort('task_name')">
+                            Task
+                        </a>
+                        <span
+                            v-if="
+                                sort_direction == 'desc' &&
+                                sort_field == 'task_name'
+                            "
+                            >&uarr;</span
+                        >
+                        <span
+                            v-if="
+                                sort_direction == 'asc' &&
+                                sort_field == 'task_name'
+                            "
+                            >&darr;</span
+                        >
+                    </th>
+                    <th>
+                        <a href="#" @click.prevent="change_sort('remark')">
+                            Remark
+                        </a>
+                        <span
+                            v-if="
+                                sort_direction == 'desc' &&
+                                sort_field == 'remark'
+                            "
+                            >&uarr;</span
+                        >
+                        <span
+                            v-if="
+                                sort_direction == 'asc' &&
+                                sort_field == 'remark'
+                            "
+                            >&darr;</span
+                        >
+                    </th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>#1</td>
+                    <td>Date of follow up</td>
+                    <td>Time of follow up</td>
+                    <td>Contact name</td>
+                    <td>User name</td>
+                    <td>Task in Follow up Form</td>
+                    <td>Remark from Follow up form</td>
+                    <td>
+                        [[Delete button ]] and [[Link button to view in todo]]
+                    </td>
+                </tr>
+                <!-- <tr v-for="todo in todos.data" :key="todo.id">
                         <td>{{ todo.id }}</td>
                         <td>{{ todo.todo_created }}</td>
                         <td>
@@ -361,9 +350,8 @@
                             </button>
                         </td>
                     </tr> -->
-                </tbody>
-            </table>
-        </div>
+            </tbody>
+        </table>
     </div>
 </template>
 
@@ -371,7 +359,6 @@
 import LaravelVuePagination from "laravel-vue-pagination";
 import axios from "axios";
 import moment from "moment";
-import Checkbox from "../../../vendor/laravel/breeze/stubs/inertia-vue/resources/js/Components/Checkbox.vue";
 
 export default {
     components: {
@@ -385,15 +372,14 @@ export default {
         //initial date selection
         this.currentDate = this.showToday();
         this.selectedDate = this.currentDate;
+        this.getFollowUps();
 
         //initial month selection
-        this.currentMonth = this.getSelectedMonth();
-        this.selectedMonth = this.currentMonth;
-
-        this.currentYear = this.getSelectedYear();
-        this.selectedYear = this.currentYear;
-
-        this.getToDos();
+        this.selectedMonth = this.getSelectedMonth(this.currentDate);
+        this.selectedYear = this.getSelectedYear(this.currentDate);
+        this.selectedMonthYear =
+            this.selectedYear + "-" + this.selectedMonth + "-" + "01";
+        this.currentMonth = this.selectedYear + "-" + this.selectedMonth;
     },
     data() {
         return {
@@ -413,9 +399,13 @@ export default {
             currentMonth: "",
             currentYear: "",
 
+            minDateRange: "",
+            maxDateRange: "",
+
             selectedDate: "",
             selectedMonth: "",
             selectedYear: "",
+            selectedMonthYear: "",
 
             selectedDateStart: "",
             selectedDateEnd: "",
@@ -427,38 +417,54 @@ export default {
     },
     watch: {
         paginate: function (value) {
-            this.getToDos();
+            this.getFollowUps();
         },
         search: function (value) {
-            this.getToDos();
+            this.getFollowUps();
         },
         selectedStatus: function (value) {
-            this.getToDos();
+            this.getFollowUps();
         },
 
         selectedDate: function (value) {
             if (this.viewType === "day") {
                 this.selectedMonth = "";
+                this.selectedYear = "";
                 this.getSelectedDate();
-                this.getToDos();
+                this.getFollowUps();
+            }
+        },
+        viewType: function (value) {
+            if (value === "day") {
+                if (this.viewType === "day") {
+                    this.selectedMonth = "";
+                    this.selectedYear = "";
+                    this.getSelectedDate();
+                    this.getFollowUps();
+                }
+            } else {
+                this.selectedDate = "";
+                const monthYear = this.selectedMonthYear;
+                this.getSelectedMonth(monthYear);
+                this.getSelectedYear(monthYear);
+                this.getFollowUps();
+                this.selectedDate = this.currentDate;
             }
         },
 
-        selectedMonth: function (value) {
-            console.log(this.selectedMonth);
-            console.log(this.selectedYear);
-            if (this.viewType === "month") {
-                this.selectedDate = "";
-                this.selectedMonth = moment(this.selectedMonth).format("MM");
-                this.selectedYear = moment(this.selectedMonth).format("YYYY");
-                console.log(this.selectedYear);
-                this.getToDos();
-            }
+        currentMonth: function (value) {
+            this.selectedDate = "";
+            const monthYear = this.currentMonth + "-" + "01";
+            this.selectedMonthYear = monthYear;
+            this.getSelectedMonth(monthYear);
+            this.getSelectedYear(monthYear);
+            this.getFollowUps();
+            this.selectedDate = this.currentDate;
         },
     },
 
     methods: {
-        getToDos(page = 1) {
+        getFollowUps(page = 1) {
             if (typeof page === "undefined") {
                 page = 1;
             }
@@ -531,7 +537,7 @@ export default {
             } else {
                 this.sort_field = field;
             }
-            this.getToDos();
+            this.getFollowUps();
         },
 
         showToday(date) {
@@ -573,7 +579,7 @@ export default {
                 return;
             }
             axios.delete("/api/todos/delete/" + id);
-            this.getToDos();
+            this.getFollowUps();
         },
     },
 };

@@ -18,13 +18,14 @@ class ToDoResource extends JsonResource
             'id' => $this->id,
             'todo_created' => $this->todo_created,
             'todo_deadline' => $this->todo_deadline,
-            'remark' => substr($this->remark, 0, 20) . '...',
+            'todo_remark' => substr($this->todo_remark, 0, 20) . '...',
             'contact' => $this->contact->only('id', 'name'),
             'user' => $this->user->only('id', 'name'),
             'task' => $this->task->only('id', 'name'),
             'status' => $this->status->only('id', 'name'),
             'type' => $this->type->only('id', 'name'),
             // 'color' => $this->color->only('id', 'color_code'),
+            'action' => $this->action
             
         ];
     }

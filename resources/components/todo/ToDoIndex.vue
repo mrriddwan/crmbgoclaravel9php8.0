@@ -33,12 +33,13 @@
             <select v-model="viewType" class="form-control text-center">
                 <option value="day">Day</option>
                 <option value="month">Month</option>
+                <option value="range">Date Range</option>
             </select>
         </div>
         <div
             class="m-2 inline-block items-center px-2 py-1 border-gray-500 border-2"
         >
-            <span v-if="viewType === `day`">
+            <span v-show="viewType === `day`">
                 <p>select date</p>
                 <input
                     v-model.lazy="selectedDate"
@@ -46,7 +47,7 @@
                     type="date"
                 />
             </span>
-            <span v-else>
+            <span v-show="viewType === `month`">
                 <p>select month/year</p>
                 <input
                     v-model.lazy="currentMonth"
@@ -54,34 +55,30 @@
                     type="month"
                 />
             </span>
+
+            <span
+                v-show="viewType === `range`"
+                class="m-1 inline-block items-center px-2 py-1 border-gray-500 border-2"
+            >
+                <div class="border-gray-800 border-2 flex px-2 py-2">
+                    <p class="px-1 mt-1">select start date</p>
+                    <input
+                        v-model.lazy="selectedDateStart"
+                        class="border-gray-300 w-36"
+                        type="date"
+                    />
+                </div>
+                <div class="border-gray-800 border-2 flex px-2 py-2">
+                    <p class="px-1 mt-1">select end date</p>
+                    <input
+                        v-model.lazy="selectedDateEnd"
+                        class="border-gray-300 w-36"
+                        type="date"
+                    />
+                </div>
+            </span>
         </div>
-        <div
-            class="m-2 inline-block items-center px-2 py-1 border-gray-500 border-2"
-        >
-            <p class="text-xs">Range date</p>
-            <input type="checkbox" v-model="rangeDate" />
-        </div>
-        <div
-            v-if="rangeDate"
-            class="m-1 inline-block items-center px-2 py-1 border-gray-500 border-2"
-        >
-            <div class="border-gray-800 border-2 flex px-2 py-2">
-                <p class="px-1 mt-1">select start date</p>
-                <input
-                    v-model.lazy="minDateRange"
-                    class="border-gray-300 w-36"
-                    type="date"
-                />
-            </div>
-            <div class="border-gray-800 border-2 flex px-2 py-2">
-                <p class="px-1 mt-1">select end date</p>
-                <input
-                    v-model.lazy="maxDateRange"
-                    class="border-gray-300 w-36"
-                    type="month"
-                />
-            </div>
-        </div>
+
         <div
             class="m-2 inline-block items-center px-2 py-1 border-gray-500 border-2"
         >
@@ -130,20 +127,29 @@
         <div class="text-left">
             <button class="text-5xl text-left">&larr;</button>
         </div>
-        <span v-if="viewType === `day`">
+        <span v-show="viewType === `day`">
             <div class="">
                 <h3 class="uppercase font-extrabold">
                     {{ showToday(selectedDate) }}
                 </h3>
             </div>
         </span>
-        <span v-else>
+        <span v-show="viewType === `month`">
             <div>
                 <h3 class="uppercase font-extrabold">
                     {{ showMonth(selectedMonthYear) }}
                 </h3>
             </div>
         </span>
+        <span v-show="viewType === `range`">
+            <div>
+                <h3 class="uppercase font-extrabold">
+                    {{ showToday(selectedDateStart) }} ---
+                    {{ showToday(selectedDateEnd) }}
+                </h3>
+            </div>
+        </span>
+
         <div class="text-right">
             <button class="text-5xl text-right">&rarr;</button>
         </div>
@@ -153,7 +159,7 @@
         <table class="table table-hover table-bordered" id="example">
             <thead>
                 <tr>
-                    <th>ID</th>
+                    <th>#</th>
                     <th>
                         <a
                             href="#"
@@ -310,20 +316,20 @@
                         >
                     </th>
                     <th>
-                        <a href="#" @click.prevent="change_sort('remark')">
+                        <a href="#" @click.prevent="change_sort('todo_remark')">
                             Remark
                         </a>
                         <span
                             v-if="
                                 sort_direction == 'desc' &&
-                                sort_field == 'todos_remark'
+                                sort_field == 'todo_remark'
                             "
                             >&uarr;</span
                         >
                         <span
                             v-if="
                                 sort_direction == 'asc' &&
-                                sort_field == 'todos_remark'
+                                sort_field == 'todo_remark'
                             "
                             >&darr;</span
                         >
@@ -334,8 +340,8 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="todo in todos.data" :key="todo.id">
-                    <td>{{ todo.id }}</td>
+                <tr v-for="(todo, index) in todos.data" :key="todo.id">
+                    <td>{{ index + 1 }}</td>
                     <td>{{ todo.todo_created }}</td>
                     <td>
                         <span v-if="todo.todo_deadline.length !== 0">
@@ -358,19 +364,51 @@
                     </td>
                     <td>{{ todo.user.name }}</td>
                     <td>{{ todo.task.name }}</td>
-                    <td>{{ todo.remark }}</td>
+                    <td>{{ todo.todo_remark }}</td>
                     <td>Progress indication</td>
                     <td>
-                        <select class="form-control form-control-sm">
-                            <option disable value="">Select Action</option>
-                            <option
-                                v-for="action in actions.data"
-                                :key="action.id"
-                                :value="action.id"
+                        <span v-if="todo.action">
+                            {{ todo.action.name }}
+                            <!-- <select
+                                disabled
+                                id="selectAction"
+                                class="form-control form-control-sm"
+                                v-model="todo.action_id"
                             >
-                                {{ action.name }}
-                            </option>
-                        </select>
+                                <option
+                                    v-for="action in actions.data"
+                                    :key="action.id"
+                                    :value="action.id"
+                                >
+                                    {{ action.id }}
+                                </option>
+                            </select> -->
+                        </span>
+                        <span v-else>
+                            <select
+                                id="selectAction"
+                                class="form-control form-control-sm"
+                                @change="
+                                    actionSelected(
+                                        this.todo_action.action_id,
+                                        todo.id,
+                                        todo.contact.id
+                                    )
+                                "
+                                v-model="todo_action.action_id"
+                            >
+                                <option disabled value="">Select Action</option>
+                                <option
+                                    v-for="action in actions.data"
+                                    :key="action.id"
+                                    :value="action.id"
+                                >
+                                    {{ action.name }}
+                                </option>
+                            </select>
+                        </span>
+
+                        <!-- @select="updateAction(action.id)" -->
                     </td>
                     <td>
                         <router-link
@@ -380,14 +418,13 @@
                             }"
                             class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-yellow-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
                         >
-                            <i class="fa-solid fa-pen-to-square"></i
-                            >Edit</router-link
-                        >
+                            <PencilSquareIcon class="h-3 w-3"
+                        /></router-link>
                         <button
                             class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-red-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
                             @click="deleteToDo(todo.id)"
                         >
-                            Delete
+                            <TrashIcon class="h-3 w-3" />
                         </button>
                     </td>
                 </tr>
@@ -400,37 +437,43 @@
 import LaravelVuePagination from "laravel-vue-pagination";
 import axios from "axios";
 import moment from "moment";
+import { PencilSquareIcon, TrashIcon } from "@heroicons/vue/24/solid";
 
 export default {
     components: {
         Pagination: LaravelVuePagination,
+        PencilSquareIcon,
+        TrashIcon,
     },
-
     mounted() {
         this.getStatus();
         this.getActions();
         this.getUsers();
+
         //initial date selection
         this.currentDate = this.showToday();
         this.selectedDate = this.currentDate;
+        this.getSelectedDate(this.selectedDate);
+        console.log(this.selectedDate);
         this.getToDos();
-
         //initial month selection
         this.selectedMonth = this.getSelectedMonth(this.currentDate);
         this.selectedYear = this.getSelectedYear(this.currentDate);
         this.selectedMonthYear =
             this.selectedYear + "-" + this.selectedMonth + "-" + "01";
         this.currentMonth = this.selectedYear + "-" + this.selectedMonth;
+        //initialise date range
+        this.selectedDateStart = this.selectedDate;
+        this.selectedDateEnd = this.selectedDate;
     },
     data() {
         return {
             moment: moment,
-            rangeDate: false,
             todos: [],
             paginate: 10,
             viewType: "day",
             search: "",
-
+            todo: "",
             statuses: "",
             selectedStatus: "",
             users: "",
@@ -439,9 +482,6 @@ export default {
             currentDate: "",
             currentMonth: "",
             currentYear: "",
-
-            minDateRange: "",
-            maxDateRange: "",
 
             selectedDate: "",
             selectedMonth: "",
@@ -454,6 +494,9 @@ export default {
             sort_direction: "desc",
             sort_field: "todo_created",
             actions: "",
+            todo_action: {
+                action_id: "",
+            },
         };
     },
     watch: {
@@ -467,40 +510,84 @@ export default {
             this.getToDos();
         },
 
-        selectedDate: function (value) {
-            if (this.viewType === "day") {
-                this.selectedMonth = "";
-                this.selectedYear = "";
-                this.getSelectedDate();
-                this.getToDos();
-            }
-        },
         viewType: function (value) {
             if (value === "day") {
                 if (this.viewType === "day") {
                     this.selectedMonth = "";
                     this.selectedYear = "";
-                    this.getSelectedDate();
+                    this.selectedDateStart = "";
+                    this.selectedDateEnd = "";
                     this.getToDos();
+                    this.selectedMonth = this.currentMonth;
+                    this.selectedDateStart = this.selectedDate;
+                    this.selectedDateEnd = this.selectedDate;
                 }
-            } else {
+            }
+            if (value === "month") {
                 this.selectedDate = "";
+                this.selectedDateStart = "";
+                this.selectedDateEnd = "";
                 const monthYear = this.selectedMonthYear;
                 this.getSelectedMonth(monthYear);
                 this.getSelectedYear(monthYear);
                 this.getToDos();
                 this.selectedDate = this.currentDate;
+                this.selectedDateStart = this.currentDate;
+                this.selectedDateEnd = this.currentDate;
+            }
+            if (value === "range") {
+                this.selectedDate = "";
+                this.selectedMonth = "";
+                this.selectedYear = "";
+                this.getSelectedDateStart(this.selectedDateStart);
+                this.getSelectedDateEnd(this.selectedDateEnd);
+                this.getToDos();
+                this.selectedDate = this.currentDate;
+                this.selectedMonth = this.currentMonth;
+            }
+        },
+        selectedDate: function (value) {
+            if (this.viewType === "day") {
+                this.selectedMonth = "";
+                this.selectedYear = "";
+                this.selectedDateStart = "";
+                this.selectedDateEnd = "";
+                this.getSelectedDate(this.selectedDate);
+                this.getToDos();
             }
         },
 
         currentMonth: function (value) {
             this.selectedDate = "";
+            this.selectedDateStart = "";
+            this.selectedDateEnd = "";
             const monthYear = this.currentMonth + "-" + "01";
             this.selectedMonthYear = monthYear;
             this.getSelectedMonth(monthYear);
             this.getSelectedYear(monthYear);
             this.getToDos();
             this.selectedDate = this.currentDate;
+            this.selectedDateStart = this.currentDate;
+            this.selectedDateEnd = this.currentDate;
+        },
+
+        selectedDateRange(newVal) {
+            this.selectedDate = "";
+            this.selectedMonth = "";
+            this.selectedYear = "";
+            const [selectedDateStart, selectedDateEnd] = newVal.split("|");
+            this.getSelectedDateStart(selectedDateStart);
+            this.getSelectedDateEnd(selectedDateEnd);
+            console.log(this.selectedDateEnd);
+            console.log(this.selectedDateStart);
+            this.getToDos();
+            this.selectedDate = this.getSelectedDate(this.currentDate);
+            this.selectedMonth = this.currentMonth;
+        },
+    },
+    computed: {
+        selectedDateRange() {
+            return `${this.selectedDateStart}|${this.selectedDateEnd}`;
         },
     },
 
@@ -516,6 +603,10 @@ export default {
                         this.search +
                         "&selectedDate=" +
                         this.selectedDate +
+                        "&selectedDateStart=" +
+                        this.selectedDateStart +
+                        "&selectedDateEnd=" +
+                        this.selectedDateEnd +
                         "&selectedMonth=" +
                         this.selectedMonth +
                         "&selectedYear=" +
@@ -582,8 +673,8 @@ export default {
         },
 
         showToday(date) {
-            let month = moment(date).format("YYYY-MM-DD");
-            return month;
+            let day = moment(date).format("YYYY-MM-DD");
+            return day;
         },
 
         showMonth(date) {
@@ -591,10 +682,19 @@ export default {
             return month;
         },
 
-        getSelectedDate() {
-            this.currentDate = this.selectedDate;
-            this.showToday(this.currentDate);
-            return this.currentDate;
+        getSelectedDate(date) {
+            this.selectedDate = moment(date).format("YYYY-MM-DD");
+            return this.selectedDate;
+        },
+
+        getSelectedDateStart(date) {
+            this.selectedDateStart = moment(date).format("YYYY-MM-DD");
+            return this.selectedDateStart;
+        },
+
+        getSelectedDateEnd(date) {
+            this.selectedDateEnd = moment(date).format("YYYY-MM-DD");
+            return this.selectedDateEnd;
         },
 
         getSelectedDay() {
@@ -621,6 +721,31 @@ export default {
             axios.delete("/api/todos/delete/" + id);
             this.getToDos();
         },
+
+        actionSelected(action, toDoId, contactId) {
+            if (!window.confirm("Update task?")) {
+                return;
+            }
+            console.log(action);
+            console.log(toDoId);
+            console.log(contactId);
+            axios.put("/api/todos/action/" + toDoId, {
+                action_id: action,
+            });
+            alert("Task updated");
+            this.$router.push({
+                name: "followup_create",
+                params: { id: contactId, todoId: toDoId },
+            });
+        },
+        // updateAction(id) {
+        //     axios.put(`/api/todos/updateaction/${id}`)
+        //     alert("Task updated");
+        //     this.$router.push({
+        //         name: "followup_create",
+        //         params: { id: idContact },
+        //     });
+        // },
     },
 };
 </script>

@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\ContactStatusController;
 use App\Http\Controllers\Api\ContactTypeController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\ContactInchargeController;
+use App\Http\Controllers\Api\FollowUpController;
 use App\Http\Controllers\Api\TaskController;
 use App\Http\Controllers\Api\ToDoController;
 use Illuminate\Http\Request;
@@ -56,6 +57,7 @@ Route::post('/todos/insert/{todo}', [ToDoController::class, 'insert'])->name('to
 Route::post('/todos/store', [ToDoController::class, 'store'])->name('todo:store');
 Route::get('/todos/show/{todo}', [ToDoController::class, 'show'])->name('todo:show');
 Route::put('/todos/update/{todo}', [ToDoController::class, 'update'])->name('todo:update');
+Route::put('/todos/action/{todo}', [ToDoController::class, 'action'])->name('todo:action');
 Route::delete('/todos/delete/{todo}', [ToDoController::class, 'delete'])->name('todo:delete');
 Route::get('/todos/new/{todo}', [ToDoController::class, 'new'])->name('todo:new');
 Route::get('/todos/info/{todo}', [ToDoController::class, 'info'])->name('todo:info');
@@ -63,6 +65,11 @@ Route::get('/todos/info/{todo}', [ToDoController::class, 'info'])->name('todo:in
 /*Sub-To Do API*/
 Route::get('/tasks/index', [TaskController::class, 'index'])->name('task:index');
 Route::get('/actions/index', [ActionController::class, 'index'])->name('action:index');
+
+/*Follow Up API*/
+Route::get('/followups/index', [FollowUpController::class, 'index'])->name('followup:index');
+Route::post('/followups/store', [FollowUpController::class, 'store'])->name('followup:store');
+Route::get('/followups/show/{followup}', [FollowUpController::class, 'show'])->name('followup:show');
 
 
 
