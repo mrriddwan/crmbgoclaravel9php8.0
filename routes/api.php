@@ -32,6 +32,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 /*Contact API*/
 Route::get('/contacts/index', [ContactController::class, 'index'])->name('contact:index');
+Route::get('/contacts/list', [ContactController::class, 'list'])->name('contact:list');
 Route::post('/contacts/store', [ContactController::class, 'store'])->name('contact:store');
 Route::get('/contacts/show/{contact}', [ContactController::class, 'show'])->name('contact:show');
 Route::put('/contacts/update/{contact}', [ContactController::class, 'update'])->name('contact:update');

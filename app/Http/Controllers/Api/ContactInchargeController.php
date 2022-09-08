@@ -20,11 +20,11 @@ class ContactInchargeController extends Controller
 
     public function store(ContactInchargeRequest $request)
     {
-        $contact = ContactIncharge::create(
+        $incharge = ContactIncharge::create(
             $request->validated()
         );
 
-        return new ContactInchargeResource($contact);
+        return new ContactInchargeResource($incharge);
     }
 
     public function show($id)

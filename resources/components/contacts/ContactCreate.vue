@@ -2,11 +2,25 @@
     <div>
         <h3 class="text-center">Create Contact</h3>
         <GoBack />
+        <div v-if="errors">
+            <div v-for="(v, k) in errors" :key="k">
+                <p
+                    v-for="error in v"
+                    :key="error"
+                    class="text-xs bg-red-500 text-white rounded font-bold mb-1 shadow-lg py-2 px-4 pr-0 w-max"
+                >
+                    {{ error }}
+                </p>
+            </div>
+        </div>
         <div class="row">
             <div class="col-md-6">
                 <form @submit.prevent="createContact">
                     <div class="form-group">
-                        <label>Status</label>
+                        <label
+                            >Status
+                            <p class="inline text-red-600 text-lg">*</p></label
+                        >
                         <select
                             class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                             v-model="form.status_id"
@@ -23,7 +37,10 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>Type</label>
+                        <label
+                            >Type
+                            <p class="inline text-red-600 text-lg">*</p></label
+                        >
                         <select
                             class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                             v-model="form.type_id"
@@ -41,10 +58,13 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Industry</label>
+                        <label
+                            >Industry
+                            <p class="inline text-red-600 text-lg">*</p></label
+                        >
                         <select
                             class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="form.industry"
+                            v-model="form.industry_id"
                             @change="getIndustry"
                         >
                             <option disabled value="">Please select one</option>
@@ -58,7 +78,10 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>Category</label>
+                        <label
+                            >Category
+                            <p class="inline text-red-600 text-lg">*</p></label
+                        >
                         <select
                             class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                             v-model="form.category_id"
@@ -76,7 +99,10 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Company Name</label>
+                        <label
+                            >Company Name
+                            <p class="inline text-red-600 text-lg">*</p></label
+                        >
                         <input
                             type="text"
                             class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
@@ -85,7 +111,10 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Address</label>
+                        <label
+                            >Address
+                            <p class="inline text-red-600 text-lg">*</p></label
+                        >
                         <input
                             type="text"
                             class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
@@ -123,16 +152,19 @@ export default {
             form: {
                 status_id: "",
                 type_id: "",
-                industry: "",
+                industry_id: "",
                 company_name: "",
                 category_id: "",
                 address: "",
                 remark: "",
             },
+            user_id: "",
             types: [],
             categories: [],
             statuses: [],
             industries: [],
+            errors: "",
+            contact: "",
         };
     },
 
@@ -143,38 +175,7 @@ export default {
         this.getIndustry();
     },
 
-    // created() {
-    //     this.getStatus();
-    //     this.getCategory;
-    //     this.getType();
-    // },
-
     methods: {
-        createContact() {
-            axios
-                .post("/api/contacts/store", {
-                    type_id: this.form.type_id,
-                    industry: this.form.industry,
-                    status_id: this.form.status_id,
-                    name: this.form.name,
-                    category_id: this.form.category_id,
-                    address: this.form.address,
-                    remark: this.form.remark,
-                })
-                .then((res) => {
-                    if (window.confirm("Proceed to add incharge?")) {
-                        console.log(res.data.data.id);
-                        // contact_id = res.data.data.id
-                        this.$router.push(
-                            { name: "incharge_create" },
-                            { params: res.data.data.id }
-                        );
-                    } else {
-                        this.$router.push({ name: "contact_index" });
-                    }
-                });
-        },
-
         getIndustry() {
             axios
                 .get("/api/contactindustry/index")
@@ -218,7 +219,40 @@ export default {
                     console.log(error);
                 });
         },
+        async createContact() {
+            try {
+                await axios.post("/api/contacts/store", {
+                    type_id: this.form.type_id,
+                    industry_id: this.form.industry_id,
+                    status_id: this.form.status_id,
+                    name: this.form.name,
+                    category_id: this.form.category_id,
+                    address: this.form.address,
+                    remark: this.form.remark,
+                    user_id: 1, //later add current user
+                });
+            } catch (e) {
+                {
+                    if (e.response.status === 422) {
+                        this.errors = e.response.data.errors;
+                    }
+                }
+            }
+            then((res) => {
+                if (window.confirm("Proceed to add incharge?")) {
+                    this.contact = res.data.data;
+                    console.log(this.contact.id);
+                    this.$router.push(
+                        { name: "incharge_create" },
+                        { params: this.contact.id }
+                    );
+                } else {
+                    this.$router.push({ name: "contact_index" });
+                }
+            });
+        },
     },
+
     components: { GoBack },
 };
 </script>

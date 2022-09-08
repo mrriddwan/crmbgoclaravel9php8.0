@@ -53,7 +53,7 @@
                         
                     </div>
                     <div class="form-group">
-                        <label>Date of Follow Up</label>
+                        <label>Date of Follow Up<p class="inline text-red-600 text-lg">*</p></label>
                         <input
                             type="date"
                             class="block mt-1 w-max rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
@@ -71,7 +71,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Task</label>
+                        <label>Task<p class="inline text-red-600 text-lg">*</p></label>
                         <select
                             class="block mt-1 w-max rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                             v-model="form.task_id"
@@ -142,6 +142,42 @@ export default {
     },
 
     methods: {
+
+         // <p class="inline text-red-600 text-lg">*</p></label>
+
+        // async createPIC() {
+    //         const contact = this.contact_infos;
+    //         // const form = document.getElementById('inchargeForm');
+    //         try {
+    //             await axios.post("/api/incharges/store", {
+    //                 contact_id: contact[0].id,
+    //                 name: this.form.name,
+    //                 email: this.form.email,
+    //                 phone_mobile: this.form.phone_mobile,
+    //                 phone_office: this.form.phone_office,
+    //             });
+
+    //             await this.$router.push({
+    //                 name: "incharge_create",
+    //                 params: { id: this.$route.params.id },
+    //             });
+    //             this.form.contact_id = "";
+    //             this.form.name = "";
+    //             this.form.email = "";
+    //             this.form.phone_mobile = "";
+    //             this.form.phone_office = "";
+    //             this.errors = "";
+    //             this.showIncharge();
+    //         } catch (e) {
+    //             {
+    //                 if (e.response.status === 422){
+    //                     this.errors = e.response.data.errors;
+    //                 }
+                    
+    //             }
+    //         }
+    //     },
+
         createFollowUp() {
             const contact = this.contact.data;
             

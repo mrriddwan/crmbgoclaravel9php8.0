@@ -200,6 +200,41 @@ export default {
         this.getUser();
         this.getType();
     },
+    
+         // <p class="inline text-red-600 text-lg">*</p></label>
+         
+        // async createPIC() {
+    //         const contact = this.contact_infos;
+    //         // const form = document.getElementById('inchargeForm');
+    //         try {
+    //             await axios.post("/api/incharges/store", {
+    //                 contact_id: contact[0].id,
+    //                 name: this.form.name,
+    //                 email: this.form.email,
+    //                 phone_mobile: this.form.phone_mobile,
+    //                 phone_office: this.form.phone_office,
+    //             });
+
+    //             await this.$router.push({
+    //                 name: "incharge_create",
+    //                 params: { id: this.$route.params.id },
+    //             });
+    //             this.form.contact_id = "";
+    //             this.form.name = "";
+    //             this.form.email = "";
+    //             this.form.phone_mobile = "";
+    //             this.form.phone_office = "";
+    //             this.errors = "";
+    //             this.showIncharge();
+    //         } catch (e) {
+    //             {
+    //                 if (e.response.status === 422){
+    //                     this.errors = e.response.data.errors;
+    //                 }
+                    
+    //             }
+    //         }
+    //     },
 
     methods: {
         editToDo() {

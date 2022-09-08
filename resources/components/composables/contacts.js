@@ -15,7 +15,7 @@ export default function contactComposables () {
     const errors = ref('')
 
     const getContacts = async () => {
-        let response = await axios.get('/api/contacts/index')
+        let response = await axios.get('/api/contacts/list')
         contacts.value = response.data.data;
     }
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Contact\ContactRequest;
 use App\Http\Resources\ContactResource;
 use App\Models\Contact;
 use App\Models\User;
@@ -51,12 +52,18 @@ class ContactController extends Controller
         return ContactResource::collection($contact);
     }
 
-    public function store(Request $request)
-    {
-        // $contact = Contact::create($request->validated());
+    public function list (){
+        $contact = Contact::select('id', 'name')->orderBy('name')->get();
 
-        // return new ContactResource($contact);
-        
+        return response()->json([
+            'data' => $contact,
+            'status' => true,
+            'message' => 'Successfully retrieve list of contacts',
+        ]);
+    }
+
+    public function store(ContactRequest $request)
+    {
 
         $contact = Contact::create([
             'industry' => $request->industry,
@@ -64,7 +71,7 @@ class ContactController extends Controller
             'address' => $request->address,
             'remark' => $request->remark,
             'category_id' => $request->category_id,
-            'user_id' => 1,
+            'user_id' => $request->user_id ?? 1, //change to current user later
             'type_id' => $request->type_id,
             'status_id' => $request->status_id,
         ]);
@@ -72,7 +79,7 @@ class ContactController extends Controller
         return response()->json([
             'data' => $contact,
             'status' => true,
-            'message' => 'Successfully store employee',
+            'message' => 'Successfully store contact',
         ]);
     }
     public function show($id)

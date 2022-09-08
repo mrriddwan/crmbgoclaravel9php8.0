@@ -9,6 +9,17 @@
         >
             <h1 class="px-2 py-3 bg-black-50">Create To Do (Internal)</h1>
         </div>
+        <div v-if="errors">
+            <div v-for="(v, k) in errors" :key="k">
+                <p
+                    v-for="error in v"
+                    :key="error"
+                    class="text-xs bg-red-500 text-white rounded font-bold mb-1 shadow-lg py-2 px-4 pr-0 w-max"
+                >
+                    {{ error }}
+                </p>
+            </div>
+        </div>
 
         <div class="row mt-3">
             <div class="col-md-6">
@@ -36,7 +47,7 @@
                         </label>
                     </div>
                     <div class="form-group">
-                        <label>User</label>
+                        <label>User<p class="inline text-red-600 text-lg">*</p></label>
                         <select
                             class="block mt-1 w-max rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                             v-model="form.user_id"
@@ -53,7 +64,7 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>Date of Task</label>
+                        <label>Date of Task<p class="inline text-red-600 text-lg">*</p></label>
                         <input
                             type="date"
                             class="block mt-1 w-max rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
@@ -61,7 +72,7 @@
                         />
                     </div>
                     <div class="form-group">
-                        <label>Date of Deadline</label>
+                        <label>Date of Deadline<p class="inline text-red-600 text-lg">*</p></label>
                         <input
                             type="date"
                             class="block mt-1 w-max rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
@@ -70,7 +81,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Status</label>
+                        <label>Status<p class="inline text-red-600 text-lg">*</p></label>
                         <select
                             class="block mt-1 w-max rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                             v-model="form.status_id"
@@ -88,25 +99,30 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Contact</label>
-                        <select
-                            class="block mt-1 w-max rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="form.contact_id"
-                            @change="getContacts"
-                        >
-                            <option disabled value="">Please select one</option>
-                            <option
-                                v-for="contact in contacts"
-                                :key="contact.id"
-                                :value="contact.id"
+                        <label>Contact<p class="inline text-red-600 text-lg">*</p></label>
+                        <div class="h-max-10">
+                            <select
+                                class="overflow-y block mt-1 w-max rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                v-model="form.contact_id"
+                                @change="getContacts"
                             >
-                                {{ contact.name }}
-                            </option>
-                        </select>
+                                <option disabled value="">
+                                    Please select one
+                                </option>
+                                <option
+                                    class=""
+                                    v-for="contact in contacts"
+                                    :key="contact.id"
+                                    :value="contact.id"
+                                >
+                                    {{ contact.name }}
+                                </option>
+                            </select>
+                        </div>
                     </div>
 
                     <div class="form-group">
-                        <label>Type</label>
+                        <label>Type<p class="inline text-red-600 text-lg">*</p></label>
                         <select
                             class="block mt-1 w-max rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                             v-model="form.type_id"
@@ -124,7 +140,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Task</label>
+                        <label>Task<p class="inline text-red-600 text-lg">*</p></label>
                         <select
                             class="block mt-1 w-max rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                             v-model="form.task_id"
@@ -146,7 +162,7 @@
                         <textarea
                             type="text"
                             class="block mt-1 w-60 w-max-100 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="form.remark"
+                            v-model="form.todo_remark"
                         />
                     </div>
 
@@ -176,10 +192,11 @@ import contactComposables from "../composables/contacts";
 import toDoComposables from "../composables/todos";
 import { onMounted } from "vue";
 import GoBack from "../utils/GoBack.vue";
+import { ref } from "vue";
 
 export default {
     setup() {
-        let priority_id = ref(2)
+        let priority_id = ref(2);
 
         const form = reactive({
             priority_id: "",
@@ -194,10 +211,7 @@ export default {
             source_id: 3,
         });
 
-        // const errors = ref('')
-
         const {
-            errors,
             getUsers,
             users,
             getContacts,
@@ -210,7 +224,7 @@ export default {
             types,
         } = contactComposables();
 
-        const { getTasks, tasks, storeToDo } = toDoComposables();
+        const { getTasks, tasks, storeToDo, errors } = toDoComposables();
 
         onMounted(getUsers);
         onMounted(getStatuses);
@@ -225,7 +239,7 @@ export default {
 
         return {
             form,
-            // errors,
+            errors,
             createToDo,
             contacts,
             tasks,
@@ -242,6 +256,22 @@ export default {
     },
 };
 </script>
+
+<!-- <style scoped>
+.select-wrapper {
+    height: 50px;
+    overflow-y: visible;
+}
+
+.select {
+    width: 100%;
+    /* make it min-height*/
+    min-height: 50px;
+    border-radius: 25px;
+    border-color: #555;
+    padding: 10px;
+}
+</style> -->
 
 <!-- 
 <script>

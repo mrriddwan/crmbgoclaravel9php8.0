@@ -29,7 +29,8 @@
                             }"
                             class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-green-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
                         >
-                            To Do</router-link
+                            <PlusCircleIcon class="h-5 w-5" /> To
+                            Do</router-link
                         >
                         <router-link
                             :to="{
@@ -38,6 +39,7 @@
                             }"
                             class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-yellow-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
                         >
+                            <PencilSquareIcon class="h-5 w-5" />
                             Edit</router-link
                         >
                     </td>
@@ -98,7 +100,8 @@
                             }"
                             class="inline-flex text-center px-1 py-1 bg-blue-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
                         >
-                            Create/Edit Incharge</router-link
+                            <PencilSquareIcon class="h-5 w-5" /> /
+                            <PlusIcon class="h-5 w-5" />  PIC</router-link
                         >
                     </td>
                 </tr>
@@ -172,13 +175,13 @@
                                 }"
                                 class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-yellow-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
                             >
-                                Edit</router-link
-                            >
+                                <PencilIcon class="h-3 w-3"
+                            /></router-link>
                             <button
                                 class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
                                 @click="deletePIC(pic.id)"
                             >
-                                Delete
+                                <TrashIcon class="h-3 w-3" />
                             </button>
                         </tr>
                     </span>
@@ -203,10 +206,22 @@
 <script>
 import axios from "axios";
 import GoBack from "../utils/GoBack.vue";
+import {
+    PencilSquareIcon,
+    TrashIcon,
+    PlusCircleIcon,
+    PlusIcon,
+    PencilIcon,
+} from "@heroicons/vue/24/solid";
 
 export default {
     components: {
         GoBack,
+        PencilSquareIcon,
+        TrashIcon,
+        PlusCircleIcon,
+        PlusIcon,
+        PencilIcon,
     },
 
     data() {

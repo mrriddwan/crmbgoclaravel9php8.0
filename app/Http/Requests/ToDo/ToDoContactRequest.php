@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Contact;
+namespace App\Http\Requests\ToDo;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ContactInchargeRequest extends FormRequest
+class ToDoContactRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,11 +24,10 @@ class ContactInchargeRequest extends FormRequest
     public function rules()
     {
         return [
-            'contact_id' =>  ['required', 'int'],
-            'name' => ['required', 'string'],
-            'email' => ['required', 'email'],
-            'phone_mobile' => ['required', 'string'],
-            // 'phone_office' => ['nullable', 'string'],
+            'todo_created' => ['required', 'date'],
+            'contact_id'=> ['required', 'int'],
+            'user_id' => ['required', 'int'],
+            'task_id'=> ['required', 'int'],
         ];
     }
 }

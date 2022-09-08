@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Contact;
+namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ContactInchargeRequest extends FormRequest
+class FollowUpRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +13,7 @@ class ContactInchargeRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return false;
     }
 
     /**
@@ -24,11 +24,7 @@ class ContactInchargeRequest extends FormRequest
     public function rules()
     {
         return [
-            'contact_id' =>  ['required', 'int'],
-            'name' => ['required', 'string'],
-            'email' => ['required', 'email'],
-            'phone_mobile' => ['required', 'string'],
-            // 'phone_office' => ['nullable', 'string'],
+            //
         ];
     }
 }

@@ -11,6 +11,17 @@
         >
             <h1 class="px-2 py-3 bg-black-50">Create To Do (Contact)</h1>
         </div>
+        <div v-if="errors">
+            <div v-for="(v, k) in errors" :key="k">
+                <p
+                    v-for="error in v"
+                    :key="error"
+                    class="text-xs bg-red-500 text-white rounded font-bold mb-1 shadow-lg py-2 px-4 pr-0 w-max"
+                >
+                    {{ error }}
+                </p>
+            </div>
+        </div>
 
         <div class="row mt-3">
             <div class="col-md-6">
@@ -38,7 +49,10 @@
                         </label>
                     </div>
                     <div class="form-group">
-                        <label>User</label>
+                        <label
+                            >User
+                            <p class="inline text-red-600 text-lg">*</p></label
+                        >
                         <select
                             class="block mt-1 w-max rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                             v-model="contact.user_id"
@@ -55,7 +69,10 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>Date of Task</label>
+                        <label
+                            >Date of Task
+                            <p class="inline text-red-600 text-lg">*</p></label
+                        >
                         <input
                             type="date"
                             class="block mt-1 w-max rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
@@ -64,7 +81,10 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Task</label>
+                        <label
+                            >Task
+                            <p class="inline text-red-600 text-lg">*</p></label
+                        >
                         <select
                             class="block mt-1 w-max rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                             v-model="form.task_id"
@@ -86,7 +106,7 @@
                         <textarea
                             type="text"
                             class="block mt-1 w-60 w-max-100 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="form.remark"
+                            v-model="form.todo_remark"
                         />
                     </div>
 
@@ -96,7 +116,6 @@
                     >
                         Create
                     </button>
-
                 </form>
             </div>
         </div>
@@ -113,19 +132,18 @@ export default {
             form: {
                 priority_id: "",
                 user_id: "",
-                date_created: "",
-                date_deadline: "",
+                todo_created: "",
+                todo_deadline: "",
                 status_id: "",
                 type_id: "",
                 contact_id: "",
                 task_id: "",
-                remark: "",
-                
+                todo_remark: "",
             },
             tasks: [],
             users: [],
-            contact: []
-                // name: ""
+            contact: [],
+            errors: ""
         };
     },
 
@@ -136,10 +154,10 @@ export default {
     },
 
     methods: {
-        insertToDo() {
-            let contact = this.contact
-            axios
-                .post("/api/todos/insert/" + this.$route.params.id, {
+        async insertToDo() {
+            let contact = this.contact;
+            try {
+                await axios.post("/api/todos/insert/" + this.$route.params.id, {
                     priority_id: this.form.priority_id === "" ? 2 : 1,
                     user_id: contact.user_id,
                     todo_created: this.form.todo_created,
@@ -147,12 +165,21 @@ export default {
                     type_id: contact.type_id,
                     contact_id: contact.id,
                     task_id: this.form.task_id,
-                    todo_remark: this.form.remark,
+                    todo_remark: this.form.todo_remark,
                     source_id: 1,
-                })
-                .then((res) => {
-                    this.$router.push({ name: "todo_index" });
                 });
+
+                await this.$router.push({
+                    name: "todo_index",
+                    params: { id: this.$route.params.id },
+                });
+            } catch (e) {
+                {
+                    if (e.response.status === 422) {
+                        this.errors = e.response.data.errors;
+                    }
+                }
+            }
         },
 
         showContact() {

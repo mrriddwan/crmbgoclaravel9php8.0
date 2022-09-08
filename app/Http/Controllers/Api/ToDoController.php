@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ToDo\ToDoContactRequest;
+use App\Http\Requests\ToDo\ToDoInternalRequest;
 use App\Http\Resources\ToDoResource;
 use App\Models\ToDo;
 use Illuminate\Http\Request;
@@ -69,28 +71,10 @@ class ToDoController extends Controller
 
         return ToDoResource::collection($todo);
     }
-    // whereDate('created_at', '=', date('Y-m-d'))
 
-    public function store(Request $request)
+    public function store(ToDoInternalRequest $request)
     {
-        // $contact = Contact::create($request->validated());
-
-        // return new ContactResource($contact);
-
-
-        $todo = ToDo::create([
-            'priority_id' => $request->priority_id,
-            'user_id' => $request->user_id,
-            'todo_created' => $request->todo_created,
-            'todo_deadline' => $request->todo_deadline,
-            'status_id' => $request->status_id,
-            'contact_id' => $request->contact_id,
-            'type_id' => $request->type_id,
-            'task_id' => $request->task_id,
-            'todo_remark' => $request->remark,
-            'color_id' => $request->color_id ?? 1,
-            'source_id'=> 1,
-        ]);
+        $todo = ToDo::create($request->validated());
 
         return response()->json([
             'data' => $todo,
@@ -101,10 +85,15 @@ class ToDoController extends Controller
 
     public function insert(Request $request)
     {
-        // $contact = Contact::create($request->validated());
-
-        // return new ContactResource($contact);
-
+        $request->validate([
+            'todo_created' => 'required', 'date',
+            'contact_id' => 'required', 'int',
+            'user_id' => 'required', 'int',
+            'task_id' => 'required', 'int',
+        ], [
+            'todo_created.required' => 'The date is required',
+            'task_id.required' => 'The task is required.'
+        ]);
 
         $todo = ToDo::create([
             'priority_id' => $request->priority_id,
@@ -115,9 +104,9 @@ class ToDoController extends Controller
             'task_id' => $request->task_id,
             'status_id' => $request->status_id,
             'type_id' => $request->type_id,
-            'todo_remark' => $request->todo_remark ,
+            'todo_remark' => $request->todo_remark,
             'color_id' => $request->color_id ?? '1',
-            'source_id'=> $request->source_id
+            'source_id' => $request->source_id
         ]);
 
         return response()->json([
@@ -157,7 +146,7 @@ class ToDoController extends Controller
             'data' => $todo,
         ]);
     }
-    
+
     public function action(Request $request, ToDo $todo)
     {
         $todo->update([
