@@ -221,7 +221,8 @@ export default {
         },
         async createContact() {
             try {
-                await axios.post("/api/contacts/store", {
+            await axios
+                .post("/api/contacts/store", {
                     type_id: this.form.type_id,
                     industry_id: this.form.industry_id,
                     status_id: this.form.status_id,
@@ -230,26 +231,27 @@ export default {
                     address: this.form.address,
                     remark: this.form.remark,
                     user_id: 1, //later add current user
+                })
+                .then((res) => {
+                    const contact = res.data.data;
+                    if (window.confirm("Proceed to add incharge?")) {
+                        this.$router.push({
+                            name: "incharge_create",
+                            params: { id: contact.id},
+                        });
+                    } else {
+                        this.$router.push({ name: "contact_index" });
+                    }
                 });
             } catch (e) {
                 {
                     if (e.response.status === 422) {
                         this.errors = e.response.data.errors;
+                    } else {
+                        return "no error response"
                     }
                 }
             }
-            then((res) => {
-                if (window.confirm("Proceed to add incharge?")) {
-                    this.contact = res.data.data;
-                    console.log(this.contact.id);
-                    this.$router.push(
-                        { name: "incharge_create" },
-                        { params: this.contact.id }
-                    );
-                } else {
-                    this.$router.push({ name: "contact_index" });
-                }
-            });
         },
     },
 

@@ -25,8 +25,8 @@
                 <label for="paginate" class="">Per Page</label>
                 <select v-model="paginate" class="form-control">
                     <option value="10">10</option>
-                    <option value="20">20</option>
-                    <option value="30">30</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
                 </select>
             </div>
 
@@ -50,9 +50,14 @@
             />
         </div>
 
-        <div class="py-3">
-            <table class="table table-hover table-bordered" id="example">
-                <thead>
+        <!-- <div class="table-wrp block max-h-96">
+  <table class="w-full">
+    <thead class="bg-white border-b sticky top-0"> -->
+
+
+        <div class="table-wrp block max-h-screen overflow-y-auto overflow-x-auto">
+            <table class="table table-hover table-bordered w-full">
+                <thead class="bg-slate-400 border-b sticky top-0">
                     <tr>
                         <th class="py-3">
                             <div class="text-sm text-center h-6">
@@ -370,7 +375,7 @@
                         </th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="mt-2">
                     <tr v-for="contact in contacts.data" :key="contact.id">
                         <td class="text-xs">{{ contact.created_at }}</td>
                         <td class="text-xs">{{ contact.user.name }}</td>
@@ -411,7 +416,7 @@
                                 Edit</router-link
                             >
                             <button
-                                class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-red-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                                class=" mr-2 mb-2 inline-flex items-center px-2 py-1 bg-red-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
                                 @click="deletecontact(contact.id)"
                             >
                                 Delete
