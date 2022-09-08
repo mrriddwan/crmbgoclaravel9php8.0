@@ -126,7 +126,7 @@
     <div class="grid grid-cols-3 w-full text-center bg-slate-500">
         <div class="text-left">
             <button
-                class="text-xl  text-left px-3 py-3"
+                class="text-xl text-left px-3 py-3"
                 id="decrementDate"
                 @click="decrementDate"
             >
@@ -162,7 +162,9 @@
                 id="incrementDate"
                 @click="incrementDate"
             >
-                <ChevronDoubleRightIcon class="h-5 w-4  bg-blue-300 rounded-lg" />
+                <ChevronDoubleRightIcon
+                    class="h-5 w-4 bg-blue-300 rounded-lg"
+                />
             </button>
         </div>
     </div>
@@ -404,7 +406,10 @@
                     <td>{{ todo.todo_remark }}</td>
                     <td>Progress indication</td>
                     <td class="text-center align-middle">
-                        <span v-if="todo.action" class="block align-middle font-extrabold uppercase text-white bg-green-500 rounded-md py-1 px-2 text-center text-sm">
+                        <span
+                            v-if="todo.action"
+                            class="block align-middle font-extrabold uppercase text-white bg-green-500 rounded-md py-1 px-2 text-center text-sm"
+                        >
                             {{ todo.action.name }}
                             <!-- <select
                                 disabled
@@ -482,6 +487,12 @@ import {
 } from "@heroicons/vue/24/solid";
 
 export default {
+    // props: {
+    //     selectedDate: {
+    //         type: Date,
+    //     },
+    // },
+
     components: {
         Pagination: LaravelVuePagination,
         PencilSquareIcon,
@@ -489,13 +500,20 @@ export default {
         ChevronDoubleLeftIcon,
         ChevronDoubleRightIcon,
     },
+
+    created(){
+        this.$route.params.length !== 0
+            ? (this.currentDate = this.$route.params.selectedDate)
+            : (this.currentDate = this.showToday());
+    },
+
     mounted() {
         this.getStatus();
         this.getActions();
         this.getUsers();
 
         //initial date selection
-        this.currentDate = this.showToday();
+        
         this.selectedDate = this.currentDate;
         this.getSelectedDate(this.selectedDate);
         console.log(this.selectedDate);
@@ -793,19 +811,20 @@ export default {
                 ));
             } else if (this.viewType === "month") {
                 document.getElementById("incrementDate").disabled = false;
-                var monthYear =  this.selectedYear + "-" + this.selectedMonth + "-" + "01";
-                console.log('monthYear : ' + monthYear)
-                
-                var monthYearAdd = moment(monthYear).add(1, "M").format('YYYY-MM-DD');
+                var monthYear =
+                    this.selectedYear + "-" + this.selectedMonth + "-" + "01";
+                console.log("monthYear : " + monthYear);
 
-                console.log('monthYearAdd : ' + monthYearAdd)
+                var monthYearAdd = moment(monthYear)
+                    .add(1, "M")
+                    .format("YYYY-MM-DD");
+
+                console.log("monthYearAdd : " + monthYearAdd);
 
                 this.selectedMonthYear = monthYearAdd;
-                var month = this.getSelectedMonth(monthYearAdd)
-                var year = this.getSelectedYear(monthYearAdd)
-                return this.currentMonth = year + "-" + month;
-
- 
+                var month = this.getSelectedMonth(monthYearAdd);
+                var year = this.getSelectedYear(monthYearAdd);
+                return (this.currentMonth = year + "-" + month);
             } else {
                 document.getElementById("incrementDate").disabled = true;
             }
@@ -820,18 +839,20 @@ export default {
                 ));
             } else if (this.viewType === "month") {
                 document.getElementById("decrementDate").disabled = false;
-                var monthYear =  this.selectedYear + "-" + this.selectedMonth + "-" + "01";
-                console.log('monthYear : ' + monthYear)
-                
-                var monthYearMinus = moment(monthYear).subtract(1, "M").format('YYYY-MM-DD');
+                var monthYear =
+                    this.selectedYear + "-" + this.selectedMonth + "-" + "01";
+                console.log("monthYear : " + monthYear);
 
-                console.log('monthYearMinus : ' + monthYearMinus)
+                var monthYearMinus = moment(monthYear)
+                    .subtract(1, "M")
+                    .format("YYYY-MM-DD");
+
+                console.log("monthYearMinus : " + monthYearMinus);
 
                 this.selectedMonthYear = monthYearMinus;
-                var month = this.getSelectedMonth(monthYearMinus)
-                var year = this.getSelectedYear(monthYearMinus)
-                return this.currentMonth = year + "-" + month;
-                
+                var month = this.getSelectedMonth(monthYearMinus);
+                var year = this.getSelectedYear(monthYearMinus);
+                return (this.currentMonth = year + "-" + month);
             } else {
                 document.getElementById("decrementDate").disabled = true;
             }

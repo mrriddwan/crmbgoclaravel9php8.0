@@ -101,7 +101,7 @@ const routes = [
         path: "/todo/index",
         name: "todo_index",
         component: ToDoIndex,
-        props: true,
+        // props: route => ({ selectedDate: route.query.q })
     },
 
     {

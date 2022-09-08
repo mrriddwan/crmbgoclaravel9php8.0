@@ -5,12 +5,10 @@ import { useRouter } from 'vue-router';
 export default function contactComposables () {
     const contacts = ref([])
     const contact = ref([])
-
     const users = ref([])
     const statuses = ref([])
     const categories = ref([])
     const types = ref([])
-
     const router = useRouter()
     const errors = ref('')
 
