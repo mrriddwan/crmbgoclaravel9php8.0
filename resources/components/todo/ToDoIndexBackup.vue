@@ -123,7 +123,7 @@
     <div class="py-2">
         <Pagination
             :data="todos"
-            @pagination-change-page="getToDosSelectDate"
+            @pagination-change-page="getToDosSelectDate || getToDosSelectMonth || getToDosSelectDateRange"
             :size="'small'"
             :align="'center'"
             class="pagination"
@@ -492,6 +492,12 @@ import {
 } from "@heroicons/vue/24/solid";
 
 export default {
+    // props: {
+    //     selectedDate: {
+    //         type: Date,
+    //     },
+    // },
+
     components: {
         Pagination: LaravelVuePagination,
         PencilSquareIcon,
@@ -574,35 +580,75 @@ export default {
     watch: {
         paginate: function (value) {
             if (this.viewType === "day") {
+                // this.selectedMonth = "";
+                // this.selectedYear = "";
+                // this.selectedDateStart = "";
+                // this.selectedDateEnd = "";
+                // this.getSelectedDate(this.selectedDate);
                 this.getToDosSelectDate();
             }
             else if (this.viewType === "month") {
+                // this.selectedMonth = "";
+                // this.selectedYear = "";
+                // this.selectedDateStart = "";
+                // this.selectedDateEnd = "";
                 this.getToDosSelectMonth()
             }
             else if (this.viewType === "range") {
+                // this.selectedMonth = "";
+                // this.selectedYear = "";
+                // this.selectedDateStart = "";
+                // this.selectedDateEnd = "";
                 this.getToDosSelectDateRange();
             }
         },
         search: function (value) {
+            // this.getToDos();
             if (this.viewType === "day") {
+                // this.selectedMonth = "";
+                // this.selectedYear = "";
+                // this.selectedDateStart = "";
+                // this.selectedDateEnd = "";
+                // this.getSelectedDate(this.selectedDate);
                 this.getToDosSelectDate();
             }
             else if (this.viewType === "month") {
+                // this.selectedMonth = "";
+                // this.selectedYear = "";
+                // this.selectedDateStart = "";
+                // this.selectedDateEnd = "";
                 this.getToDosSelectMonth()
             }
             else if (this.viewType === "range") {
+                // this.selectedMonth = "";
+                // this.selectedYear = "";
+                // this.selectedDateStart = "";
+                // this.selectedDateEnd = "";
                 this.getToDosSelectDateRange();
             }
         },
         selectedStatus: function (value) {
+            // this.getToDos();
             if (this.viewType === "day") {
-
+                // this.selectedMonth = "";
+                // this.selectedYear = "";
+                // this.selectedDateStart = "";
+                // this.selectedDateEnd = "";
+                // this.getSelectedDate(this.selectedDate);
                 this.getToDosSelectDate();
             }
             else if (this.viewType === "month") {
+                // this.selectedMonth = "";
+                // this.selectedYear = "";
+                // this.selectedDateStart = "";
+                // this.selectedDateEnd = "";
                 this.getToDosSelectMonth()
             }
             else if (this.viewType === "range") {
+                // this.selectedMonth = "";
+                // this.selectedYear = "";
+                // this.selectedDateStart = "";
+                // this.selectedDateEnd = "";
                 this.getToDosSelectDateRange();
             }
         },
@@ -610,10 +656,21 @@ export default {
         viewType: function (value) {
             if (value === "day") {
                 if (this.viewType === "day") {
+                    // this.selectedMonth = "";
+                    // this.selectedYear = "";
+                    // this.selectedDateStart = "";
+                    // this.selectedDateEnd = "";
                     this.getToDosSelectDate();
+                    // this.currentDate = this.getCurrentDate();
+                    // this.selectedMonth = this.currentMonth;
+                    // this.selectedDateStart = this.selectedDate;
+                    // this.selectedDateEnd = this.selectedDate;
                 }
             }
             if (value === "month") {
+                // this.selectedDate = "";
+                // this.selectedDateStart = "";
+                // this.selectedDateEnd = "";
                 const monthYear = this.selectedMonthYear;
                 this.getSelectedMonth(monthYear);
                 this.getSelectedYear(monthYear);
@@ -626,30 +683,52 @@ export default {
                         this.getSelectedYear(monthYear)
                 );
                 this.getToDosSelectMonth();
+                // this.selectedDate = this.currentDate;
+                // this.selectedDateStart = this.selectedDate;
+                // this.selectedDateEnd = this.selectedDate;
             }
             if (value === "range") {
+                // this.selectedDate = "";
+                // this.selectedMonth = "";
+                // this.selectedYear = "";
                 this.getSelectedDateStart(this.currentDate);
                 this.getSelectedDateEnd(this.currentDate);
                 this.getToDosSelectDateRange();
+                // this.selectedDate = this.currentDate;
+                // this.selectedMonth = this.currentMonth;
             }
         },
         selectedDate: function (value) {
             if (this.viewType === "day") {
+                // this.selectedMonth = "";
+                // this.selectedYear = "";
+                // this.selectedDateStart = "";
+                // this.selectedDateEnd = "";
                 this.getSelectedDate(this.selectedDate);
                 this.getToDosSelectDate();
             }
         },
 
         currentMonth: function (value) {
+            // this.selectedDate = "";
+            // this.selectedDateStart = "";
+            // this.selectedDateEnd = "";
             const monthYear = this.currentMonth + "-" + "01";
             this.selectedMonthYear = monthYear;
             this.getSelectedMonth(monthYear);
             this.getSelectedYear(monthYear);
+            // this.getToDos();
             this.getToDosSelectMonth()
             console.log("current date after month change: " + this.currentDate);
+            // this.selectedDate = this.currentDate;
+            // this.selectedDateStart = this.selectedDate;
+            // this.selectedDateEnd = this.selectedDate;
         },
 
         selectedDateRange(newVal) {
+            // this.selectedDate = "";
+            // this.selectedMonth = "";
+            // this.selectedYear = "";
             const [selectedDateStart, selectedDateEnd] = newVal.split("|");
             this.getSelectedDateStart(selectedDateStart);
             this.getSelectedDateEnd(selectedDateEnd);
@@ -662,6 +741,8 @@ export default {
                     this.getSelectedDateEnd(selectedDateEnd)
             );
             this.getToDosSelectDateRange();
+            // this.selectedDate = this.currentDate;
+            // this.selectedMonth = this.currentMonth;
         },
     },
     computed: {
@@ -671,6 +752,12 @@ export default {
     },
 
     methods: {
+        changeQueryString() {
+            this.$router.replace({
+                query: { fruit: this.fruit.toLocaleLowerCase() },
+            });
+            this.fruit = "";
+        },
 
         getToDos(page = 1) {
             if (typeof page === "undefined") {

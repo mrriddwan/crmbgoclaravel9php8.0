@@ -301,7 +301,7 @@ export default {
 
         getContacts() {
             axios
-                .get("/api/contacts/index")
+                .get("/api/contacts/list")
                 .then((res) => {
                     this.contacts = res.data.data;
                 })

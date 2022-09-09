@@ -1,4 +1,22 @@
 <template>
+    <router-link
+        to="/dashboard"
+        class="inline-block items-center px-2 py-1 bg-gray-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+    >
+        Contact</router-link
+    >
+    <router-link
+        to="/todo/index"
+        class="inline-block items-center px-2 py-1 bg-blue-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+    >
+        To Do</router-link
+    >
+    <router-link
+        to="/followup/index"
+        class="inline-block items-center px-2 py-1 bg-green-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+    >
+        Follow Up</router-link
+    >
     <h1
         class="items-center text-center text-6xl text-white font-extrabold bg-slate-400 px-2 py-2 rounded-md"
     >
@@ -7,16 +25,9 @@
 
     <router-link
         to="/contacts/create"
-        class="m-2 inline-block items-center px-2 py-1 bg-gray-800 border border-transparent rounded-md font-semibold text-m text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+        class="m-2 inline-block items-center px-2 py-1 bg-gray-800 border border-transparent rounded-md font-semibold text-sm text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
     >
-        Create contact</router-link
-    >
-
-    <router-link
-        to="/todo/index"
-        class="m-3 inline-block items-center px-2 py-1 bg-gray-800 border border-transparent rounded-md font-semibold text-m text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
-    >
-        To Do Index</router-link
+        <UserPlusIcon class="h-6 w-6 inline"/> contact</router-link
     >
 
     <div class="">
@@ -54,8 +65,9 @@
   <table class="w-full">
     <thead class="bg-white border-b sticky top-0"> -->
 
-
-        <div class="table-wrp block max-h-screen overflow-y-auto overflow-x-auto">
+        <div
+            class="table-wrp block max-h-screen overflow-y-auto overflow-x-auto"
+        >
             <table class="table table-hover table-bordered w-full">
                 <thead class="bg-slate-400 border-b sticky top-0">
                     <tr>
@@ -404,7 +416,7 @@
                                 }"
                                 class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-green-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
                             >
-                                Add To Do</router-link
+                            <PlusIcon class="h-5 w-5 mr-1"/> To Do</router-link
                             >
                             <router-link
                                 :to="{
@@ -413,13 +425,13 @@
                                 }"
                                 class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-yellow-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
                             >
-                                Edit</router-link
+                            <PencilSquareIcon class="h-3 w-3"/></router-link
                             >
                             <button
-                                class=" mr-2 mb-2 inline-flex items-center px-2 py-1 bg-red-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                                class="mr-2 mb-2 inline-flex items-center px-2 py-1 bg-red-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
                                 @click="deletecontact(contact.id)"
                             >
-                                Delete
+                                <TrashIcon class="h-3 w-3"/>
                             </button>
                         </td>
                     </tr>
@@ -432,11 +444,15 @@
 <script>
 import LaravelVuePagination from "laravel-vue-pagination";
 import axios from "axios";
-// import "bootstrap/dist/css/bootstrap.min.css";
+import { PencilSquareIcon, TrashIcon, UserPlusIcon, PlusIcon } from "@heroicons/vue/24/solid";
 
 export default {
     components: {
         Pagination: LaravelVuePagination,
+        PencilSquareIcon,
+        TrashIcon,
+        UserPlusIcon,
+        PlusIcon
     },
 
     mounted() {

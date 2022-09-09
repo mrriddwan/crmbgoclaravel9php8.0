@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
+import TestQueryString from "../components/utils/TestQueryString.vue";
 
 /**Contact Imports */
 import ContactIndex from "../components/contacts/ContactIndex.vue";
@@ -26,6 +27,19 @@ import FollowUpIndex from "../components/followups/FollowUpIndex.vue";
 import FollowUpCreate from "../components/followups/FollowUpCreate.vue";
 
 const routes = [
+
+    /*                      
+        test Routes                      
+    */
+
+        {
+            path: "/testpage",
+            name: "TestQueryString",
+            component: TestQueryString,
+        },
+
+
+
     /*                      
         Contact Routes                      
     */
