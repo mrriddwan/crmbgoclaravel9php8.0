@@ -44,20 +44,22 @@
                             <div
                                 class="w-14 h-7 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"
                             ></div>
-                            
+
                             <span
                                 class="ml-3 text-md font-extrabold uppercase text-black"
                                 >Urgent</span
                             >
                         </label>
-                        
                     </div>
                     <div class="form-group">
-                        <label>Date of Follow Up<p class="inline text-red-600 text-lg">*</p></label>
+                        <label
+                            >Date of Follow Up
+                            <p class="inline text-red-600 text-lg">*</p></label
+                        >
                         <input
                             type="date"
                             class="block mt-1 w-max rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="form.created"
+                            v-model="form.followup_created"
                         />
                     </div>
 
@@ -66,12 +68,15 @@
                         <input
                             type="time"
                             class="block mt-1 w-max rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="form.time"
+                            v-model="form.followup_time"
                         />
                     </div>
 
                     <div class="form-group">
-                        <label>Task<p class="inline text-red-600 text-lg">*</p></label>
+                        <label
+                            >Task
+                            <p class="inline text-red-600 text-lg">*</p></label
+                        >
                         <select
                             class="block mt-1 w-max rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                             v-model="form.task_id"
@@ -93,7 +98,7 @@
                         <textarea
                             type="text"
                             class="block mt-1 w-60 w-max-100 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="form.remark"
+                            v-model="form.followup_remark"
                         />
                     </div>
 
@@ -142,78 +147,58 @@ export default {
     },
 
     methods: {
+        // <p class="inline text-red-600 text-lg">*</p></label>
 
-         // <p class="inline text-red-600 text-lg">*</p></label>
-
-        // async createPIC() {
-    //         const contact = this.contact_infos;
-    //         // const form = document.getElementById('inchargeForm');
-    //         try {
-    //             await axios.post("/api/incharges/store", {
-    //                 contact_id: contact[0].id,
-    //                 name: this.form.name,
-    //                 email: this.form.email,
-    //                 phone_mobile: this.form.phone_mobile,
-    //                 phone_office: this.form.phone_office,
-    //             });
-
-    //             await this.$router.push({
-    //                 name: "incharge_create",
-    //                 params: { id: this.$route.params.id },
-    //             });
-    //             this.form.contact_id = "";
-    //             this.form.name = "";
-    //             this.form.email = "";
-    //             this.form.phone_mobile = "";
-    //             this.form.phone_office = "";
-    //             this.errors = "";
-    //             this.showIncharge();
-    //         } catch (e) {
-    //             {
-    //                 if (e.response.status === 422){
-    //                     this.errors = e.response.data.errors;
-    //                 }
-                    
-    //             }
-    //         }
-    //     },
-
-        createFollowUp() {
+        async createFollowUp() {
+            // const form = document.getElementById('inchargeForm');
             const contact = this.contact.data;
-            
-            axios.post("/api/followups/store", {
-                priority_id: this.form.priority_id === "" ? 2 : 1,
-                followup_created: this.form.created,
-                followup_time: this.form.time,
-                task_id: this.form.task_id,
-                followup_remark: this.form.remark,
-                todo_id: this.$route.params.todoId,
-                contact_id: contact.id,
-                user_id: contact.user_id,
-                status_id: contact.status_id,
-                type_id: contact.type_id,
-            });
-            axios
-                .post("/api/todos/insert/" + this.$route.params.id, {
+            try {
+                await axios.post("/api/followups/store", {
                     priority_id: this.form.priority_id === "" ? 2 : 1,
+                    followup_created: this.form.followup_created,
+                    followup_time: (this.form.time = ""
+                        ? "No time set"
+                        : this.form.time),
+                    task_id: this.form.task_id,
+                    followup_remark: (this.form.followup_remark = " "
+                        ? "No remark"
+                        : this.form.followup_remark),
+                    todo_id: this.$route.params.todoId,
+                    contact_id: contact.id,
                     user_id: contact.user_id,
-                    todo_created: this.form.created,
-                    // todo_deadline: "2000-01-01",
                     status_id: contact.status_id,
                     type_id: contact.type_id,
-                    contact_id: contact.id,
-                    task_id: this.form.task_id,
-                    todo_remark: this.form.remark,
-                    source_id: 2,
-                })
-                .then((res) => {
-                    this.$router.push({ name: "followup_index" });
                 });
+
+                await axios
+                    .post("/api/todos/insert/" + this.$route.params.id, {
+                        priority_id: this.form.priority_id === "" ? 2 : 1,
+                        user_id: contact.user_id,
+                        todo_created: this.form.followup_created,
+                        // todo_deadline: "2000-01-01",
+                        status_id: contact.status_id,
+                        type_id: contact.type_id,
+                        contact_id: contact.id,
+                        task_id: this.form.task_id,
+                        todo_remark: (this.form.followup_remark = ""
+                            ? "No remark"
+                            : this.form.followup_remark),
+                        source_id: 2,
+                    })
+                    .then((res) => {
+                        this.$router.push({ name: "followup_index" });
+                    });
+            } catch (e) {
+                {
+                    if (e.response.status === 422) {
+                        this.errors = e.response.data.errors;
+                    }
+                }
+            }
         },
 
-        showContact() {
-            axios
-                .get("/api/contacts/show/" + this.$route.params.id)
+        async showContact() {
+            await axios.get("/api/contacts/show/" + this.$route.params.id)
                 .then((res) => {
                     this.contact = res.data;
                 })
@@ -222,9 +207,8 @@ export default {
                 });
         },
 
-        getTasks() {
-            axios
-                .get("/api/tasks/index")
+        async getTasks() {
+            await axios.get("/api/tasks/index")
                 .then((res) => {
                     this.tasks = res.data.data;
                 })
@@ -233,9 +217,8 @@ export default {
                 });
         },
 
-        getUsers() {
-            axios
-                .get("/api/users/index")
+        async getUsers() {
+            await axios.get("/api/users/index")
                 .then((res) => {
                     this.users = res.data.data;
                 })

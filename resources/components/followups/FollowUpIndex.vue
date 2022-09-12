@@ -18,12 +18,22 @@
         Follow Up</router-link
     >
     <h1
-        class="items-center text-center text-6xl text-white font-extrabold bg-slate-400 px-2 py-2 rounded-md"
+        class="items-center text-center text-6xl text-white font-extrabold bg-slate-400 px-2 rounded-md"
     >
         Follow up Index
     </h1>
 
     <div class="text-sm">
+        <div
+            class="m-2 inline-block items-center px-2 py-1 border-gray-500 border-2"
+        >
+            <select v-model="paginate" class="form-control">
+                <option value="10">10</option>
+                <option value="20">50</option>
+                <option value="30">100</option>
+            </select>
+            <label for="paginate" class="px-2">of 100 entries</label>
+        </div>
         <div
             class="m-2 inline-block items-center px-2 py-1 border-gray-500 border-2"
         >
@@ -102,16 +112,6 @@
         </div>
     </div>
 
-    <div
-        class="m-2 inline-block items-center px-2 py-1 border-gray-500 border-2"
-    >
-        <select v-model="paginate" class="form-control">
-            <option value="10">10</option>
-            <option value="20">50</option>
-            <option value="30">100</option>
-        </select>
-        <label for="paginate" class="px-2">of 100 entries</label>
-    </div>
     <div class="py-2">
         <Pagination
             :data="followups"
@@ -129,7 +129,7 @@
                 id="decrementDate"
                 @click="decrementDate"
             >
-                <ChevronDoubleLeftIcon class="h-5 w-4 bg-blue-300 rounded-lg" />
+                <ChevronDoubleLeftIcon class="h-6 w-6 bg-blue-300 rounded-lg" />
             </button>
         </div>
         <span v-show="viewType === `day`">
@@ -162,7 +162,7 @@
                 @click="incrementDate"
             >
                 <ChevronDoubleRightIcon
-                    class="h-5 w-4 bg-blue-300 rounded-lg"
+                    class="h-6 w-6 bg-blue-300 rounded-lg"
                 />
             </button>
         </div>
@@ -172,7 +172,7 @@
         <table class="table table-hover table-bordered" id="example">
             <thead>
                 <tr>
-                    <th>#List no.</th>
+                    <th>#</th>
                     <th>
                         <a
                             href="#"
@@ -357,33 +357,32 @@
 </template>
 
 <script>
-    import LaravelVuePagination from "laravel-vue-pagination";
-    import axios from "axios";
-    import moment from "moment";
-    import {
+import LaravelVuePagination from "laravel-vue-pagination";
+import axios from "axios";
+import moment from "moment";
+import {
+    PencilSquareIcon,
+    TrashIcon,
+    ChevronDoubleLeftIcon,
+    ChevronDoubleRightIcon,
+    PlusIcon,
+    LightBulbIcon,
+    EyeIcon,
+} from "@heroicons/vue/24/solid";
+
+export default {
+    components: {
+        Pagination: LaravelVuePagination,
         PencilSquareIcon,
         TrashIcon,
         ChevronDoubleLeftIcon,
         ChevronDoubleRightIcon,
         PlusIcon,
         LightBulbIcon,
-        EyeIcon
-    } from "@heroicons/vue/24/solid";
-    
-    export default {
-    
-        components: {
-            Pagination: LaravelVuePagination,
-            PencilSquareIcon,
-            TrashIcon,
-            ChevronDoubleLeftIcon,
-            ChevronDoubleRightIcon,
-            PlusIcon,
-            LightBulbIcon,
-            EyeIcon
-        },
+        EyeIcon,
+    },
 
-        mounted() {
+    mounted() {
         this.getStatus();
         this.getActions();
         this.getUsers();
@@ -391,10 +390,12 @@
             ? (this.currentDate = this.$route.params.selectedDate)
             : (this.currentDate = this.getCurrentDate());
         //initial date selection
-        console.log("Result of mounted getCurrentDate: "+ this.getCurrentDate());
+        console.log(
+            "Result of mounted getCurrentDate: " + this.getCurrentDate()
+        );
         this.selectedDate = this.currentDate;
         // this.getSelectedDate(this.selectedDate);
-        console.log("Result of mounted currrentDate: "+ this.currentDate);
+        console.log("Result of mounted currrentDate: " + this.currentDate);
         //initial month selection
         this.selectedMonth = this.getSelectedMonth(this.selectedDate);
         this.selectedYear = this.getSelectedYear(this.selectedDate);
@@ -406,12 +407,15 @@
         //initialise date range
         this.selectedDateStart = this.selectedDate;
         this.selectedDateEnd = this.selectedDate;
-        console.log("Result of mounted selectedDateStart: "+ this.selectedDateStart);
-        console.log("Result of mounted selectedDateEnd: "+ this.selectedDateEnd);
+        console.log(
+            "Result of mounted selectedDateStart: " + this.selectedDateStart
+        );
+        console.log(
+            "Result of mounted selectedDateEnd: " + this.selectedDateEnd
+        );
 
         this.incrementDate();
         this.decrementDate();
-        
     },
     data() {
         return {
@@ -449,7 +453,6 @@
     },
     watch: {
         paginate: function (value) {
-
             this.getFollowUps();
         },
         search: function (value) {
@@ -480,8 +483,14 @@
                 const monthYear = this.selectedMonthYear;
                 this.getSelectedMonth(monthYear);
                 this.getSelectedYear(monthYear);
-                console.log("Result of this.getSelectedMonth(monthYear): "+ this.getSelectedMonth(monthYear));
-                console.log("Result of this.getSelectedYear(monthYear): "+ this.getSelectedYear(monthYear));
+                console.log(
+                    "Result of this.getSelectedMonth(monthYear): " +
+                        this.getSelectedMonth(monthYear)
+                );
+                console.log(
+                    "Result of this.getSelectedYear(monthYear): " +
+                        this.getSelectedYear(monthYear)
+                );
                 this.getFollowUps();
                 this.selectedDate = this.currentDate;
                 this.selectedDateStart = this.selectedDate;
@@ -518,7 +527,7 @@
             this.getSelectedMonth(monthYear);
             this.getSelectedYear(monthYear);
             this.getFollowUps();
-            console.log("current date after month change: " + this.currentDate)
+            console.log("current date after month change: " + this.currentDate);
             this.selectedDate = this.currentDate;
             this.selectedDateStart = this.selectedDate;
             this.selectedDateEnd = this.selectedDate;

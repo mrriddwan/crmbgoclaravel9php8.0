@@ -101,7 +101,7 @@
                             class="inline-flex text-center px-1 py-1 bg-blue-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
                         >
                             <PencilSquareIcon class="h-5 w-5" /> /
-                            <PlusIcon class="h-5 w-5" />  PIC</router-link
+                            <PlusIcon class="h-5 w-5" /> PIC</router-link
                         >
                     </td>
                 </tr>
@@ -187,11 +187,11 @@
                     </span>
                 </span>
 
-                <span v-else>
+                <span v-else class="">
                     <td
-                        class="px-2 py-4 text-m leading-5 font-bold text-gray-900 whitespace-no-wrap"
+                        class="mx-auto font-serif border-5 border-grey-900 mb-2 text-xl font-extrabold tracking-tight leading-none text-gray-700 md:text-2xl lg:text-2xl text-center bg-slate-500 py-2 px-2 rounded-md uppercase w-max"
                     >
-                        No PIC Data
+                        No PIC
                     </td>
                 </span>
             </tbody>
@@ -245,6 +245,17 @@ export default {
                 .catch((error) => {
                     console.log(error);
                 });
+        },
+        deletePIC(id) {
+            if (!window.confirm("Are you sure?")) {
+                return;
+            }
+            axios.delete("/api/incharges/delete/" + id);
+            this.$router.push({
+                name: "contacts_info",
+                params: { id: this.$route.params.id },
+            });
+            this.showContact();
         },
     },
 };

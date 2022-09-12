@@ -18,22 +18,32 @@
         Follow Up</router-link
     >
     <h1
-        class="items-center text-center text-6xl text-white font-extrabold bg-slate-400 px-2 py-2 rounded-md"
+        class="items-center text-center text-6xl text-white font-extrabold bg-slate-400 rounded-md"
     >
         To Do Index
     </h1>
 
-    <router-link
-        to="/todo/create"
-        class="m-2 inline-block items-center px-2 py-1 bg-blue-800 border border-transparent rounded-md font-semibold text-m text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
-    >
-        <PlusIcon class="inline h-6 w-6 mr-1" />
-        to do</router-link
-    >
-
     <div class="text-sm">
+        <div>
+            <router-link
+                to="/todo/create"
+                class="inline-block items-center px-2 py-1 align-top bg-blue-800 border border-transparent rounded-md font-semibold text-m text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+            >
+                <PlusIcon class="inline h-6 w-6 mr-1" />
+                to do</router-link
+            >
+        </div>
+
+        <div class="inline-block px-1 border-gray-500 border-2">
+            <select v-model="paginate" class="form-control">
+                <option value="10">10</option>
+                <option value="20">50</option>
+                <option value="30">100</option>
+            </select>
+            <label for="paginate" class="px-2">of 100 entries</label>
+        </div>
         <div
-            class="m-2 inline-block items-center px-2 py-1 border-gray-500 border-2"
+            class="m-1 inline-block items-center px-1 py-1 border-gray-500 border-2"
         >
             <p>view by</p>
             <select v-model="viewType" class="form-control text-center">
@@ -43,7 +53,7 @@
             </select>
         </div>
         <div
-            class="m-2 inline-block items-center px-2 py-1 border-gray-500 border-2"
+            class="m-1 inline-block items-center px-1 py-1 border-gray-500 border-2"
             @change=""
         >
             <span v-show="viewType === `day`">
@@ -65,7 +75,7 @@
 
             <span
                 v-show="viewType === `range`"
-                class="m-1 inline-block items-center px-2 py-1 border-gray-500 border-2"
+                class="m-1 inline-block items-center px-1 py-1 border-gray-500 border-2"
             >
                 <div class="border-gray-800 border-2 flex px-2 py-2">
                     <p class="px-1 mt-1">select start date</p>
@@ -75,7 +85,7 @@
                         type="date"
                     />
                 </div>
-                <div class="border-gray-800 border-2 flex px-2 py-2">
+                <div class="border-gray-800 border-2 flex px-1 py-2">
                     <p class="px-1 mt-1">select end date</p>
                     <input
                         v-model.lazy="selectedDateEnd"
@@ -87,7 +97,7 @@
         </div>
 
         <div
-            class="m-2 inline-block items-center px-2 py-1 border-gray-500 border-2"
+            class="m-1 inline-block items-center px-1 py-1 border-gray-500 border-2"
         >
             <p>Filter term</p>
             <input
@@ -98,7 +108,7 @@
             />
         </div>
         <div
-            class="m-2 inline-block items-center px-2 py-1 border-gray-500 border-2"
+            class="m-1 inline-block items-center px-1 py-1 border-gray-500 border-2"
         >
             <p>Select user</p>
             <select v-model="selectedUser" class="">
@@ -110,16 +120,6 @@
         </div>
     </div>
 
-    <div
-        class="m-2 inline-block items-center px-2 py-1 border-gray-500 border-2"
-    >
-        <select v-model="paginate" class="form-control">
-            <option value="10">10</option>
-            <option value="20">50</option>
-            <option value="30">100</option>
-        </select>
-        <label for="paginate" class="px-2">of 100 entries</label>
-    </div>
     <div class="py-2">
         <Pagination
             :data="todos"
@@ -133,29 +133,29 @@
     <div class="grid grid-cols-3 w-full text-center bg-slate-500">
         <div class="text-left">
             <button
-                class="text-xl text-left px-3 py-3"
+                class="text-xl text-left px-2 py-2"
                 id="decrementDate"
                 @click="decrementDate"
             >
-                <ChevronDoubleLeftIcon class="h-5 w-4 bg-blue-300 rounded-lg" />
+                <ChevronDoubleLeftIcon class="h-6 w-6 bg-blue-300 rounded-lg" />
             </button>
         </div>
         <span v-show="viewType === `day`">
-            <div class="mt-2">
+            <div class="mt-1">
                 <h3 class="uppercase text-white font-extrabold">
                     {{ showToday(selectedDate) }}
                 </h3>
             </div>
         </span>
         <span v-show="viewType === `month`">
-            <div class="mt-2">
+            <div class="mt-1">
                 <h3 class="uppercase text-white font-extrabold">
                     {{ showMonth(selectedMonthYear) }}
                 </h3>
             </div>
         </span>
         <span v-show="viewType === `range`">
-            <div class="mt-2">
+            <div class="mt-1">
                 <h3 class="uppercase text-white font-extrabold">
                     {{ showToday(selectedDateStart) }} ---
                     {{ showToday(selectedDateEnd) }}
@@ -165,12 +165,12 @@
 
         <div class="text-right">
             <button
-                class="text-5xl text-right px-3 py-3"
+                class="text-5xl text-right px-2 py-2"
                 id="incrementDate"
                 @click="incrementDate"
             >
                 <ChevronDoubleRightIcon
-                    class="h-5 w-4 bg-blue-300 rounded-lg"
+                    class="h-6 w-6 bg-blue-300 rounded-lg"
                 />
             </button>
         </div>
@@ -575,34 +575,27 @@ export default {
         paginate: function (value) {
             if (this.viewType === "day") {
                 this.getToDosSelectDate();
-            }
-            else if (this.viewType === "month") {
-                this.getToDosSelectMonth()
-            }
-            else if (this.viewType === "range") {
+            } else if (this.viewType === "month") {
+                this.getToDosSelectMonth();
+            } else if (this.viewType === "range") {
                 this.getToDosSelectDateRange();
             }
         },
         search: function (value) {
             if (this.viewType === "day") {
                 this.getToDosSelectDate();
-            }
-            else if (this.viewType === "month") {
-                this.getToDosSelectMonth()
-            }
-            else if (this.viewType === "range") {
+            } else if (this.viewType === "month") {
+                this.getToDosSelectMonth();
+            } else if (this.viewType === "range") {
                 this.getToDosSelectDateRange();
             }
         },
         selectedStatus: function (value) {
             if (this.viewType === "day") {
-
                 this.getToDosSelectDate();
-            }
-            else if (this.viewType === "month") {
-                this.getToDosSelectMonth()
-            }
-            else if (this.viewType === "range") {
+            } else if (this.viewType === "month") {
+                this.getToDosSelectMonth();
+            } else if (this.viewType === "range") {
                 this.getToDosSelectDateRange();
             }
         },
@@ -645,7 +638,7 @@ export default {
             this.selectedMonthYear = monthYear;
             this.getSelectedMonth(monthYear);
             this.getSelectedYear(monthYear);
-            this.getToDosSelectMonth()
+            this.getToDosSelectMonth();
             console.log("current date after month change: " + this.currentDate);
         },
 
@@ -671,7 +664,6 @@ export default {
     },
 
     methods: {
-
         getToDos(page = 1) {
             if (typeof page === "undefined") {
                 page = 1;

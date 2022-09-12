@@ -104,7 +104,7 @@ class ToDoController extends Controller
             'task_id' => $request->task_id,
             'status_id' => $request->status_id,
             'type_id' => $request->type_id,
-            'todo_remark' => $request->todo_remark,
+            'todo_remark' => $request->todo_remark ?? "None",
             'color_id' => $request->color_id ?? '1',
             'source_id' => $request->source_id
         ]);
@@ -136,7 +136,7 @@ class ToDoController extends Controller
             'task_id' => $request->task_id,
             'status_id' => $request->status_id,
             'type_id' => $request->type_id,
-            'todo_remark' => $request->remark,
+            'todo_remark' => $request->todo_remark,
         ]);
 
 

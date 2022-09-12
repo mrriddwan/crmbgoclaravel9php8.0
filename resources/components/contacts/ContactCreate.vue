@@ -113,7 +113,7 @@
                     <div class="form-group">
                         <label
                             >Address
-                            <p class="inline text-red-600 text-lg">*</p></label
+                        </label
                         >
                         <input
                             type="text"
@@ -176,8 +176,8 @@ export default {
     },
 
     methods: {
-        getIndustry() {
-            axios
+        async getIndustry() {
+            await axios
                 .get("/api/contactindustry/index")
                 .then((res) => {
                     this.industries = res.data.data;
@@ -187,8 +187,8 @@ export default {
                 });
         },
 
-        getStatus() {
-            axios
+        async getStatus() {
+            await axios
                 .get("/api/contactstatus/index")
                 .then((res) => {
                     this.statuses = res.data.data;
@@ -198,8 +198,8 @@ export default {
                 });
         },
 
-        getCategory() {
-            axios
+        async getCategory() {
+            await axios
                 .get("/api/contactcategory/index")
                 .then((res) => {
                     this.categories = res.data.data;
@@ -209,8 +209,8 @@ export default {
                 });
         },
 
-        getType() {
-            axios
+        async getType() {
+            await axios
                 .get("/api/contacttype/index")
                 .then((res) => {
                     this.types = res.data.data;
@@ -228,8 +228,8 @@ export default {
                     status_id: this.form.status_id,
                     name: this.form.name,
                     category_id: this.form.category_id,
-                    address: this.form.address,
-                    remark: this.form.remark,
+                    address: this.form.address = "" ? "No address saved" : this.form.address,
+                    remark: this.form.remark = "" ? "No remark" : this.form.remark,
                     user_id: 1, //later add current user
                 })
                 .then((res) => {

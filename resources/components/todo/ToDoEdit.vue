@@ -150,7 +150,7 @@
                         <textarea
                             type="text"
                             class="block mt-1 w-60 w-max-100 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            v-model="todo.remark"
+                            v-model="todo.todo_remark"
                         />
                     </div>
 
@@ -247,7 +247,7 @@ export default {
                     type_id: this.todo.type_id,
                     contact_id: this.todo.contact_id,
                     task_id: this.todo.task_id,
-                    todo_remark: this.todo.remark,
+                    todo_remark: this.todo.todo_remark,
                     //need to add color id later
                 })
                 .then((res) => {
@@ -255,8 +255,8 @@ export default {
                 });
         },
 
-        showToDo() {
-            axios
+        async showToDo() {
+            await axios
                 .get("/api/todos/show/" + this.$route.params.id)
                 .then((res) => {
                     this.todo = res.data.data;
@@ -266,8 +266,8 @@ export default {
                 });
         },
 
-        getTasks() {
-            axios
+        async getTasks() {
+            await axios
                 .get("/api/tasks/index")
                 .then((res) => {
                     this.tasks = res.data.data;
@@ -277,8 +277,8 @@ export default {
                 });
         },
 
-        getStatus() {
-            axios
+        async getStatus() {
+            await axios
                 .get("/api/contactstatus/index")
                 .then((res) => {
                     this.statuses = res.data.data;
@@ -288,8 +288,8 @@ export default {
                 });
         },
 
-        getUser() {
-            axios
+        async getUser() {
+            await axios
                 .get("/api/users/index")
                 .then((res) => {
                     this.users = res.data.data;
@@ -299,8 +299,8 @@ export default {
                 });
         },
 
-        getContacts() {
-            axios
+        async getContacts() {
+            await axios
                 .get("/api/contacts/list")
                 .then((res) => {
                     this.contacts = res.data.data;
@@ -310,8 +310,8 @@ export default {
                 });
         },
 
-        getType() {
-            axios
+        async getType() {
+            await axios
                 .get("/api/contacttype/index")
                 .then((res) => {
                     this.types = res.data.data;

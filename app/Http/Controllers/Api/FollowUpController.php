@@ -74,9 +74,9 @@ class FollowUpController extends Controller
         $followup = FollowUp::create([
             'priority_id' => $request->priority_id,
             'followup_created' => $request->followup_created,
-            'followup_time' => $request->followup_time,
+            'followup_time' => $request->followup_time ?? "12:00",
             'task_id' => $request->task_id,
-            'followup_remark' => $request->followup_remark,
+            'followup_remark' => $request->followup_remark ?? "No remark",
             'todo_id' => $request->todo_id,
             'contact_id' => $request->contact_id,
             'user_id' => $request->user_id,
@@ -96,9 +96,9 @@ class FollowUpController extends Controller
         $followup->update([
             'priority_id' => $request->priority_id,
             'follow_ups_created' => $request->follow_ups_created,
-            'follow_ups_time' => $request->follow_ups_time,
+            'follow_ups_time' => $request->follow_ups_time ?? "12:00",
             'task_id' => $request->task_id,
-            'followup_remark' => $request->followup_remark,
+            'followup_remark' => $request->followup_remark ?? "No remark",
             'todo_id' => $request->todo_id,
             'contact_id' => $request->contact_id,
             'user_id' => $request->user_id,

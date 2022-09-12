@@ -23,14 +23,14 @@ class DatabaseSeeder extends Seeder
             Contact_CategorySeeder::class,
             Contact_IndustrySeeder::class,
             ContactSeeder::class,
-            Contact_InchargeSeeder::class,
+            // Contact_InchargeSeeder::class,
             TaskSeeder::class,
             PrioritySeeder::class,
             TextColorSeeder::class,
             ActionSeeder::class,
             ToDoSourceSeeder::class,
-            ToDoSeeder::class,
-            FollowUpSeeder::class,
+            // ToDoSeeder::class,
+            // FollowUpSeeder::class,
 
         ]);
     }

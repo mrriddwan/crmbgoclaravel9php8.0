@@ -237,11 +237,15 @@ export default {
                     phone_mobile: this.form.phone_mobile,
                     phone_office: this.form.phone_office,
                 });
+                if (window.confirm("Continue to add incharge?")) {
+                    await this.$router.push({
+                        name: "incharge_create",
+                        params: { id: this.$route.params.id },
+                    });
+                } else {
+                    this.$router.push({ name: "contact_index" });
+                }
 
-                await this.$router.push({
-                    name: "incharge_create",
-                    params: { id: this.$route.params.id },
-                });
                 this.form.contact_id = "";
                 this.form.name = "";
                 this.form.email = "";
@@ -251,10 +255,9 @@ export default {
                 this.showIncharge();
             } catch (e) {
                 {
-                    if (e.response.status === 422){
+                    if (e.response.status === 422) {
                         this.errors = e.response.data.errors;
                     }
-                    
                 }
             }
         },

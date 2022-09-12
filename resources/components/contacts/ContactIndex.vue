@@ -18,14 +18,14 @@
         Follow Up</router-link
     >
     <h1
-        class="items-center text-center text-6xl text-white font-extrabold bg-slate-400 px-2 py-2 rounded-md"
+        class="items-center text-center text-6xl text-white font-extrabold bg-slate-400 px-2 rounded-md"
     >
         Contact Index
     </h1>
 
     <router-link
         to="/contacts/create"
-        class="m-2 inline-block items-center px-2 py-1 bg-gray-800 border border-transparent rounded-md font-semibold text-sm text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+        class="ml-1 inline-block items-center px-2 py-1 bg-gray-800 border border-transparent rounded-md font-semibold text-sm text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
     >
         <UserPlusIcon class="h-6 w-6 inline"/> contact</router-link
     >
@@ -51,7 +51,7 @@
             </div>
         </div>
 
-        <div class="py-3">
+        <div class="py-1">
             <Pagination
                 :data="contacts"
                 @pagination-change-page="getContacts"

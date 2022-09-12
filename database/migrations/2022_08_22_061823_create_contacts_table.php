@@ -17,8 +17,8 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->string('name', 100);
-            $table->string('address');
-            $table->string('remark');
+            $table->string('address')->nullable();
+            $table->string('remark')->nullable();
             $table->unsignedBigInteger('user_id')->nullable()->constrained();
             $table->unsignedBigInteger('status_id')->nullable()->constrained();
             $table->unsignedBigInteger('type_id')->nullable()->constrained();

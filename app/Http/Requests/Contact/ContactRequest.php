@@ -26,12 +26,13 @@ class ContactRequest extends FormRequest
         return [
             
             'name' => ['required', 'string'],
-            'address' => ['required', 'string'],
+            'address' => ['nullable', 'string'],
             'industry_id' =>  ['required', 'int'],
             'status_id' =>  ['required', 'int'],
             'type_id' =>  ['required', 'int'],
             'category_id' =>  ['required', 'int'],
             'user_id' =>  ['required', 'int'],
+            'remark' =>  ['nullable', 'int'],
         ];
     }
 }

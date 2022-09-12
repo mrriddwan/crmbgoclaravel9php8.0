@@ -66,10 +66,10 @@ class ContactController extends Controller
     {
 
         $contact = Contact::create([
-            'industry' => $request->industry,
+            'industry_id' => $request->industry_id,
             'name' => $request->name,
-            'address' => $request->address,
-            'remark' => $request->remark,
+            'address' => $request->address ?? 'None',
+            'remark' => $request->remark ?? 'None',
             'category_id' => $request->category_id,
             'user_id' => $request->user_id ?? 1, //change to current user later
             'type_id' => $request->type_id,
