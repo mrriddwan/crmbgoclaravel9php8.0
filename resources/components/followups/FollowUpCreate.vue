@@ -1,15 +1,26 @@
 <template>
     <div
-        class="container w-max-10 border-4 align-center mx-auto h-max px-5 py-5"
+        class="container w-max-10 border-4 align-center mx-auto h-max px-1 py-1"
     >
-        <!-- <div>
+        <div>
             <GoBack />
-        </div> -->
+        </div>
 
         <div
-            class="items-center text-center text-white font-extrabold bg-slate-600 px-2 py-2 rounded-md"
+            class="items-center text-center text-white font-extrabold bg-slate-600 px-2 rounded-md"
         >
             <h1 class="px-2 py-3 bg-black-50">Follow Up</h1>
+        </div>
+        <div v-if="errors">
+            <div v-for="(v, k) in errors" :key="k">
+                <p
+                    v-for="error in v"
+                    :key="error"
+                    class="text-xs bg-red-500 text-white rounded font-bold mb-1 shadow-lg py-2 px-4 pr-0 w-max"
+                >
+                    {{ error }}
+                </p>
+            </div>
         </div>
 
         <div
@@ -137,6 +148,7 @@ export default {
             tasks: [],
             users: [],
             contact: [],
+            errors: "",
         };
     },
 
@@ -147,7 +159,6 @@ export default {
     },
 
     methods: {
-        // <p class="inline text-red-600 text-lg">*</p></label>
 
         async createFollowUp() {
             // const form = document.getElementById('inchargeForm');

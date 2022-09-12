@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ToDo\FollowUpRequest;
 use App\Http\Resources\FollowUpResource;
 use App\Models\FollowUp;
 use App\Models\ToDo;
@@ -66,23 +67,22 @@ class FollowUpController extends Controller
     }
     // whereDate('created_at', '=', date('Y-m-d'))
 
-    public function store(Request $request)
+    public function store(FollowUpRequest $request)
     {
-        // $contact = Contact::create($request->validated());
-        // return new ContactResource($contact);
+        $followup = FollowUp::create($request->validated());
 
-        $followup = FollowUp::create([
-            'priority_id' => $request->priority_id,
-            'followup_created' => $request->followup_created,
-            'followup_time' => $request->followup_time ?? "12:00",
-            'task_id' => $request->task_id,
-            'followup_remark' => $request->followup_remark ?? "No remark",
-            'todo_id' => $request->todo_id,
-            'contact_id' => $request->contact_id,
-            'user_id' => $request->user_id,
-            'status_id' => $request->status_id,
-            'type_id' => $request->type_id,
-        ]);
+        // $followup = FollowUp::create([
+        //     'priority_id' => $request->priority_id,
+        //     'followup_created' => $request->followup_created,
+        //     'followup_time' => $request->followup_time ?? "12:00",
+        //     'task_id' => $request->task_id,
+        //     'followup_remark' => $request->followup_remark ?? "No remark",
+        //     'todo_id' => $request->todo_id,
+        //     'contact_id' => $request->contact_id,
+        //     'user_id' => $request->user_id,
+        //     'status_id' => $request->status_id,
+        //     'type_id' => $request->type_id,
+        // ]);
 
         return response()->json([
             'data' => $followup,

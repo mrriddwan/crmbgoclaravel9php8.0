@@ -505,20 +505,28 @@ export default {
     created() {},
 
     mounted() {
+        console.log(
+            "this is the route params: " + this.$route.params.selectedDate
+        );
         this.getStatus();
         this.getActions();
         this.getUsers();
-        this.$route.params.length !== 0
-            ? (this.currentDate = this.$route.params.selectedDate)
-            : (this.currentDate = this.getCurrentDate());
+        if (!this.$route.params.selectedDate) {
+            this.currentDate = this.getCurrentDate();
+            this.selectedDate = this.currentDate;
+            this.getToDos();
+        } else {
+            this.selectedDate = this.$route.params.selectedDate;
+            this.getToDos();
+        }
         //initial date selection
         console.log(
             "Result of mounted getCurrentDate: " + this.getCurrentDate()
         );
-        this.selectedDate = this.currentDate;
+
         // this.getSelectedDate(this.selectedDate);
         console.log("Result of mounted currrentDate: " + this.currentDate);
-        this.getToDos();
+
         //initial month selection
         this.selectedMonth = this.getSelectedMonth(this.selectedDate);
         this.selectedYear = this.getSelectedYear(this.selectedDate);
@@ -538,6 +546,9 @@ export default {
         this.incrementDate();
         this.decrementDate();
     },
+
+    props: {},
+
     data() {
         return {
             moment: moment,
